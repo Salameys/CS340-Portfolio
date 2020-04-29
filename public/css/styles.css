@@ -1,0 +1,17 @@
+body {
+    background-color:  lightgray;
+}
+
+.topnav {
+    background-color: darkgray;
+}
+
+.topnav a {
+    background-color: black;
+    color: lightgreen;
+    text-decoration: none;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+
