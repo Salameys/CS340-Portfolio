@@ -8,40 +8,45 @@
         <div class="sourcebuttons">
 
         </div>
-        <table id="monsters">
-            <tr class="listheader">
-                <th class="headerSortUp" onclick="sortTable('monsters', 0, this)" data-ascending>Name</th>
-                <th  onclick="sortTable('monsters', 1, this)" data-ascending>Type</th>
-                <th  onclick="sortTable('monsters', 2, this)" data-int data-ascending>CR</th>
-                <th  onclick="sortTable('monsters', 3, this)" data-ascending>Source</th>
+        <table id="characters">
+            <tr>
+                <th  onclick="sortTable('characters', 0, this)" data-ascending>Name</th>
+                <th  onclick="sortTable('characters', 1, this)" data-ascending>Race</th>
+                <th  onclick="sortTable('characters', 2, this)" data-ascending>Class</th>
+                <th  onclick="sortTable('characters', 3, this)" data-isInt data-ascending>Level</th>
+                <th  onclick="sortTable('characters', 4, this)" data-ascending>Party</th>
             </tr>
-            <tr class="clickable-row" data-href="#monsterID" onclick="loadMonster(this)">
-                <td class="monster_name">Jeffasaurus</td>
-                <td class="monster_type">Dinosaur</td>
-                <td class="monster_cr">5</td>
-                <td class="monster_source">Derp</td>
+            <tr class="clickable-row" data-href="#characterID" onclick="loadCharacter(this)">
+                <td class="character_name">Jeff O'Saur</td>
+                <td class="character_race">Dinosaurian</td>
+                <td class="character_class">Bard</td>
+                <td class="character_level">5</td>
+                <td class="character_party">Derpestarians</td>
             </tr>
-            <tr class="clickable-row" data-href="#monsterID" onclick="loadMonster(this)">
-                <td class="monster_name">Beezle Bub</td>
-                <td class="monster_type">Demon</td>
-                <td class="monster_cr">8</td>
-                <td class="monster_source">Derp</td>
+            <tr class="clickable-row" data-href="#characterID" onclick="loadCharacter(this)">
+                <td class="character_name">Robert Sandfield</td>
+                <td class="character_race">Human</td>
+                <td class="character_class">Wizard</td>
+                <td class="character_level">4</td>
+                <td class="character_party">Database Comrades</td>
             </tr>
-            <tr class="clickable-row" data-href="#monsterID" onclick="loadMonster(this)">
-                <td class="monster_name">Cat</td>
-                <td class="monster_type">Animal</td>
-                <td class="monster_cr">1</td>
-                <td class="monster_source">Life</td>
+            <tr class="clickable-row" data-href="#characterID" onclick="loadCharacter(this)">
+                <td class="character_name">Salah Salamey</td>
+                <td class="character_race">Human</td>
+                <td class="character_class">Monk</td>
+                <td class="character_level">4</td>
+                <td class="character_party">Database Comrades</td>
             </tr>
-            <tr class="clickable-row" data-href="#monsterID" onclick="loadMonster(this)">
-                <td class="monster_name">Rory</td>
-                <td class="monster_type">Human</td>
-                <td class="monster_cr">10</td>
-                <td class="monster_source">Dr Who</td>
+            <tr class="clickable-row" data-href="#characterID" onclick="loadCharacter(this)">
+                <td class="character_name">Bill</td>
+                <td class="character_race">Donkey</td>
+                <td class="character_class">Bourgeoisie</td>
+                <td class="character_level">5</td>
+                <td class="character_party">Derpestarians</td>
             </tr>
         </table>
     </div>
-    <div class="viewcontainer">
-
+    <div class="viewcontainer" >
+        {{> characterDisplay name="Zebra"}}
     </div>
 </div>
