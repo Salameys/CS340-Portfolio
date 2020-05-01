@@ -3,8 +3,47 @@
 <form>
     <table>
         <tr id="row-name">
-            <td>{{name}}</td>
-            <td class='hidden'><input type-"text" id="name" value={{name}}></input></td>
+            <td class='display' colspan='6'>{{name}}</td>
+            <td class='input hidden' colspan='6'><input type-"text" id="name" value={{name}}></input></td>
+        </tr>
+        <tr id="row-race">
+            <td class='display' colspan='6'>{{race}}</td>
+            <td class='input hidden' colspan='6'><input type-"text" id="race" value={{race}}></input></td>
+        </tr>
+        <tr id="row-class">
+            <td class='display' colspan='4'>{{class}}</td>
+            <td class='input hidden' colspan='4'><input type-"text" id="class" value={{class}}></input></td>
+            <td class='display' colspan='2'>{{level}}</td>
+            <td class='input hidden' colspan='2'><input type-"number" id="level" value={{level}}></input></td>
+        </tr>
+        <tr id="row-statheaders">
+            <td>STR</td>
+            <td>DEX</td>
+            <td>CON</td>
+            <td>INT</td>
+            <td>WIS</td>
+            <td>CHA</td>
+        </tr>
+        <tr id="row-stats">
+            <td class='display'>{{strength}}</td>
+            <td class='input hidden'><input type-"number" id="strength" value={{strength}}></input></td>
+            <td class='display'>{{dexterity}}</td>
+            <td class='input hidden'><input type-"number" id="dexterity" value={{dexterity}}></input></td>
+            <td class='display'>{{constitution}}</td>
+            <td class='input hidden'><input type-"number" id="constitution" value={{constitution}}></input></td>
+            <td class='display'>{{intelligence}}</td>
+            <td class='input hidden'><input type-"number" id="intelligence" value={{intelligence}}></input></td>
+            <td class='display'>{{wisdom}}</td>
+            <td class='input hidden'><input type-"number" id="wisdom" value={{wisdom}}></input></td>
+            <td class='display'>{{charisma}}</td>
+            <td class='input hidden'><input type-"number" id="charisma" value={{charisma}}></input></td>
+        </tr>
+        <tr id="row-partylabel">
+            <td colspan='6'>Member of:</td>
+        </tr>
+        <tr id="row-party">
+            <td class='display' colspan='6'>{{party}}</td>
+            <td class='input hidden' colspan='6'><input type-"text" id="party" value={{party}}></input></td>
         </tr>
     </table>
 </form>
