@@ -1,0 +1,12 @@
+{{log this}}
+<table id="characters">
+    {{#each character}}
+    <tr class="clickable-row" data-href={{characterID}} onclick="loadCharacter(this)">
+        <td class="character_name">{{name}}</td>
+        <td class="character_race">{{race}}</td>
+        <td class="character_class">{{class}}</td>
+        <td class="character_level">{{level}}</td>
+        <td class="character_party">{{party}}</td>
+    </tr>
+    {{/each}}
+</table>

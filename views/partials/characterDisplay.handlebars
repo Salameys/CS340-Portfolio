@@ -38,12 +38,15 @@
             <td class='display'>{{charisma}}</td>
             <td class='input hidden'><input type-"number" id="charisma" value={{charisma}}></input></td>
         </tr>
-        <tr id="row-partylabel">
-            <td colspan='6'>Member of:</td>
-        </tr>
         <tr id="row-party">
-            <td class='display' colspan='6'>{{party}}</td>
-            <td class='input hidden' colspan='6'><input type-"text" id="party" value={{party}}></input></td>
+            <td colspan='2'>Member of:</td>
+            <td class='display' colspan='4'>
+                {{#if party}}
+                    {{party}}
+                {{else}}
+                    None
+                {{/if}}</td>
+            <td class='input hidden' colspan='4'><input type-"text" id="party" value={{party}}></input></td>
         </tr>
     </table>
 </form>
