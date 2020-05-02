@@ -1,5 +1,15 @@
 <script src="/js/sortTable.js"></script>
 <script src="/js/character.js"></script>
+<script>
+    var context = '{{#each characters}} { {{#each this}}{{#unless @last}}"{{@key}}":"{{this}}", {{/unless}}{{#if @last}}"{{@key}}":"{{this}}"{{/if}}{{/each}} }, {{/each}}';
+    context = context.split("},");
+    context.length = context.length-1;
+    for(var i = 0; i < context.length; i++) {
+        context[i] = context[i] + "}";
+        context[i] = context[i].replace("&#x27;", "'");
+        context[i] = JSON.parse(context[i]);
+    };
+</script>
 <link rel='stylesheet' type='text/css' href='/css/table.css' />
 
 <div class="viewport">
@@ -10,46 +20,9 @@
         <div class="sourcebuttons">
 
         </div>
-        <table id="characters">
-            <tr>
-                <th  onclick="sortTable('characters', 0, this)" data-ascending>Name</th>
-                <th  onclick="sortTable('characters', 1, this)" data-ascending>Race</th>
-                <th  onclick="sortTable('characters', 2, this)" data-ascending>Class</th>
-                <th  onclick="sortTable('characters', 3, this)" data-isInt data-ascending>Level</th>
-                <th  onclick="sortTable('characters', 4, this)" data-ascending>Party</th>
-            </tr>
-            <tr class="clickable-row" data-href="#characterID" onclick="loadCharacter(this)">
-                <td class="character_name">Jeff O'Saur</td>
-                <td class="character_race">Dinosaurian</td>
-                <td class="character_class">Bard</td>
-                <td class="character_level">5</td>
-                <td class="character_party">Derpestarians</td>
-            </tr>
-            <tr class="clickable-row" data-href="#characterID" onclick="loadCharacter(this)">
-                <td class="character_name">Robert Sandfield</td>
-                <td class="character_race">Human</td>
-                <td class="character_class">Wizard</td>
-                <td class="character_level">4</td>
-                <td class="character_party">Database Comrades</td>
-            </tr>
-            <tr class="clickable-row" data-href="#characterID" onclick="loadCharacter(this)">
-                <td class="character_name">Salah Salamey</td>
-                <td class="character_race">Human</td>
-                <td class="character_class">Monk</td>
-                <td class="character_level">4</td>
-                <td class="character_party">Database Comrades</td>
-            </tr>
-            <tr class="clickable-row" data-href="#characterID" onclick="loadCharacter(this)">
-                <td class="character_name">Bill</td>
-                <td class="character_race">Donkey</td>
-                <td class="character_class">Bourgeoisie</td>
-                <td class="character_level">5</td>
-                <td class="character_party">Derpestarians</td>
-            </tr>
-        </table>
+        {{> characterTable this}}
     </div>
     <div class="viewcontainer" >
-        {{> characterDisplay name="Jeff" race="Human" class="Barbarian" level="1" party="Qwrp"
-        strength="10" dexterity="10" constitution="10" intelligence="10" wisdom="10" charisma="10"}}
+        {{> characterDisplay characters.[0]}}
     </div>
 </div>

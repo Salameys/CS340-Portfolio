@@ -1,7 +1,13 @@
-{{log this}}
 <table id="characters">
-    {{#each character}}
-    <tr class="clickable-row" data-href={{characterID}} onclick="loadCharacter(this)">
+    <tr>
+        <th  onclick="sortTable('characters', 0, this)" data-ascending>Name</th>
+        <th  onclick="sortTable('characters', 1, this)" data-ascending>Race</th>
+        <th  onclick="sortTable('characters', 2, this)" data-ascending>Class</th>
+        <th  onclick="sortTable('characters', 3, this)" data-isInt data-ascending>Level</th>
+        <th  onclick="sortTable('characters', 4, this)" data-ascending>Party</th>
+    </tr>
+    {{#each characters}}
+    <tr class="clickable-row" id={{characterID}} onclick="loadCharacter(this)">
         <td class="character_name">{{name}}</td>
         <td class="character_race">{{race}}</td>
         <td class="character_class">{{class}}</td>
