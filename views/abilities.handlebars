@@ -1,0 +1,49 @@
+<script src="/js/sortTable.js"></script>
+<link rel='stylesheet' type='text/css' href='/css/table.css' />
+
+<div class="viewport">
+    <div class="listcontainer">
+        <div class="filtersearch">
+
+        </div>
+        <div class="sourcebuttons">
+
+        </div>
+        <table id="characters">
+            <tr>
+                <th onclick="sortTable('abilities', 0, this)" data-ascending>Name</th>
+                <th onclick="sortTable('abilities', 1, this)" data-ascending>Damage Type</th>
+                <th onclick="sortTable('abilities', 2, this)" data-ascending>Range</th>
+                <th onclick="sortTable('abilities', 3, this)" data-isInt data-ascending>Damage Dice</th>
+            </tr>
+            <tr class="clickable-row" data-href="#abilityID" onclick="loadAbility(this)">
+                <td class="ability_name">Bite</td>
+                <td class="ability_damage_type">Piercing</td>
+                <td class="ability_range">Melee</td>
+                <td class="ability_damage_dice">1d8</td>
+
+            </tr>
+            <tr class="clickable-row" data-href="#abilityID" onclick="loadAbility(this)">
+                <td class="ability_name">Claws</td>
+                <td class="ability_damage_type">Slashing</td>
+                <td class="ability_range">Melee</td>
+                <td class="ability_damage_dice">2d4</td>
+            </tr>
+            <tr class="clickable-row" data-href="#abilityID" onclick="loadAbility(this)">
+                <td class="ability_name">Fire Ray</td>
+                <td class="ability_damage_type">Fire</td>
+                <td class="ability_range">30ft</td>
+                <td class="ability_damage_dice">3d6</td>
+            </tr>
+            <tr class="clickable-row" data-href="#abilityID" onclick="loadAbility(this)">
+                <td class="ability_name">Slam</td>
+                <td class="ability_damage_type">Bludgeoning</td>
+                <td class="ability_range">Melee</td>
+                <td class="ability_damage_dice">2d6</td>
+            </tr>
+        </table>
+    </div>
+    <div class="viewcontainer">
+ 
+    </div>
+</div>

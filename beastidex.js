@@ -34,6 +34,16 @@ app.get('/characters',function(req,res,next){
   res.render('characters',context);
 });
 
+app.get('/biomes', function (req, res, next) {
+    var context = {};
+    res.render('biomes', context);
+});
+
+app.get('/abilities', function (req, res, next) {
+    var context = {};
+    res.render('abilities', context);
+});
+
 app.use(function(req,res){
   res.status(404);
   res.render('404');
