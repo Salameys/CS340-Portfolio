@@ -1,18 +1,19 @@
 body {
-    background-color:  lightgray;
+    background-color: antiquewhite;
 }
 
 .topnav {
-    background-color: darkgray;
+    background-color: #344652;
     overflow: hidden;
 }
 
 .topnav a {
     float: left;
-    background-color: black;
-    color: lightgreen;
+    background-color: #101F2A;
+    color: #FFB143;
     text-align: center;
     padding: 10px;
     text-decoration: none;
     font-size: 17px;
+    font-weight: bold;
 }

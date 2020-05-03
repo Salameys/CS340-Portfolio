@@ -1,6 +1,14 @@
-table td,
+table {
+  background-color: #D9D2C6;
+}
+
 table th {
-  border: 1px solid silver;
+  color: #FFB143;
+  border: 1px solid #344652;
+  background-color: #101F2A;
+}
+table td {
+  border: 1px solid #344652;
 }
 .headerSortDown:after,
 .headerSortUp:after {
@@ -12,12 +20,12 @@ table th {
 
 .headerSortDown:after {
   top: 15px;
-  border-top-color: silver;
+  border-top-color: #FFB143;
 }
 
 .headerSortUp:after {
   bottom: 15px;
-  border-bottom-color: silver;
+  border-bottom-color: #FFB143;
 }
 
 .headerSortDown,

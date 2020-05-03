@@ -17,16 +17,20 @@ app.use(express.static(path.join(__dirname, '/public')));
 
 app.get('/',function(req,res,next){
   var context = {};
+  context.title = "Beastidex";
   res.render('home',context);
 });
 
 app.get('/index',function(req,res,next){
   var context = {};
+  context.title = "Beastidex";
   res.render('home',context);
 });
 
 app.get('/monsters',function(req,res,next){
   var context = {};
+  
+  context.title = "Monsters";
   res.render('monsters',context);
 });
 
@@ -59,16 +63,19 @@ app.get('/characters',function(req,res,next){
       intelligence:11, wisdom:9, charisma:18 }
   ];
 
+  context.title = "Characters";
   res.render('characters',context);
 });
 
 app.get('/biomes', function (req, res, next) {
     var context = {};
+    context.title = "Biomes";
     res.render('biomes', context);
 });
 
 app.get('/abilities', function (req, res, next) {
     var context = {};
+    context.title = "Abilities";
     res.render('abilities', context);
 });
 
