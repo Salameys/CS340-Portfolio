@@ -53,8 +53,8 @@ app.get('/characters',function(req,res,next){
       class:"Fighter", level:6, party:"Shronkey",
       strength:18, dexterity:11, constitution:16,
       intelligence:12, wisdom:9, charisma:8},
-    { characterID:6, name:"Bard", race:"Donkey",
-      class:"Bourgeoisie", level:8, party:"Shronkey",
+    { characterID:6, name:"Donkey", race:"Donkey",
+      class:"Bard", level:8, party:"Shronkey",
       strength:14, dexterity:8, constitution:15,
       intelligence:11, wisdom:9, charisma:18 }
   ];
