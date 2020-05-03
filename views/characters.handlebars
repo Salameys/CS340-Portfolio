@@ -9,6 +9,7 @@
         context[i] = context[i].replace("&#x27;", "'");
         context[i] = JSON.parse(context[i]);
     };
+    console.log(context);
 </script>
 <link rel='stylesheet' type='text/css' href='/css/table.css' />
 
@@ -22,7 +23,7 @@
         </div>
         {{> characterTable this}}
     </div>
-    <div class="viewcontainer" >
+    <div class="viewcontainer" id="display">
         {{> characterDisplay characters.[0]}}
     </div>
 </div>

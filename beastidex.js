@@ -5,7 +5,8 @@ var path=require('path');
 var app = express();
 var handlebars = require('express-handlebars').create({
   defaultLayout:'main',
-  partialsDir: ['views/partials/']
+  partialsDir: ['views/partials/'],
+  helpers: {}
 });
 
 app.engine('handlebars', handlebars.engine);
