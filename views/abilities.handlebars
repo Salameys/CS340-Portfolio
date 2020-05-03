@@ -9,7 +9,7 @@
         <div class="sourcebuttons">
 
         </div>
-        <table id="characters">
+        <table id="abilities">
             <tr>
                 <th onclick="sortTable('abilities', 0, this)" data-ascending>Name</th>
                 <th onclick="sortTable('abilities', 1, this)" data-ascending>Damage Type</th>
@@ -21,6 +21,7 @@
                 <td class="ability_damage_type">Piercing</td>
                 <td class="ability_range">Melee</td>
                 <td class="ability_damage_dice">1d8</td>
+                <td><input type="button" class="delete" onclick="deleteRow(this)" value="Delete"></td>
 
             </tr>
             <tr class="clickable-row" data-href="#abilityID" onclick="loadAbility(this)">
@@ -42,6 +43,9 @@
                 <td class="ability_damage_dice">2d6</td>
             </tr>
         </table>
+
+        <input type="button" class="add" onclick="addAbility()" value="Add">
+        
     </div>
     <div class="viewcontainer">
  

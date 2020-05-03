@@ -77,3 +77,29 @@ function compareAndSwap(rows, i, column, isInt, ascending) {
         return true;
     }
 }
+
+function addAbility() {
+    var table = document.getElementById("abilities");
+    var row = document.createElement("tr");
+
+    var td1 = document.createElement("td");
+    td1.innerHTML = documnet.getElementById("name");
+    row.appendChild(td1);
+
+    var td2 = document.createElement("td");
+    td2.innerHTML = documnet.getElementById("damage_type");
+    row.appendChild(td2);
+
+    var td3 = document.createElement("td");
+    td3.innerHTML = documnet.getElementById("range");
+    row.appendChild(td3);
+
+    var td4 = document.createElement("td");
+    td4.innerHTML = documnet.getElementById("damage_dice");
+    row.appendChild(td4);
+}
+
+function deleteRow(r) {
+    var i = r.parentNode.parentNode.rowIndex;
+    document.getElementById("abilities").deleteRow(i);
+}
