@@ -1,0 +1,21 @@
+<table id="monsters">
+    <tr class="listheader">
+        <th class="headerSortUp" onclick="sortTable('monsters', 0, this)" data-ascending>Name</th>
+        <th  onclick="sortTable('monsters', 1, this)" data-ascending>Type</th>
+        <th  onclick="sortTable('monsters', 2, this)" data-int data-ascending>CR</th>
+        <th  onclick="sortTable('monsters', 3, this)" data-ascending>Source</th>
+        <th>Delete</th>
+    </tr>
+    {{#each monsters}}
+    <tr class="clickable-row" id={{monsterID}} onclick="loadElement(this, 'monsterID')">
+        <td class="monster_name">{{name}}</td>
+        <td class="monster_race">{{type}}</td>
+        <td class="monster_class">{{challenge}}</td>
+        <td class="monster_level">{{source}}</td>
+        <td><input type="button" class="delete" onclick="deleteRow(this)" value="Delete"></td>
+    </tr>
+    {{/each}}
+    <tr>
+        <td colspan=5><input type="button" class="add" onclick="addMonster()" value="Add New Monster"></input></td>
+    </tr>
+</table>

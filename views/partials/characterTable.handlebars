@@ -5,14 +5,19 @@
         <th  onclick="sortTable('characters', 2, this)" data-ascending>Class</th>
         <th  onclick="sortTable('characters', 3, this)" data-isInt data-ascending>Level</th>
         <th  onclick="sortTable('characters', 4, this)" data-ascending>Party</th>
+        <th>Delete</th>
     </tr>
     {{#each characters}}
-    <tr class="clickable-row" id={{characterID}} onclick="loadCharacter(this)">
+    <tr class="clickable-row" id={{characterID}} onclick="loadElement(this, 'characterID')">
         <td class="character_name">{{name}}</td>
         <td class="character_race">{{race}}</td>
         <td class="character_class">{{class}}</td>
         <td class="character_level">{{level}}</td>
         <td class="character_party">{{party}}</td>
+        <td><input type="button" class="delete" onclick="deleteRow(this)" value="Delete"></td>
     </tr>
     {{/each}}
+    <tr>
+        <td colspan=6><input type="button" class="add" onclick="addCharacter()" value="Add New Character"></input></td>
+    </tr>
 </table>

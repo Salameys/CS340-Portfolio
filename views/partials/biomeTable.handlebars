@@ -1,0 +1,15 @@
+<table id="biomes">
+    <tr class="listheader">
+        <th class="headerSortUp" onclick="sortTable('biomes', 0, this)" data-ascending>Name</th>
+    </tr>
+    {{#each biomes}}
+    <tr class="clickable-row" id={{biomeID}}>
+        <td class="biome_name">{{name}}</td>
+        <td><input type="button" class="delete" onclick="deleteRow(this)" value="Delete"></td>
+        <th>Delete</th>
+    </tr>
+    {{/each}}
+    <tr>
+        <td colspan=2><input type="button" class="add" onclick="addBiome()" value="Add New Biome"></input></td>
+    </tr>
+</table>

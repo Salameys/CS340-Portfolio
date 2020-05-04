@@ -1,49 +1,22 @@
 <script src="/js/sortTable.js"></script>
+<script src="/js/display.js"></script>
 <link rel='stylesheet' type='text/css' href='/css/table.css' />
+<script>
+    var context = '{{#each monsters}} { {{#each this}}{{#unless @last}}"{{@key}}":"{{this}}", {{/unless}}{{#if @last}}"{{@key}}":"{{this}}"{{/if}}{{/each}} }, {{/each}}';
+    context = context.split("},");
+    context.length = context.length-1;
+    for(var i = 0; i < context.length; i++) {
+        context[i] = context[i] + "}";
+        context[i] = context[i].replace("&#x27;", "'");
+        context[i] = JSON.parse(context[i]);
+    };
+</script>
 
 <div class="viewport">
     <div class="listcontainer">
-        <div class="filtersearch">
-
-        </div>
-        <div class="sourcebuttons">
-
-        </div>
-        <table id="monsters">
-            <tr class="listheader">
-                <th class="headerSortUp" onclick="sortTable('monsters', 0, this)" data-ascending>Name</th>
-                <th  onclick="sortTable('monsters', 1, this)" data-ascending>Type</th>
-                <th  onclick="sortTable('monsters', 2, this)" data-int data-ascending>CR</th>
-                <th  onclick="sortTable('monsters', 3, this)" data-ascending>Source</th>
-            </tr>
-            <tr class="clickable-row" data-href="#monsterID" onclick="loadMonster(this)">
-                <td class="monster_name">Jeffasaurus</td>
-                <td class="monster_type">Dinosaur</td>
-                <td class="monster_cr">5</td>
-                <td class="monster_source">Derp</td>
-            </tr>
-            <tr class="clickable-row" data-href="#monsterID" onclick="loadMonster(this)">
-                <td class="monster_name">Beezle Bub</td>
-                <td class="monster_type">Demon</td>
-                <td class="monster_cr">8</td>
-                <td class="monster_source">Derp</td>
-            </tr>
-            <tr class="clickable-row" data-href="#monsterID" onclick="loadMonster(this)">
-                <td class="monster_name">Cat</td>
-                <td class="monster_type">Animal</td>
-                <td class="monster_cr">1</td>
-                <td class="monster_source">Life</td>
-            </tr>
-            <tr class="clickable-row" data-href="#monsterID" onclick="loadMonster(this)">
-                <td class="monster_name">Rory</td>
-                <td class="monster_type">Human</td>
-                <td class="monster_cr">10</td>
-                <td class="monster_source">Dr Who</td>
-            </tr>
-        </table>
+        {{> monsterTable this}}
     </div>
     <div class="viewcontainer">
-        {{> monsterDisplay name="Jeff" type="Human" size="Medium" challenge="1" alignment="LN"
-        strength="10" dexterity="10" constitution="10" intelligence="10" wisdom="10" charisma="10"}}
+        {{> monsterDisplay monsters.[0]}}
     </div>
 </div>

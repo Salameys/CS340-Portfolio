@@ -3,29 +3,7 @@
 
 <div class="viewport">
     <div class="listcontainer">
-        <div class="filtersearch">
-
-        </div>
-        <div class="sourcebuttons">
-
-        </div>
-        <table id="biomes">
-            <tr>
-                <th onclick="sortTable('biomes', 0, this)" data-ascending>Name</th>
-            </tr>
-            <tr class="clickable-row" data-href="#biomeID" onclick="loadBiome"(this)">
-                <td class="biome_name">Desert</td>
-            </tr>
-            <tr class="clickable-row" data-href="#biomeID" onclick="loadBiome" (this)">
-                <td class="biome_name">Jungle</td>
-            </tr>
-            <tr class="clickable-row" data-href="#biomeID" onclick="loadBiome" (this)">
-                <td class="biome_name">Tundra</td>
-            </tr>
-            <tr class="clickable-row" data-href="#biomeID" onclick="loadBiome" (this)">
-                <td class="biome_name">Forest</td>
-            </tr>
-        </table>
+        {{> biomeTable this}}
     </div>
     <div class="viewcontainer">
 

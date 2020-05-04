@@ -1,5 +1,5 @@
 <script src="/js/sortTable.js"></script>
-<script src="/js/character.js"></script>
+<script src="/js/display.js"></script>
 <script>
     var context = '{{#each characters}} { {{#each this}}{{#unless @last}}"{{@key}}":"{{this}}", {{/unless}}{{#if @last}}"{{@key}}":"{{this}}"{{/if}}{{/each}} }, {{/each}}';
     context = context.split("},");
@@ -9,18 +9,11 @@
         context[i] = context[i].replace("&#x27;", "'");
         context[i] = JSON.parse(context[i]);
     };
-    console.log(context);
 </script>
 <link rel='stylesheet' type='text/css' href='/css/table.css' />
 
 <div class="viewport">
     <div class="listcontainer">
-        <div class="filtersearch">
-
-        </div>
-        <div class="sourcebuttons">
-
-        </div>
         {{> characterTable this}}
     </div>
     <div class="viewcontainer" id="display">

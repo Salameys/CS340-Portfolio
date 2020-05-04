@@ -29,7 +29,41 @@ app.get('/index',function(req,res,next){
 
 app.get('/monsters',function(req,res,next){
   var context = {};
-  
+  context.monsters = [
+    {
+      monsterID:1, name:"Jeffasaurus", description:"Part Jeff, part saurus. All ready to rock.",
+      type:"Dinosaur", alignment:"CN",
+      armor_class:8, hit_dice:"4d6", speed:30,
+      strength:18, dexterity:8, constitution:16,
+      intelligence:10, wisdom:8, charisma:20,
+      challenge:5, source:"Derp"
+    },
+    {
+      monsterID:2, name:"Beezle Bub", description:"Gonna take you to heck, bub.",
+      type:"Demon", alignment:"LE",
+      armor_class:16, hit_dice:"4d8", speed:30,
+      strength:14, dexterity:12, constitution:16,
+      intelligence:15, wisdom:13, charisma:15,
+      challenge:8, source:"Derp"
+    },
+    {
+      monsterID:3, name:"Cat", description:"Meow.",
+      type:"Animal", alignment:"CE",
+      armor_class:2, hit_dice:"2d6", speed:30,
+      strength:6, dexterity:14, constitution:7,
+      intelligence:7, wisdom:8, charisma:18,
+      challenge:5, source:"Life"
+    },
+    {
+      monsterID:4, name:"Rory", description:"Been through so much time and back.",
+      type:"Human", alignment:"LG",
+      armor_class:14, hit_dice:"4d12", speed:30,
+      strength:12, dexterity:11, constitution:22,
+      intelligence:14, wisdom:9, charisma:12,
+      challenge:10, source:"Dr Who"
+    }
+  ];
+
   context.title = "Monsters";
   res.render('monsters',context);
 });
@@ -40,27 +74,33 @@ app.get('/characters',function(req,res,next){
     { characterID:1, name:"Robert Sandfield", race:"Human",
       class:"Wizard", level:5, party:"Database Comrades",
       strength:20, dexterity:20, constitution:20,
-      intelligence:20, wisdom:20, charisma:20 },
+      intelligence:20, wisdom:20, charisma:20
+    },
     { characterID:2, name:"Salah Salamey", race:"Dinosaur",
       class:"Monk", level:5, party:"Database Comrades",
       strength:20, dexterity:20, constitution:20,
-      intelligence:20, wisdom:20, charisma:20 },
+      intelligence:20, wisdom:20, charisma:20
+    },
     { characterID:3, name:"Jeff O'Saur", race:"Dinosaur",
       class:"Bard", level:3, party:"Derpestarians",
       strength:13, dexterity:8, constitution:15,
-      intelligence:11, wisdom:8, charisma:20 },
+      intelligence:11, wisdom:8, charisma:20
+    },
     { characterID:4, name:"Bill", race:"Donkey",
       class:"Bourgeoisie", level:8, party:"Derpestarians",
       strength:14, dexterity:8, constitution:15,
-      intelligence:7, wisdom:6, charisma:8 },
+      intelligence:7, wisdom:6, charisma:8
+    },
     { characterID:5, name:"Shrek", race:"Ogre",
       class:"Fighter", level:6, party:"Shronkey",
       strength:18, dexterity:11, constitution:16,
-      intelligence:12, wisdom:9, charisma:8},
+      intelligence:12, wisdom:9, charisma:8
+    },
     { characterID:6, name:"Donkey", race:"Donkey",
       class:"Bard", level:8, party:"Shronkey",
       strength:14, dexterity:8, constitution:15,
-      intelligence:11, wisdom:9, charisma:18 }
+      intelligence:11, wisdom:9, charisma:18
+    }
   ];
 
   context.title = "Characters";
@@ -70,12 +110,26 @@ app.get('/characters',function(req,res,next){
 app.get('/biomes', function (req, res, next) {
     var context = {};
     context.title = "Biomes";
+    context.biomes = [
+      {name:"Desert"},
+      {name:"Jungle"},
+      {name:"Tundra"},
+      {name:"Forest"}
+    ];
+
     res.render('biomes', context);
 });
 
 app.get('/abilities', function (req, res, next) {
     var context = {};
     context.title = "Abilities";
+    context.abilities = [
+      {name:"Bite", damage_type:"Piercing", range:"Melee", damage_dice:"1d8"},
+      {name:"Claws", damage_type:"Slashing", range:"Melee", damage_dice:"2d4"},
+      {name:"Fire Ray", damage_type:"Fire", range:"30ft", damage_dice:"3d6"},
+      {name:"Slam", damage_type:"Bludgeoning", range:"Melee", damage_dice:"2d6"}
+    ];
+
     res.render('abilities', context);
 });
 
