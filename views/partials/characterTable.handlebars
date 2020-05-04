@@ -1,10 +1,10 @@
 <table id="characters">
     <tr>
-        <th  onclick="sortTable('characters', 0, this)" data-ascending>Name</th>
-        <th  onclick="sortTable('characters', 1, this)" data-ascending>Race</th>
-        <th  onclick="sortTable('characters', 2, this)" data-ascending>Class</th>
-        <th  onclick="sortTable('characters', 3, this)" data-isInt data-ascending>Level</th>
-        <th  onclick="sortTable('characters', 4, this)" data-ascending>Party</th>
+        <th onclick="sortTable('characters', 0, this)" data-ascending>Name</th>
+        <th onclick="sortTable('characters', 1, this)" data-ascending>Race</th>
+        <th onclick="sortTable('characters', 2, this)" data-ascending>Class</th>
+        <th onclick="sortTable('characters', 3, this)" data-isInt data-ascending>Level</th>
+        <th onclick="sortTable('characters', 4, this)" data-ascending>Party</th>
         <th>Delete</th>
     </tr>
     {{#each characters}}
@@ -14,10 +14,24 @@
         <td class="character_class">{{class}}</td>
         <td class="character_level">{{level}}</td>
         <td class="character_party">{{party}}</td>
-        <td><input type="button" class="delete" onclick="deleteRow(this)" value="Delete"></td>
+        <td><input type="button" class="delete" onclick="deleteCharacter(this)" value="Delete"></td>
     </tr>
     {{/each}}
+</table>
+<table>
     <tr>
-        <td colspan=6><input type="button" class="add" onclick="addCharacter()" value="Add New Character"></input></td>
+        <td>Character Name:</td>
+        <td><input type="text" id="character_name"></td>
+        <td>Character Race:</td>
+        <td><input type="text" id="character_race"></td>
+        <td>Character Class:</td>
+        <td><input type="text" id="character_class"></td>
+        <td>Character Level:</td>
+        <td><input type="text" id="character_level"></td>
+        <td>Character Party:</td>
+        <td><input type="text" id="character_party"></td>
     </tr>
 </table>
+<div>
+    <td colspan=5><input type="button" class="add" onclick="addCharacter()" value="Add New Character"></td>
+</div>

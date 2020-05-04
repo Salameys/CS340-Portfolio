@@ -78,28 +78,85 @@ function compareAndSwap(rows, i, column, isInt, ascending) {
     }
 }
 
-function addAbility() {
-    var table = document.getElementById("abilities");
-    var row = document.createElement("tr");
+function addMonster() {
+    var table = document.getElementById("monsters");
+    var rowCount = table.rows.length;
+    var row = table.insertRow(rowCount);
 
-    var td1 = document.createElement("td");
-    td1.innerHTML = documnet.getElementById("name");
-    row.appendChild(td1);
+    var monsterName = document.getElementById("monster_name");
+    var monsterRace = document.getElementById("monster_race");
+    var monsterClass = document.getElementById("monster_class");
+    var monsterLevel = document.getElementById("monster_level");
 
-    var td2 = document.createElement("td");
-    td2.innerHTML = documnet.getElementById("damage_type");
-    row.appendChild(td2);
-
-    var td3 = document.createElement("td");
-    td3.innerHTML = documnet.getElementById("range");
-    row.appendChild(td3);
-
-    var td4 = document.createElement("td");
-    td4.innerHTML = documnet.getElementById("damage_dice");
-    row.appendChild(td4);
+    row.insertCell(0).innerHTML = monsterName.value;
+    row.insertCell(1).innerHTML = monsterRace.value;
+    row.insertCell(2).innerHTML = monsterClass.value;
+    row.insertCell(3).innerHTML = monsterLevel.value;
 }
 
-function deleteRow(r) {
+function deleteMonster(r) {
+    var i = r.parentNode.parentNode.rowIndex;
+    document.getElementById("monsters").deleteRow(i);
+}
+
+function addCharacter() {
+    var table = document.getElementById("characters");
+    var rowCount = table.rows.length;
+    var row = table.insertRow(rowCount);
+
+    var characterName = document.getElementById("character_name");
+    var characterRace = document.getElementById("character_race");
+    var characterClass = document.getElementById("character_class");
+    var characterLevel = document.getElementById("character_level");
+    var characterParty = document.getElementById("character_party");
+
+    row.insertCell(0).innerHTML = characterName.value;
+    row.insertCell(1).innerHTML = characterRace.value;
+    row.insertCell(2).innerHTML = characterClass.value;
+    row.insertCell(3).innerHTML = characterLevel.value;
+    row.insertCell(4).innerHTML = characterParty.value;
+}
+
+function deleteCharacter(r) {
+    var i = r.parentNode.parentNode.rowIndex;
+    document.getElementById("characters").deleteRow(i);
+}
+
+function addBiome() {
+    var table = document.getElementById("biomes");
+    var rowCount = table.rows.length;
+    var row = table.insertRow(rowCount);
+
+    var biomeName = document.getElementById("biome_name");
+    var biomeDescription = document.getElementById("biome_description");
+
+    row.insertCell(0).innerHTML = biomeName.value;
+    row.insertCell(1).innerHTML = biomeDescription.value;
+}
+
+function deleteBiome(r) {
+    var i = r.parentNode.parentNode.rowIndex;
+    document.getElementById("biomes").deleteRow(i);
+}
+
+function addAbility() {
+    var table = document.getElementById("abilities");
+    var rowCount = table.rows.length;
+    var row = table.insertRow(rowCount);
+
+    var abilityName = document.getElementById("name");
+    var damageType = document.getElementById("damage_dice");
+    var range = document.getElementById("range");
+    var damageDice = document.getElementById("damage_type");
+   
+    row.insertCell(0).innerHTML = abilityName.value;
+    row.insertCell(1).innerHTML = damageType.value;
+    row.insertCell(2).innerHTML = range.value;
+    row.insertCell(3).innerHTML = damageDice.value;
+}
+
+
+function deleteAbility(r) {
     var i = r.parentNode.parentNode.rowIndex;
     document.getElementById("abilities").deleteRow(i);
 }

@@ -1,9 +1,9 @@
 <table id="monsters">
     <tr class="listheader">
         <th class="headerSortUp" onclick="sortTable('monsters', 0, this)" data-ascending>Name</th>
-        <th  onclick="sortTable('monsters', 1, this)" data-ascending>Type</th>
-        <th  onclick="sortTable('monsters', 2, this)" data-int data-ascending>CR</th>
-        <th  onclick="sortTable('monsters', 3, this)" data-ascending>Source</th>
+        <th onclick="sortTable('monsters', 1, this)" data-ascending>Type</th>
+        <th onclick="sortTable('monsters', 2, this)" data-int data-ascending>CR</th>
+        <th onclick="sortTable('monsters', 3, this)" data-ascending>Source</th>
         <th>Delete</th>
     </tr>
     {{#each monsters}}
@@ -12,10 +12,22 @@
         <td class="monster_race">{{type}}</td>
         <td class="monster_class">{{challenge}}</td>
         <td class="monster_level">{{source}}</td>
-        <td><input type="button" class="delete" onclick="deleteRow(this)" value="Delete"></td>
+        <td><input id="button" type="button" class="delete" onclick="deleteMonster(this)" value="Delete"></td>
     </tr>
     {{/each}}
+</table>
+<table>
     <tr>
-        <td colspan=5><input type="button" class="add" onclick="addMonster()" value="Add New Monster"></input></td>
+        <td>Monster Name:</td>
+        <td><input type="text" id="monster_name"></td>
+        <td>Monster Type:</td>
+        <td><input type="text" id="monster_race"></td>
+        <td>CR:</td>
+        <td><input type="text" id="monster_class"></td>
+        <td>Source:</td>
+        <td><input type="text" id="monster_level"></td>
     </tr>
 </table>
+<div>
+    <td colspan=5><input type="button" class="add" onclick="addMonster()" value="Add New Monster"></td>
+</div>

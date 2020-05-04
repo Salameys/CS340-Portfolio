@@ -1,8 +1,10 @@
 {
   "ExpandedNodes": [
     "",
+    "\\public",
+    "\\public\\js",
     "\\views"
   ],
-  "SelectedNode": "\\views",
+  "SelectedNode": "\\public\\js\\sortTable.js",
   "PreviewInSolutionExplorer": false
 }

@@ -7,6 +7,16 @@ table th {
   border: 1px solid #344652;
   background-color: #101F2A;
 }
+
+tr:not(:first-child) {
+        cursor: pointer;
+        transition: all .25s ease-in-out;
+}
+
+tr:not(:first-child):hover {
+            background-color: #ddd;
+}
+
 table td {
   border: 1px solid #344652;
 }

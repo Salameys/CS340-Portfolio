@@ -1,9 +1,9 @@
 <table id="abilities">
     <tr class="listheader">
         <th class="headerSortUp" onclick="sortTable('abilities', 0, this)" data-ascending>Name</th>
-        <th  onclick="sortTable('abilities', 1, this)" data-ascending>Type</th>
-        <th  onclick="sortTable('abilities', 2, this)" data-int data-ascending>CR</th>
-        <th  onclick="sortTable('abilities', 3, this)" data-ascending>Source</th>
+        <th onclick="sortTable('abilities', 1, this)" data-ascending>Type</th>
+        <th onclick="sortTable('abilities', 2, this)" data-int data-ascending>CR</th>
+        <th onclick="sortTable('abilities', 3, this)" data-ascending>Source</th>
         <th>Delete</th>
     </tr>
     {{#each abilities}}
@@ -12,10 +12,22 @@
         <td class="damage_type">{{damage_type}}</td>
         <td class="range">{{range}}</td>
         <td class="damage_dice">{{damage_dice}}</td>
-        <td><input type="button" class="delete" onclick="deleteRow(this)" value="Delete"></td>
+        <td><input id="button" type="button" class="delete" onclick="deleteAbility(this)" value="Delete"></td>
     </tr>
     {{/each}}
+</table>
+<table>
     <tr>
-        <td colspan=5><input type="button" class="add" onclick="addAbility()" value="Add New Ability"></input></td>
+        <td>Ability Name:</td>
+        <td><input type="text" id="name"></td>
+        <td>Damage Dice:</td>
+        <td><input type="text" id="damage_dice"></td>
+        <td>Range:</td>
+        <td><input type="text" id="range"></td>
+        <td>Damage Type:</td>
+        <td><input type="text" id="damage_type"></td>
     </tr>
 </table>
+<div>
+    <td colspan=5><input type="button" class="add" onclick="addAbility()" value="Add New Ability"></td>
+</div>
