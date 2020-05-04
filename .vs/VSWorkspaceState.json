@@ -2,9 +2,11 @@
   "ExpandedNodes": [
     "",
     "\\public",
+    "\\public\\css",
     "\\public\\js",
-    "\\views"
+    "\\views",
+    "\\views\\partials"
   ],
-  "SelectedNode": "\\public\\js\\sortTable.js",
+  "SelectedNode": "\\public\\css\\table.css",
   "PreviewInSolutionExplorer": false
 }

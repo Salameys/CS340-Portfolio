@@ -14,6 +14,7 @@ app.set('view engine', 'handlebars');
 app.set('port', process.argv[2]);
 
 app.use(express.static(path.join(__dirname, '/public')));
+app.use(express.static('images'));
 
 app.get('/',function(req,res,next){
   var context = {};
