@@ -14,9 +14,94 @@
 
 <div class="viewport">
     <div class="listcontainer">
-        {{> characterTable this}}
+        <table id="characters">
+            <tr>
+                <th onclick="sortTable('characters', 0, this)" data-ascending>Name</th>
+                <th onclick="sortTable('characters', 1, this)" data-ascending>Race</th>
+                <th onclick="sortTable('characters', 2, this)" data-ascending>Class</th>
+                <th onclick="sortTable('characters', 3, this)" data-isInt data-ascending>Level</th>
+                <th onclick="sortTable('characters', 4, this)" data-ascending>Party</th>
+            </tr>
+            {{#each characters}}
+            <tr class="clickable-row" id={{characterID}} onclick="loadElement({{characterID}}, 'characterID')">
+                <td>{{name}}</td>
+                <td>{{race}}</td>
+                <td>{{class}}</td>
+                <td class="center">{{level}}</td>
+                <td>{{party}}</td>
+            </tr>
+            {{/each}}
+        </table>
     </div>
     <div class="viewcontainer" id="display">
-        {{> characterDisplay characters.[0]}}
+        <form id="character-form">
+            <p class='hidden' id="characterID-display">{{characters.[0].characterID}}</p>
+            <input class='hidden' type="number" id="characterID" value={{characters.[0].characterID}}></input>
+            <table>
+                <tr id="row-name">
+                    <th>Name</th>
+                    <td class='display' colspan='5' id="name-display">{{characters.[0].name}}</td>
+                    <td class='input hidden' colspan='5'><input type="text" id="name" value={{characters.[0].name}}></input></td>
+                </tr>
+                <tr id="row-race">
+                    <th>Race</th>
+                    <td class='display' colspan='5' id="race-display">{{characters.[0].race}}</td>
+                    <td class='input hidden' colspan='5'><input type="text" id="race" value={{characters.[0].race}}></input></td>
+                </tr>
+                <tr id="row-class">
+                    <th>Class</th>
+                    <td class='display' colspan='3' id="class-display">{{characters.[0].class}}</td>
+                    <td class='input hidden' colspan='3'><input type="text" id="class" value={{characters.[0].class}}></input></td>
+                    <th>Level</th>
+                    <td class='display' id="level-display">{{characters.[0].level}}</td>
+                    <td class='input hidden'><input type="number" id="level" value={{characters.[0].level}}></input></td>
+                </tr>
+                <tr id="row-statheaders">
+                    <th>STR</th>
+                    <th>DEX</th>
+                    <th>CON</th>
+                    <th>INT</th>
+                    <th>WIS</th>
+                    <th>CHA</th>
+                </tr>
+                <tr id="row-stats">
+                    <td class='display center' id="strength-display">{{characters.[0].strength}}</td>
+                    <td class='input center hidden'><input type="number" id="strength" value={{characters.[0].strength}}></input></td>
+                    <td class='display center' id="dexterity-display">{{characters.[0].dexterity}}</td>
+                    <td class='input center hidden'><input type="number" id="dexterity" value={{characters.[0].dexterity}}></input></td>
+                    <td class='display center' id="constitution-display">{{characters.[0].constitution}}</td>
+                    <td class='input center hidden' id="name-display"><input type="number" id="constitution" value={{characters.[0].constitution}}></input></td>
+                    <td class='display center' id="intelligence-display">{{characters.[0].intelligence}}</td>
+                    <td class='input center hidden' id="name-display"><input type="number" id="intelligence" value={{characters.[0].intelligence}}></input></td>
+                    <td class='display center' id="wisdom-display">{{characters.[0].wisdom}}</td>
+                    <td class='input center hidden'><input type="number" id="wisdom" value={{characters.[0].wisdom}}></input></td>
+                    <td class='display center' id="charisma-display">{{characters.[0].charisma}}</td>
+                    <td class='input center hidden'><input type="number" id="charisma" value={{characters.[0].charisma}}></input></td>
+                </tr>
+                <tr id="row-party">
+                    <th colspan='2'>Party</th>
+                    <td class='display' colspan='4' id="party-display">
+                        {{#if characters.[0].party}}
+                            {{characters.[0].party}}
+                        {{else}}
+                            None
+                        {{/if}}</td>
+                    <td class='input hidden' colspan='4'><input type="text" id="party" value={{characters.[0].party}}></input></td>
+                </tr>
+                <tr>
+                    <td class="center" colspan=2>
+                        <input class='display'  type="button" onclick="swapForm('character-form', 'add')" value="Add New">
+                        <input class='input hidden'  type="button" onclick="confirmChange('character-form', 'characterKeys', 'characterID')" value="Confirm">
+                    </td>
+                    <td class="center" colspan=2>
+                        <input class='display' type="button" onclick="swapForm('character-form', 'modify')" value="Modify">
+                        <input class='input hidden'  type="button" onclick="swapForm('character-form', 'cancel')" value="Cancel">
+                    </td>
+                    <td class="center" colspan=2>
+                        <input type="button" onclick="deleteElement('characters', 'characterID')" value="Delete">
+                    </td>
+                </tr>
+            </table>
+        </form>
     </div>
 </div>

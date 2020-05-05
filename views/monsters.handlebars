@@ -1,6 +1,5 @@
 <script src="/js/sortTable.js"></script>
 <script src="/js/display.js"></script>
-<link rel='stylesheet' type='text/css' href='/css/table.css' />
 <script>
     var context = '{{#each monsters}} { {{#each this}}{{#unless @last}}"{{@key}}":"{{this}}", {{/unless}}{{#if @last}}"{{@key}}":"{{this}}"{{/if}}{{/each}} }, {{/each}}';
     context = context.split("},");
@@ -11,12 +10,119 @@
         context[i] = JSON.parse(context[i]);
     };
 </script>
+<link rel='stylesheet' type='text/css' href='/css/table.css' />
 
 <div class="viewport">
     <div class="listcontainer">
-        {{> monsterTable this}}
+        <table id="monsters">
+    <tr class="listheader">
+        <th class="headerSortUp" onclick="sortTable('monsters', 0, this)" data-ascending>Name</th>
+        <th onclick="sortTable('monsters', 1, this)" data-ascending>Type</th>
+        <th onclick="sortTable('monsters', 2, this)" data-int data-ascending>CR</th>
+        <th onclick="sortTable('monsters', 3, this)" data-ascending>Source</th>
+    </tr>
+    {{#each monsters}}
+    <tr class="clickable-row" id={{monsterID}} onclick="loadElement({{monsterID}}, 'monsterID')">
+        <td>{{name}}</td>
+        <td>{{type}}</td>
+        <td>{{challenge}}</td>
+        <td>{{source}}</td>
+    </tr>
+    {{/each}}
+</table>
     </div>
     <div class="viewcontainer">
-        {{> monsterDisplay monsters.[0]}}
+        <form id="monster-form">
+            <p class='hidden' id="monsterID-display">{{monsters.[0].monsterID}}</p>
+            <input class='hidden' type="number" id="monsterID" value={{monsters.[0].monsterID}}></input>
+            <table>
+                <tr id="row-name">
+                    <th>Name</th>
+                    <td class='display' colspan='5' id="name-display">{{monsters.[0].name}}</td>
+                    <td class='input hidden' colspan='5'><input type="text" id="name" value={{monsters.[0].name}}></input></td>
+                </tr>
+                <tr id="row-type">
+                    <th>Type</th>
+                    <td class='display' colspan='3' id="type-display">{{monsters.[0].type}}</td>
+                    <td class='input hidden' colspan='3'><input type="text" id="type" value={{monsters.[0].type}}></input></td>
+                    <th>CR</th>
+                    <td class='display' id='challenge-display'>{{monsters.[0].challenge}}</td>
+                    <td class='input hidden'><input type="number" id="challenge" value={{monsters.[0].challenge}}></input></td>
+                </tr>
+                <tr id="row-detailheaders">
+                    <th>Size</th>
+                    <th>Hit Dice</th>
+                    <th>Armor Class</th>
+                    <th>Alignment</th>
+                    <th>Speed</th>
+                    <th>Fly Speed</th>
+                </tr>
+                <tr id="row-details">
+                    <td class='display' id='size-display'>{{monsters.[0].size}}</td>
+                    <td class='input short hidden'><input type="text" id="size" value={{monsters.[0].size}}></input></td>
+                    <td class='display' id='hit_dice-display'>{{monsters.[0].hit_dice}}</td>
+                    <td class='input short hidden'><input type="text" id="hit_dice" value={{monsters.[0].hit_dice}}></input></td>
+                    <td class='display' id='armor_class-display'>{{monsters.[0].armor_class}}</td>
+                    <td class='input hidden'><input type="number" id="armor_class" value={{monsters.[0].armor_class}}></input></td>
+                    <td class='display' id="alignment-display">{{monsters.[0].alignment}}</td>
+                    <td class='input short hidden'><input type="text" id="alignment" value={{monsters.[0].alignment}}></input></td>
+                    <td class='display' id="speed-display">{{monsters.[0].speed}}</td>
+                    <td class='input hidden'><input type="number" id="speed" value={{monsters.[0].speed}}></input></td>
+                    <td class='display' id="fly_speed-display">
+                        {{#if monsters.[0].fly_speed}}
+                            {{monsters.[0].fly_speed}}
+                        {{else}}
+                            -
+                        {{/if}}</td>
+                    <td class='input hidden'><input type="number" id="fly_speed" value={{monsters.[0].fly_speed}}></input></td>
+                </tr>
+                <tr id="row-description">
+                    <th>Description</th>
+                    <td class='display' colspan='5' id="description-display">{{monsters.[0].description}}</td>
+                    <td class='input hidden' colspan='5'><input type="text" id="description" value={{monsters.[0].description}}></input></td>
+                </tr>
+                <tr id="row-statheaders">
+                    <th>STR</th>
+                    <th>DEX</th>
+                    <th>CON</th>
+                    <th>INT</th>
+                    <th>WIS</th>
+                    <th>CHA</th>
+                </tr>
+                <tr id="row-stats">
+                    <td class='display' id="strength-display">{{monsters.[0].strength}}</td>
+                    <td class='input hidden'><input type="number" id="strength" value={{monsters.[0].strength}}></input></td>
+                    <td class='display' id="dexterity-display">{{monsters.[0].dexterity}}</td>
+                    <td class='input hidden'><input type="number" id="dexterity" value={{monsters.[0].dexterity}}></input></td>
+                    <td class='display' id="constitution-display">{{monsters.[0].constitution}}</td>
+                    <td class='input hidden' id="name-display"><input type="number" id="constitution" value={{monsters.[0].constitution}}></input></td>
+                    <td class='display' id="intelligence-display">{{monsters.[0].intelligence}}</td>
+                    <td class='input hidden' id="name-display"><input type="number" id="intelligence" value={{monsters.[0].intelligence}}></input></td>
+                    <td class='display' id="wisdom-display">{{monsters.[0].wisdom}}</td>
+                    <td class='input hidden'><input type="number" id="wisdom" value={{monsters.[0].wisdom}}></input></td>
+                    <td class='display' id="charisma-display">{{monsters.[0].charisma}}</td>
+                    <td class='input hidden'><input type="number" id="charisma" value={{monsters.[0].charisma}}></input></td>
+                </tr>
+                <tr id="row-souce">
+                    <th>Source</th>
+                    <td class='display' colspan='5' id="source-display">{{monsters.[0].source}}</td>
+                    <td class='input hidden' colspan='5' id="source"><input type="text" id="source" value={{monsters.[0].source}}></input></td>
+                </tr>
+                <tr>
+                    <td class="center" colspan=2>
+                        <input class='display'  type="button" onclick="swapForm('monster-form', 'add')" value="Add New">
+                        <input class='input hidden'  type="button" onclick="confirmChange('monster-form', 'monsterKeys', 'monsterID')" value="Confirm">
+                    </td>
+                    <td class="center" colspan=2>
+                        <input class='display' type="button" onclick="swapForm('monster-form', 'modify')" value="Modify">
+                        <input class='input hidden'  type="button" onclick="swapForm('monster-form', 'cancel')" value="Cancel">
+                    </td>
+                    <td class="center" colspan=2>
+                        <input type="button" onclick="deleteElement('monsters', 'monsterID')" value="Delete">
+                    </td>
+                </tr>
+            </table>
+        </form>
+
     </div>
 </div>

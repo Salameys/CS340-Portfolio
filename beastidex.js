@@ -112,10 +112,10 @@ app.get('/biomes', function (req, res, next) {
     var context = {};
     context.title = "Biomes";
     context.biomes = [
-      {name:"Desert"},
-      {name:"Jungle"},
-      {name:"Tundra"},
-      {name:"Forest"}
+      {biomeID:1, name:"Desert", description:"I don't like the sand. It's coarse and rough and irritating."},
+      {biomeID:2, name:"Jungle", description:"Basically the opposite of desert. Still hate it."},
+      {biomeID:3, name:"Tundra", description:"Too cold."},
+      {biomeID:4, name:"Forest", description:"Shady and smells nice."}
     ];
 
     res.render('biomes', context);
@@ -125,10 +125,10 @@ app.get('/abilities', function (req, res, next) {
     var context = {};
     context.title = "Abilities";
     context.abilities = [
-      {name:"Bite", damage_type:"Piercing", range:"Melee", damage_dice:"1d8"},
-      {name:"Claws", damage_type:"Slashing", range:"Melee", damage_dice:"2d4"},
-      {name:"Fire Ray", damage_type:"Fire", range:"30ft", damage_dice:"3d6"},
-      {name:"Slam", damage_type:"Bludgeoning", range:"Melee", damage_dice:"2d6"}
+      {abilityID:1, name:"Bite", damage_type:"Piercing", range:"Melee", damage_dice:"1d8"},
+      {abilityID:2, name:"Claws", damage_type:"Slashing", range:"Melee", damage_dice:"2d4"},
+      {abilityID:3, name:"Fire Ray", damage_type:"Fire", range:"30ft", damage_dice:"3d6"},
+      {abilityID:4, name:"Slam", damage_type:"Bludgeoning", range:"Melee", damage_dice:"2d6"}
     ];
 
     res.render('abilities', context);
