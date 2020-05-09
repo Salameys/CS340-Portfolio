@@ -17,6 +17,45 @@ function loadElement(elementID, attributeID) {
 }
 
 /*
+* Submits a search query for an element of the given name and either shows an alert
+* if not found or loads the element into the display table as if clicked
+* @param key attribute to search
+* @param searchField input containing search term
+* @param attributeID name of ID attribute for the element
+*/
+function tagSearch(key, searchField, attributeID) {
+    var element = context.find(element => {return element[key] == document.getElementById(searchField).value})
+    if(element) {
+        console.log(element[attributeID] + ", " + attributeID);
+        loadElement(element[attributeID], attributeID);
+    } else {
+        alert("Name not found");
+    }
+}
+
+/*
+* Filters list table for elements containing the matching tag
+* @param table list table DOM element
+* @param key to filter by
+* @param value to filter by within key
+* @param keyList list of keys to rebuild table with
+*/
+function filterList(table, key, value, keyList) {
+    Array.from(document.getElementById(table)
+    .getElementsByTagName("tr"))
+    .forEach(row => {
+        if(row.classList.contains("clickable-row")) {
+            row.remove();
+        }
+    });
+    context.forEach(element => {
+        if(element[key] == value) {
+            addRow(table, element, keyList);
+        }
+    })
+}
+
+/*
 * Updates teh paired display and input fields of an attribute on the display table
 * @param key of attribute to be updated
 * @param value to be updated to

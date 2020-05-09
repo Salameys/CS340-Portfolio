@@ -16,6 +16,27 @@
     <div class="listcontainer">
         <table id="characters">
             <tr>
+               <form id="search-form" onsubmit="tagSearch('name', 'search-field', 'characterID'); return false;" method="post">
+                   <td colspan='4'><input id="search-field" type="text"></input></td>
+                   <td><input type="submit" value="Search"></td>
+                </form> 
+            </tr>
+            <tr>
+                <td class="wrappable" colspan='5' id="filter-row">
+                    <div >
+                        <button onclick="filterList('characters', 'race', 'Dinosaur', characterKeys)">Dinosaur</button> 
+                        <button onclick="filterList('characters', 'race', 'Donkey', characterKeys)">Donkey</button> 
+                        <button onclick="filterList('characters', 'race', 'Human', characterKeys)">Human</button> 
+                        <button onclick="filterList('characters', 'race', 'Ogre', characterKeys)">Ogre</button> 
+                        <button onclick="filterList('characters', 'class', 'Bard', characterKeys)">Bard</button> 
+                        <button onclick="filterList('characters', 'class', 'Bourgeoisie', characterKeys)">Bourgeoisie</button> 
+                        <button onclick="filterList('characters', 'class', 'Fighter', characterKeys)">Fighter</button> 
+                        <button onclick="filterList('characters', 'class', 'Monk', characterKeys)">Monk</button> 
+                        <button onclick="filterList('characters', 'class', 'Wizard', characterKeys)">Wizard</button>
+                    </div>
+                </td>
+            </tr>
+            <tr>
                 <th onclick="sortTable('characters', 0, this)" data-ascending>Name</th>
                 <th onclick="sortTable('characters', 1, this)" data-ascending>Race</th>
                 <th onclick="sortTable('characters', 2, this)" data-ascending>Class</th>

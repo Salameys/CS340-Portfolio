@@ -1,5 +1,6 @@
 table {
   background-color: #D9D2C6;
+  table-layout: fixed;
 }
 
 th {
@@ -79,4 +80,10 @@ input[type='number'] {
 
 .short {
   width: 35px;
+}
+
+.wrappable {
+  width: 100%;
+  overflow-wrap: break-word;
+  word-wrap: break-all;
 }
