@@ -15,21 +15,40 @@
 <div class="viewport">
     <div class="listcontainer">
         <table id="monsters">
-    <tr class="listheader">
-        <th class="headerSortUp" onclick="sortTable('monsters', 0, this)" data-ascending>Name</th>
-        <th onclick="sortTable('monsters', 1, this)" data-ascending>Type</th>
-        <th onclick="sortTable('monsters', 2, this)" data-int data-ascending>CR</th>
-        <th onclick="sortTable('monsters', 3, this)" data-ascending>Source</th>
-    </tr>
-    {{#each monsters}}
-    <tr class="clickable-row" id={{monsterID}} onclick="loadElement({{monsterID}}, 'monsterID')">
-        <td>{{name}}</td>
-        <td>{{type}}</td>
-        <td>{{challenge}}</td>
-        <td>{{source}}</td>
-    </tr>
-    {{/each}}
-</table>
+            <tr>
+               <form id="search-form" onsubmit="tagSearch('name', 'search-field', 'monsterID'); return false;" method="post">
+                   <td colspan='3'><input id="search-field" type="text"></input></td>
+                   <td><input type="submit" value="Search"></td>
+                </form> 
+            </tr>
+            <tr>
+                <td class="wrappable" colspan='4' id="filter-row">
+                    <div >
+                        <button onclick="filterList('monsters', 'type', 'Animal', monsterKeys)">Animal</button> 
+                        <button onclick="filterList('monsters', 'type', 'Demon', monsterKeys)">Demon</button> 
+                        <button onclick="filterList('monsters', 'type', 'Dinosaur', monsterKeys)">Dinosaur</button> 
+                        <button onclick="filterList('monsters', 'type', 'Human', monsterKeys)">Human</button> 
+                        <button onclick="filterList('monsters', 'source', 'Derp', monsterKeys)">Derp</button> 
+                        <button onclick="filterList('monsters', 'source', 'Dr Who', monsterKeys)">Dr Who</button> 
+                        <button onclick="filterList('monsters', 'source', 'Life', monsterKeys)">Life</button>
+                    </div>
+                </td>
+            </tr>
+            <tr class="listheader">
+                <th class="headerSortUp" onclick="sortTable('monsters', 0, this)" data-ascending>Name</th>
+                <th onclick="sortTable('monsters', 1, this)" data-ascending>Type</th>
+                <th onclick="sortTable('monsters', 2, this)" data-int data-ascending>CR</th>
+                <th onclick="sortTable('monsters', 3, this)" data-ascending>Source</th>
+            </tr>
+            {{#each monsters}}
+            <tr class="clickable-row" id={{monsterID}} onclick="loadElement({{monsterID}}, 'monsterID')">
+                <td>{{name}}</td>
+                <td>{{type}}</td>
+                <td>{{challenge}}</td>
+                <td>{{source}}</td>
+            </tr>
+            {{/each}}
+        </table>
     </div>
     <div class="viewcontainer">
         <form id="monster-form">

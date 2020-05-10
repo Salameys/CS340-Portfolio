@@ -15,6 +15,12 @@
 <div class="viewport">
     <div class="listcontainer">
         <table id="biomes">
+            <tr>
+               <form id="search-form" onsubmit="tagSearch('name', 'search-field', 'biomeID'); return false;" method="post">
+                   <td colspan='1'><input id="search-field" type="text"></input></td>
+                   <td><input type="submit" value="Search"></td>
+                </form> 
+            </tr>
             <tr class="listheader">
                 <th class="headerSortUp" onclick="sortTable('biomes', 0, this)" data-ascending>Name</th>
                 <th class="headerSortUp" onclick="sortTable('biomes', 1, this)" data-ascending>Description</th>
