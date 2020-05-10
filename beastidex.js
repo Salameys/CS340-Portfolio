@@ -69,6 +69,26 @@ app.get('/monsters',function(req,res,next){
   res.render('monsters',context);
 });
 
+app.get('/monster_abilities', function (req, res, next) {
+    var context = {};
+    context.monster_abilities = [
+        { abilityID: 1, name: Bite },
+        { abilityID: 2, name: Claws },
+    ];
+
+    res.JSON(context);
+});
+
+app.get('/monster_biomes', function (req, res, next) {
+    var context = {};
+    context.monster_biomes = [
+        { biomeID: 1, name: Desert },
+        { biomeID: 2, name: Jungle },
+    ];
+
+    res.JSON(context);
+});
+
 app.get('/characters',function(req,res,next){
   var context = {};
   context.characters = [
@@ -108,6 +128,16 @@ app.get('/characters',function(req,res,next){
   res.render('characters',context);
 });
 
+app.get('/characters_monsters', function (req, res, next) {
+    var context = {};
+    context.character_monsters = [
+        { monsterID: 1, name: "Jeffasaurus" },
+        { monsterID: 2, name: "Beezle Bub" }
+    ];
+
+    res.JSON(context);
+});
+
 app.get('/biomes', function (req, res, next) {
     var context = {};
     context.title = "Biomes";
@@ -133,6 +163,26 @@ app.get('/abilities', function (req, res, next) {
 
     res.render('abilities', context);
 });
+
+
+/*
+ * Commented below is the idea I had to utilize search without
+ * having walls of text
+ * (and hopefully other things we will need to do with SQL)
+/*
+var searchName = function (res, table) {
+    var context = {};
+    mysql.pool.query('SELECT * FROM' + table, 'WHERE name = ?', function (err, rows, fields) {
+        if (err) throw err;
+        context.results = rows;
+        res.render(context);
+    });
+};
+
+app.get('/character_name', function (req, res) {
+    searchName(res, 'characters');
+});
+*/
 
 app.use(function(req,res){
   res.status(404);

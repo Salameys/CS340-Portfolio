@@ -1,12 +1,14 @@
 {
   "ExpandedNodes": [
     "",
+    "\\images",
     "\\public",
     "\\public\\css",
     "\\public\\js",
     "\\views",
+    "\\views\\layouts",
     "\\views\\partials"
   ],
-  "SelectedNode": "\\public\\css\\table.css",
+  "SelectedNode": "\\public\\js\\display.js",
   "PreviewInSolutionExplorer": false
 }
