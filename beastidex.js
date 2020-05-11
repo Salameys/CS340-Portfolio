@@ -72,21 +72,21 @@ app.get('/monsters',function(req,res,next){
 app.get('/monster_abilities', function (req, res, next) {
     var context = {};
     context.monster_abilities = [
-        { abilityID: 1, name: Bite },
-        { abilityID: 2, name: Claws },
+        { abilityID: 1, name: "Bite" },
+        { abilityID: 2, name: "Claws" },
     ];
 
-    res.JSON(context);
+    res.json(context);
 });
 
 app.get('/monster_biomes', function (req, res, next) {
     var context = {};
     context.monster_biomes = [
-        { biomeID: 1, name: Desert },
-        { biomeID: 2, name: Jungle },
+        { biomeID: 1, name: "Desert" },
+        { biomeID: 2, name: "Jungle" },
     ];
 
-    res.JSON(context);
+    res.json(context);
 });
 
 app.get('/characters',function(req,res,next){
@@ -135,7 +135,7 @@ app.get('/characters_monsters', function (req, res, next) {
         { monsterID: 2, name: "Beezle Bub" }
     ];
 
-    res.JSON(context);
+    res.json(context);
 });
 
 app.get('/biomes', function (req, res, next) {

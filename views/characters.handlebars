@@ -1,5 +1,6 @@
 <script src="/js/sortTable.js"></script>
 <script src="/js/display.js"></script>
+<script src="/js/character.js"></script>
 <script>
     var context = '{{#each characters}} { {{#each this}}{{#unless @last}}"{{@key}}":"{{this}}", {{/unless}}{{#if @last}}"{{@key}}":"{{this}}"{{/if}}{{/each}} }, {{/each}}';
     context = context.split("},");
@@ -44,7 +45,7 @@
                 <th onclick="sortTable('characters', 4, this)" data-ascending>Party</th>
             </tr>
             {{#each characters}}
-            <tr class="clickable-row" id={{characterID}} onclick="loadElement({{characterID}}, 'characterID')">
+            <tr class="clickable-row" id={{characterID}} onclick="loadCharacter({{characterID}})">
                 <td>{{name}}</td>
                 <td>{{race}}</td>
                 <td>{{class}}</td>
@@ -109,6 +110,9 @@
                         {{/if}}</td>
                     <td class='input hidden' colspan='4'><input type="text" id="party" value={{characters.[0].party}}></input></td>
                 </tr>
+                <tbody id="encounters">
+                    <th colspan='6'>Monsters Encountered</th>
+                </tbody>
                 <tr>
                     <td class="center" colspan=2>
                         <input class='display'  type="button" onclick="swapForm('character-form', 'add')" value="Add New">

@@ -3,10 +3,10 @@ var biomeKeys = ["name"];
 var characterKeys = ["name", "race", "class", "level", "party"];
 var monsterKeys = ["name", "type", "challenge", "source"];
 
-/*
+/**
 * Loads an element into the display table
-* @param elementID id number of element
-* @param attributeID name of id attribute
+* @param {Number} elementID primary key value of element to be loaded
+* @param {string} attributeID primary key attribute name
 */
 function loadElement(elementID, attributeID) {
     //Replace with SQL request, gets an object
@@ -16,12 +16,12 @@ function loadElement(elementID, attributeID) {
     });
 }
 
-/*
+/**
 * Submits a search query for an element of the given name and either shows an alert
 * if not found or loads the element into the display table as if clicked
-* @param key attribute to search
-* @param searchField input containing search term
-* @param attributeID name of ID attribute for the element
+* @param {string} key attribute to search
+* @param {HTMLElement} searchField input containing search term
+* @param {string} attributeID primary key attribute name
 */
 function tagSearch(key, searchField, attributeID) {
     var element = context.find(element => {return element[key] == document.getElementById(searchField).value})
@@ -33,12 +33,12 @@ function tagSearch(key, searchField, attributeID) {
     }
 }
 
-/*
+/**
 * Filters list table for elements containing the matching tag
-* @param table list table DOM element
-* @param key to filter by
-* @param value to filter by within key
-* @param keyList list of keys to rebuild table with
+* @param {string} table name of table listing elements
+* @param {string} key attribute to filter by
+* @param {*} value attribute value to filter by
+* @param {Array} keyList array listing attributes to be displayed
 */
 function filterList(table, key, value, keyList) {
     Array.from(document.getElementById(table)
@@ -55,20 +55,20 @@ function filterList(table, key, value, keyList) {
     })
 }
 
-/*
+/**
 * Updates teh paired display and input fields of an attribute on the display table
-* @param key of attribute to be updated
-* @param value to be updated to
+* @param {string} key attribute key to be updated
+* @param {*} value attribute value be updated to
 */
 function updateField(key, value) {
     document.getElementById(key + "-display").innerHTML = value;
     document.getElementById(key).value = value;
 }
 
-/*
+/**
 * Swaps the display table from display to edit mode
-* @param table id of table
-* @param toInput whether to swap to or from input
+* @param {string} table name of table displaying element data
+* @param {string} swapTo whether swap is to add, modify, or cancel action
 */
 function swapForm(form, swapTo) {
     //Load nodes
@@ -115,11 +115,11 @@ function swapForm(form, swapTo) {
     }
 }
 
-/*
+/**
 * Inserts a new object or updates an existing one depending on sketchy logic
-* @param form containing all relevent data
-* @param keysList array of keys for building table row
-* @param attributeID key name for id attribute
+* @param {string} form name of form containing all relevent data
+* @param {Arary} keysList array of keys for building table row
+* @param {string} attributeID name of primary key attribute
 */
 function confirmChange(form, keysList, attributeID) {
     form = document.getElementById(form);
@@ -161,10 +161,10 @@ function confirmChange(form, keysList, attributeID) {
     swapForm(form.id, "cancel");
 }
 
-/*
+/**
 * Deletes an element from the database and from the display table
-* @param table name of list table
-* @attributeID 
+* @param {string} table name of table listing elements
+* @param {string} attributeID name of primary key attribute
 */
 function deleteElement(table, attributeID) {
     var table = document.getElementById(table);
@@ -189,11 +189,11 @@ function deleteElement(table, attributeID) {
     loadElement(context[0][attributeID], attributeID);
 }
 
-/*
+/**
 * Modifies a row of the table
-* @param table to be modified
-* @param element to be modified
-* @param keyList list of keys from element in row
+* @param {string} table name of table to be modified
+* @param {Object} element to be modified
+* @param {Array} keyList array of keys listing attributes to be displayed
 */
 function modifyRow(table, element, elementID, keyList) {
     var table = document.getElementById(table);
@@ -214,11 +214,11 @@ function modifyRow(table, element, elementID, keyList) {
     }
 }
 
-/*
+/**
 * Adds a row to the table
-* @param table to be added to
-* @param element to be added
-* @param keyList list of keys from element in row
+* @param {string} table name of table to be added to
+* @param {Object} element to be added
+* @param {Array} keyList array listing attributes to be displayed
 */
 function addRow(table, element, keyList, attributeID) {
     var table = document.getElementById(table);
@@ -235,15 +235,30 @@ function addRow(table, element, keyList, attributeID) {
     });
 }
 
-/*
+/**
 * Adds a node to the DOM as a child of an existing node
-* @param parent node
-* @param type of node
-* @param content of node
+* @param {HTMLElement} parent node
+* @param {string} type of node
+* @param {string} content of node
 */
 function addNode(parent, type, content) {
     var node = document.createElement(type);
     parent.appendChild(node);
     node.innerHTML = content;
     return node;
+}
+
+/**
+ * Handles requesting dynamic content from the server
+ * @param {string} action 
+ * @param {string} type 
+ * @param {string} url 
+ * @param {function} func 
+ */
+function requestContent (action, type, url, func) {
+	var request = new XMLHttpRequest();
+	request.open(action, url);
+	request.setRequestHeader('Content-Type', type);
+    request.addEventListener("load", response => {func(request)});
+	request.send();
 }

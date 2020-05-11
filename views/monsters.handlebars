@@ -1,5 +1,6 @@
 <script src="/js/sortTable.js"></script>
 <script src="/js/display.js"></script>
+<script src="/js/monster.js"></script>
 <script>
     var context = '{{#each monsters}} { {{#each this}}{{#unless @last}}"{{@key}}":"{{this}}", {{/unless}}{{#if @last}}"{{@key}}":"{{this}}"{{/if}}{{/each}} }, {{/each}}';
     context = context.split("},");
@@ -41,7 +42,7 @@
                 <th onclick="sortTable('monsters', 3, this)" data-ascending>Source</th>
             </tr>
             {{#each monsters}}
-            <tr class="clickable-row" id={{monsterID}} onclick="loadElement({{monsterID}}, 'monsterID')">
+            <tr class="clickable-row" id={{monsterID}} onclick="loadMonster({{monsterID}})">
                 <td>{{name}}</td>
                 <td>{{type}}</td>
                 <td>{{challenge}}</td>
@@ -123,10 +124,12 @@
                     <td class='input hidden'><input type="number" id="charisma" value={{monsters.[0].charisma}}></input></td>
                 </tr>
                 <tr id="row-souce">
-                    <th>Source</th>
+                    <th colspan='2'>Source</th>
                     <td class='display' colspan='5' id="source-display">{{monsters.[0].source}}</td>
-                    <td class='input hidden' colspan='5' id="source"><input type="text" id="source" value={{monsters.[0].source}}></input></td>
+                    <td class='input hidden' colspan='4' id="source"><input type="text" id="source" value={{monsters.[0].source}}></input></td>
                 </tr>
+                <tbody id="foundIn"></tbody>
+                <tbody id="abilityList"></tbody>
                 <tr>
                     <td class="center" colspan=2>
                         <input class='display'  type="button" onclick="swapForm('monster-form', 'add')" value="Add New">
