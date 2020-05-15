@@ -28,6 +28,50 @@ app.get('/index',function(req,res,next){
   res.render('home',context);
 });
 
+var getTable = function (res, table) {
+    var context = {};
+    mysql.pool.query('SELECT * FROM' + table, function (err, rows, fields) {
+        if (err) {
+            next(err);
+            return;
+        }
+        context.results = rows;
+        res.render(table, context);
+    });
+};
+
+app.get('/monsters', function (req, res) {
+    getTable(res, 'monsters');
+});
+
+app.get('/characters', function (req, res) {
+    getTable(res, 'characters');
+});
+
+app.get('/abilities', function (req, res) {
+    getTable(res, 'abilities');
+});
+
+app.get('/biomes', function (req, res) {
+    getTable(res, 'biomes');
+});
+
+app.get('/parties', function (req, res) {
+    getTable(res, 'parties');
+});
+
+app.get('/monster_biome', function (req, res) {
+    getTable(res, 'monster_biome');
+});
+
+app.get('/monster_ability', function (req, res) {
+    getTable(res, 'monster_ability');
+});
+
+
+
+
+/*
 app.get('/monsters',function(req,res,next){
   var context = {};
   context.monsters = [
