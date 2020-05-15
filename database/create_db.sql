@@ -66,7 +66,7 @@ REFERENCES `monsters`(`monsterID`)
 ON DELETE CASCADE,
 FOREIGN KEY fk_biome(`biomeID`)
 REFERENCES `biomes`(`biomeID`)
-ON DELETE CASCADE)
+ON DELETE CASCADE);
 
 CREATE TABLE `monster_ability` (
 `monsterID` INT NOT NULL,
@@ -77,7 +77,18 @@ REFERENCES `monsters`(`monsterID`)
 ON DELETE CASCADE,
 FOREIGN KEY `fk_ability`(`abilityID`)
 REFERENCES `abilities`(`abilityID`)
-ON DELETE CASCADE)
+ON DELETE CASCADE);
+
+CREATE TABLE `character_monster` (
+`characterID` INT NOT NULL,
+`monsterID` INT NOT NULL,
+PRIMARY KEY (`characterID`, `monsterID`),
+FOREIGN KEY `fk_character`(`characterID`)
+REFERENCES `characters`(`characterID`)
+ON DELETE CASCADE,
+FOREIGN KEY `fk_monster3`(`monsterID`)
+REFERENCES `monsters`(`monsterID`)
+ON DELETE CASCADE);
 
 ALTER TABLE `monsters` 
 ADD FOREIGN KEY (`abilityID`) REFERENCES `abilities` (`abilityID`);

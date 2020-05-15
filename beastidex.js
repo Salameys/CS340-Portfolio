@@ -68,6 +68,10 @@ app.get('/monster_ability', function (req, res) {
     getTable(res, 'monster_ability');
 });
 
+app.get('/character_monster', function (req, res) {
+    getTable(res, 'character_monster');
+});
+
 
 
 
