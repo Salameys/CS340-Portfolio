@@ -1,6 +1,6 @@
 var abilityKeys = ["name", "damage_type", "range", "damage_dice"];
 var biomeKeys = ["name"];
-var characterKeys = ["name", "race", "class", "level", "party"];
+var characterKeys = ["name", "race", "class", "level", "_partyID:Parties"];
 var monsterKeys = ["name", "type", "challenge", "source"];
 
 /**
@@ -9,7 +9,7 @@ var monsterKeys = ["name", "type", "challenge", "source"];
  * @param {*} column 
  * @param {*} button 
  */
-function loadTable(table, keyList, button, row) {
+function loadTable(table, keyList, button, orderBy = "name") {
 
     //Determine how the table is to be sorted
     let ascending = true;
@@ -36,33 +36,57 @@ function loadTable(table, keyList, button, row) {
         }
     }
 
-    requestTable('GET', table, request => {
+    if(!ascending) {
+        orderBy += " DESC";
+    }
+    
+    listTable = document.getElementById("listTable");
+
+    //Depopulate the existing table entries
+    while (listTable.firstChild) {
+        listTable.removeChild(listTable.firstChild);
+    }
+
+    //Populate table per header sort
+    requestTable(table, request => {
         let elements = JSON.parse(request.responseText);
         let attributeID = 'characterID';
         elements.forEach(element => {
-            addRow(element, keyList, attributeID);
+            addRow(listTable, element, keyList, attributeID);
         })
-    });    
+    }, orderBy);    
 }
 
 /**
  * Adds a row to the list table
+ * @param {HTMLElement} table 
  * @param {Object} element 
  * @param {Array} keyList 
  * @param {string} attributeID 
  */
-function addRow(element, keyList, attributeID) {
-    let table = document.getElementById("listTable");
-
+function addRow(table, element, keyList, attributeID) {
+    
     //Build the empty row
     let row = addNode(table, "tr", "")
     row.setAttribute("class", "clickable-row");
     row.setAttribute("id", element[attributeID]);
-    row.setAttribute("onclick", "loadElement(" + element[attributeID] + ", '" + attributeID + "')");
+    row.setAttribute(
+        "onclick",
+        "load" + attributeID.substring(0, 1).toUpperCase() + attributeID.substring(1, attributeID.length-2)
+        + "(" + element[attributeID] + ", '" + attributeID + "')");
 
     //Populate the row with each column
     keyList.forEach(key => {
-        addNode(row, "td", element[key]);
+        if(key[0] == '_') {
+            let divide = key.search(":");
+            let attribute = key.substring(1, divide);
+            let table = key.substring(divide + 1);
+            requestTable(table, request => {
+                addNode(row, "td", JSON.parse(request.responseText)[0].name);
+            }, false, attribute, element[attribute]);
+        } else {
+            addNode(row, "td", element[key]);
+        }
     });
 }
 

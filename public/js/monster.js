@@ -7,7 +7,7 @@ window.addEventListener("DOMContentLoaded", event => {
 * @param {Number} monsterID primary key value of monster to be loaded
 */
 function loadMonster(monsterID) {
-    requestTable('GET', 'application/json', 'Monsters', monsterRequest => {
+    requestTable('application/json', 'Monsters', monsterRequest => {
         let monster = JSON.parse(monsterRequest.responseText)[0];
     
         Object.keys(monster).forEach(key => {
@@ -18,7 +18,7 @@ function loadMonster(monsterID) {
     let foundIn = document.getmonstersById("foundIn");
     foundIn.innerHTML = "<th colspan='6'>Found In</th>";
 
-    requestContent('GET', 'application/json', '/monster_biomes', request => {
+    requestContent('application/json', '/monster_biomes', request => {
         let biomes = JSON.parse(request.responseText).monster_biomes;
         biomes.forEach(biome => {
             let row = addNode(foundIn, "tr", "");
@@ -32,7 +32,7 @@ function loadMonster(monsterID) {
     let abilityList = document.getmonstersById("abilityList");
     abilityList.innerHTML = "<th colspan='6'>Abiliites</th>";
     
-    requestContent('GET', 'application/json', '/monster_abilities', request => {
+    requestContent('application/json', '/monster_abilities', request => {
         let abilities = JSON.parse(request.responseText).monster_abilities;
         abilities.forEach(ability => {
             let row = addNode(abilityList, "tr", "");

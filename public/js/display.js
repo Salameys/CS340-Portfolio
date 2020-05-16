@@ -1,3 +1,26 @@
+/**
+ * Requests a table and calls the provided function asynchronously
+ * @param {string} table 
+ * @param {function} func 
+ * @param {string} orderBy 
+ * @param {string} attributeKey 
+ * @param {string} attributeValue 
+ */
+function requestTable (table, func, orderBy = false, attributeKey = false, attributeValue = null) {
+	var request = new XMLHttpRequest();
+	request.open('get', '/table');
+    request.setRequestHeader('Content-Type', 'application/json');
+    request.setRequestHeader('dataTable', table);
+    if(attributeKey) {
+        request.setRequestHeader('attributeKey', attributeKey)
+        request.setRequestHeader('attributeValue', attributeValue);
+    }
+    if(orderBy) {
+        request.setRequestHeader('orderBy', orderBy);
+    }
+    request.addEventListener("load", response => {func(request)});
+	request.send();
+}
 
 /**
 * Updates the paired display and input fields of an attribute on the display table
@@ -11,12 +34,11 @@ function updateField(key, value) {
 
 /**
 * Swaps the display table from display to edit mode
-* @param {string} table name of table displaying element data
 * @param {string} swapTo whether swap is to add, modify, or cancel action
 */
-function swapForm(form, swapTo) {
+function swapForm(swapTo) {
     //Load nodes
-    var form = document.getElementById(form);
+    var form = document.getElementById('display-form');
     var inputs = form.querySelectorAll(".input");
     var displays = form.querySelectorAll(".display");
 
@@ -28,16 +50,12 @@ function swapForm(form, swapTo) {
         inputs.forEach(node => {
             node.classList.remove("hidden");
         });
+        document.getElementById("addElement").classList.remove("hidden");
         for(i = 0; i < inputs.length - 2; i++) {
             inputs[i].firstElementChild.value = "";
         }
-        
-        //This will be scrapped when making SQL calls, replaced by auto_increment
-        var attributeID = form.children[1].id;
-        form.children[0].innerHTML = Number.parseInt(context.reduce(function(max, element){
-            return (element[attributeID] > max[attributeID] ? element : max);
-        })[attributeID]) + 1;
     }
+
     //Hide display nodes and reveal identically valued input nodes
     if(swapTo == "modify") {
         inputs.forEach(node => {
@@ -46,7 +64,9 @@ function swapForm(form, swapTo) {
         displays.forEach(node => {
             node.classList.add("hidden");
         });
+        document.getElementById("modifyElement").classList.remove("hidden");
     }
+    
     //Hide input nodes and reveal display nodes of object rememberd by table
     if(swapTo == "cancel") {
         inputs.forEach(node => {
@@ -55,54 +75,9 @@ function swapForm(form, swapTo) {
         displays.forEach(node => {
             node.classList.remove("hidden");
         });
-        displayElement(form.children[1].value, form.children[1].id);
+        document.getElementById("addElement").classList.add("hidden");
+        document.getElementById("modifyElement").classList.add("hidden");
     }
-}
-
-/**
-* Inserts a new object or updates an existing one depending on sketchy logic
-* @param {string} form name of form containing all relevent data
-* @param {Arary} keysList array of keys for building table row
-* @param {string} attributeID name of primary key attribute
-*/
-function confirmChange(form, keysList, attributeID) {
-    form = document.getElementById(form);
-    
-    //Retrieve display and input id values. If same, edit. If different, new.
-    var id1 = document.getElementById(attributeID + "-display").innerHTML; 
-    var id2 = document.getElementById(attributeID).value;
-    var same = id1 == id2;
-    id = same ? id2 : id1;
-
-    //Load object with determined id value
-    var element = {};
-    element[attributeID] = id;
-
-    //Load object with key:value pairs from form
-    for(var i = 1; i < form.length-5; i++) {
-        var value = form.elements[i].value;
-        if(Number.parseInt(value)) {
-            value = Number.parseInt(value);
-        }
-        element[form.elements[i].id] = value;
-    }
-    
-    //Loads the list table name, relying on naming conventions
-    var table = form.id.substr(0, form.id.length-5) + "s";
-    if(same) {
-        //This needs to be replaced by SQL MODIFY command
-        var target = context.find(element => {return element[attributeID] == id});
-        Object.assign(target, element);
-        //This call will stay, but modifyRow will change
-        modifyRow(table, element, id, window[keysList]);
-    } else {
-        //This needs to be replaced by SQL INSERT command
-        context.push(element);
-        addRow(table, element, window[keysList], attributeID);
-    }
-
-    //Changes the form back to display mode, showing the element created or changed
-    swapForm(form.id, "cancel");
 }
 
 /**
@@ -116,31 +91,6 @@ function addNode(parent, type, content) {
     parent.appendChild(node);
     node.innerHTML = content;
     return node;
-}
-
-/**
- * Handles requesting dynamic content from the server
- * @param {string} action 
- * @param {string} type 
- * @param {string} url 
- * @param {function} func 
- * @param {string} idAttribute
- * @param {Number} idValue
- */
-function requestTable (action, table, func, orderBy = false, attributeKey = false, attributeValue = null) {
-	var request = new XMLHttpRequest();
-	request.open(action, '/table');
-    request.setRequestHeader('Content-Type', 'application/json');
-    request.setRequestHeader('dataTable', table);
-    if(attributeKey) {
-        request.setRequestHeader('attributeKey', attributeKey)
-        request.setRequestHeader('attributeValue', attributeValue);
-    }
-    if(orderBy) {
-        request.setRequestHeader('orderBy', orderBy);
-    }
-    request.addEventListener("load", response => {func(request)});
-	request.send();
 }
 
 /**

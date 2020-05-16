@@ -8,7 +8,7 @@
         <table>
             <tr>
                 <form id="search-form" onsubmit="tagSearch('name', 'search-field', 'characterID'); return false;" method="post">
-                    <td colspan='4'><input id="search-field" type="text"></input></td>
+                    <td colspan='4'><input id="search-field" type="text"/></td>
                     <td><input type="submit" value="Search"></td>
                 </form>
             </tr>
@@ -38,27 +38,27 @@
         </table>
     </div>
     <div class="viewcontainer" id="display">
-        <form id="character-form">
-            <p class='hidden' id="characterID-display">{{characters.[0].characterID}}</p>
-            <input class='hidden' type="number" id="characterID" value={{characters.[0].characterID}}></input>
+        <form id="display-form">
+            <p class='hidden' id="characterID-display"></p>
+            <input class='hidden' type="number" id="characterID"/>
             <table>
                 <tr id="row-name">
                     <th>Name</th>
-                    <td class='display' colspan='5' id="name-display">{{characters.[0].name}}</td>
-                    <td class='input hidden' colspan='5'><input type="text" id="name" value={{characters.[0].name}}></input></td>
+                    <td class='display' colspan='5' id="name-display"></td>
+                    <td class='input hidden' colspan='5'><input type="text" id="name"/></td>
                 </tr>
                 <tr id="row-race">
                     <th>Race</th>
-                    <td class='display' colspan='5' id="race-display">{{characters.[0].race}}</td>
-                    <td class='input hidden' colspan='5'><input type="text" id="race" value={{characters.[0].race}}></input></td>
+                    <td class='display' colspan='5' id="race-display"></td>
+                    <td class='input hidden' colspan='5'><input type="text" id="race"/></td>
                 </tr>
                 <tr id="row-class">
                     <th>Class</th>
-                    <td class='display' colspan='3' id="class-display">{{characters.[0].class}}</td>
-                    <td class='input hidden' colspan='3'><input type="text" id="class" value={{characters.[0].class}}></input></td>
+                    <td class='display' colspan='3' id="class-display"></td>
+                    <td class='input hidden' colspan='3'><input type="text" id="class"/></td>
                     <th>Level</th>
-                    <td class='display' id="level-display">{{characters.[0].level}}</td>
-                    <td class='input hidden'><input type="number" id="level" value={{characters.[0].level}}></input></td>
+                    <td class='display' id="level-display"></td>
+                    <td class='input hidden'><input type="number" id="level"/></td>
                 </tr>
                 <tr id="row-statheaders">
                     <th>STR</th>
@@ -69,38 +69,34 @@
                     <th>CHA</th>
                 </tr>
                 <tr id="row-stats">
-                    <td class='display center' id="strength-display">{{characters.[0].strength}}</td>
-                    <td class='input center hidden'><input type="number" id="strength" value={{characters.[0].strength}}></input></td>
-                    <td class='display center' id="dexterity-display">{{characters.[0].dexterity}}</td>
-                    <td class='input center hidden'><input type="number" id="dexterity" value={{characters.[0].dexterity}}></input></td>
-                    <td class='display center' id="constitution-display">{{characters.[0].constitution}}</td>
-                    <td class='input center hidden' id="name-display"><input type="number" id="constitution" value={{characters.[0].constitution}}></input></td>
-                    <td class='display center' id="intelligence-display">{{characters.[0].intelligence}}</td>
-                    <td class='input center hidden' id="name-display"><input type="number" id="intelligence" value={{characters.[0].intelligence}}></input></td>
-                    <td class='display center' id="wisdom-display">{{characters.[0].wisdom}}</td>
-                    <td class='input center hidden'><input type="number" id="wisdom" value={{characters.[0].wisdom}}></input></td>
-                    <td class='display center' id="charisma-display">{{characters.[0].charisma}}</td>
-                    <td class='input center hidden'><input type="number" id="charisma" value={{characters.[0].charisma}}></input></td>
+                    <td class='display center' id="strength-display"></td>
+                    <td class='input center hidden'><input type="number" id="strength"/></td>
+                    <td class='display center' id="dexterity-display"></td>
+                    <td class='input center hidden'><input type="number" id="dexterity"/></td>
+                    <td class='display center' id="constitution-display"></td>
+                    <td class='input center hidden' id="name-display"><input type="number" id="constitution"/></td>
+                    <td class='display center' id="intelligence-display"></td>
+                    <td class='input center hidden' id="name-display"><input type="number" id="intelligence"/></td>
+                    <td class='display center' id="wisdom-display"></td>
+                    <td class='input center hidden'><input type="number" id="wisdom"/></td>
+                    <td class='display center' id="charisma-display"></td>
+                    <td class='input center hidden'><input type="number" id="charisma"/></td>
                 </tr>
                 <tr id="row-party">
                     <th colspan='2'>Party</th>
-                    <td class='display' colspan='4' id="partyID-display">
-                        {{#if characters.[0].partyID}}
-                            {{characters.[0].partyID}}
-                        {{else}}
-                            None
-                        {{/if}}</td>
-                    <td class='input hidden' colspan='4'><input type="text" id="partyID" value={{characters.[0].partyID}}></input></td>
+                    <td class='display' colspan='4' id="partyID-display">None</td>
+                    <td class='input hidden' colspan='4'><select id="partyID"/></td>
                 </tr>
                 <tbody id="encounters"></tbody>
                 <tr>
                     <td class="center" colspan=2>
-                        <input class='display'  type="button" onclick="swapForm('character-form', 'add')" value="Add New">
-                        <input class='input hidden'  type="button" onclick="confirmChange('character-form', 'characterKeys', 'characterID')" value="Confirm">
+                        <input class='display'  type="button" onclick="swapForm('add')" value="Add New">
+                        <input id="addElement" class='hidden'  type="button" onclick="addElement('Characters', 'characterID')" value="Confirm">
+                        <input id="modifyElement" class='hidden'  type="button" onclick="modifyElement('Characters', 'characterID')" value="Confirm">
                     </td>
                     <td class="center" colspan=2>
-                        <input class='display' type="button" onclick="swapForm('character-form', 'modify')" value="Modify">
-                        <input class='input hidden'  type="button" onclick="swapForm('character-form', 'cancel')" value="Cancel">
+                        <input class='display' type="button" onclick="swapForm('modify')" value="Modify">
+                        <input class='input hidden'  type="button" onclick="swapForm('cancel'); loadCharacter(document.getElementById('characterID').value)" value="Cancel">
                     </td>
                     <td class="center" colspan=2>
                         <input type="button" onclick="deleteElement('characters', 'characterID')" value="Delete">

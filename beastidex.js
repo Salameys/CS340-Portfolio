@@ -101,11 +101,20 @@ app.get('/table', function (req, res) {
     orderBy = req.get('orderBy');
   }
 
-  getTable(table, where).then(function (characters) {
+  getTable(table, where, orderBy).then(function (characters) {
     res.json(characters);
   });
 });
 
+app.post('/table_insert', function (req, res) {
+  let table = req.get('dataTable');
+  let element = req.get('element');
+});
+
+app.post('/table_modify', function (req, res) {
+  let table = req.get('dataTable');
+  let element = req.get('element');
+});
 
 /*
 app.get('/monsters',function(req,res,next){
