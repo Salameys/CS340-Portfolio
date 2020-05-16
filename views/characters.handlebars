@@ -1,21 +1,11 @@
-<script src="/js/sortTable.js"></script>
+<script src="/js/list.js"></script>
 <script src="/js/display.js"></script>
 <script src="/js/character.js"></script>
-<script>
-    var context = '{{#each characters}} { {{#each this}}{{#unless @last}}"{{@key}}":"{{this}}", {{/unless}}{{#if @last}}"{{@key}}":"{{this}}"{{/if}}{{/each}} }, {{/each}}';
-    context = context.split("},");
-    context.length = context.length-1;
-    for(var i = 0; i < context.length; i++) {
-        context[i] = context[i] + "}";
-        context[i] = context[i].replace("&#x27;", "'");
-        context[i] = JSON.parse(context[i]);
-    };
-</script>
 <link rel='stylesheet' type='text/css' href='/css/table.css' />
 
 <div class="viewport">
     <div class="listcontainer">
-        <table id="characters">
+        <table>
             <tr>
                 <form id="search-form" onsubmit="tagSearch('name', 'search-field', 'characterID'); return false;" method="post">
                     <td colspan='4'><input id="search-field" type="text"></input></td>
@@ -37,22 +27,14 @@
                     </div>
                 </td>
             </tr>
-            <tr>
-                <th onclick="sortTable('characters', 0, this)" data-ascending>Name</th>
-                <th onclick="sortTable('characters', 1, this)" data-ascending>Race</th>
-                <th onclick="sortTable('characters', 2, this)" data-ascending>Class</th>
-                <th onclick="sortTable('characters', 3, this)" data-isInt data-ascending>Level</th>
-                <th onclick="sortTable('characters', 4, this)" data-ascending>Party</th>
+            <tr id="tableHeaders">
+                <th class="headerSortUp" onclick="loadTable('Characters', characterKeys, this, 'name')" data-ascending>Name</th>
+                <th onclick="loadTable('Characters', characterKeys, this, 'race')" data-ascending>Race</th>
+                <th onclick="loadTable('Characters', characterKeys, this, 'class')" data-ascending>Class</th>
+                <th onclick="loadTable('Characters', characterKeys, this, 'level')" data-ascending>Level</th>
+                <th onclick="loadTable('Characters', characterKeys, this, 'partyID')" data-ascending>Party</th>
             </tr>
-            {{#each characters}}
-            <tr class="clickable-row" id={{characterID}} onclick="loadCharacter({{characterID}})">
-                <td>{{name}}</td>
-                <td>{{race}}</td>
-                <td>{{class}}</td>
-                <td class="center">{{level}}</td>
-                <td>{{party}}</td>
-            </tr>
-            {{/each}}
+            <tbody id="listTable"></tbody>
         </table>
     </div>
     <div class="viewcontainer" id="display">
@@ -102,17 +84,15 @@
                 </tr>
                 <tr id="row-party">
                     <th colspan='2'>Party</th>
-                    <td class='display' colspan='4' id="party-display">
-                        {{#if characters.[0].party}}
-                            {{characters.[0].party}}
+                    <td class='display' colspan='4' id="partyID-display">
+                        {{#if characters.[0].partyID}}
+                            {{characters.[0].partyID}}
                         {{else}}
                             None
                         {{/if}}</td>
-                    <td class='input hidden' colspan='4'><input type="text" id="party" value={{characters.[0].party}}></input></td>
+                    <td class='input hidden' colspan='4'><input type="text" id="partyID" value={{characters.[0].partyID}}></input></td>
                 </tr>
-                <tbody id="encounters">
-                    <th colspan='6'>Monsters Encountered</th>
-                </tbody>
+                <tbody id="encounters"></tbody>
                 <tr>
                     <td class="center" colspan=2>
                         <input class='display'  type="button" onclick="swapForm('character-form', 'add')" value="Add New">

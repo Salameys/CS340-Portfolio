@@ -7,14 +7,15 @@ window.addEventListener("DOMContentLoaded", event => {
 * @param {Number} monsterID primary key value of monster to be loaded
 */
 function loadMonster(monsterID) {
-    //Replace with SQL request, gets an object
-    let element = context.find(element => {return element["monsterID"] == monsterID});
+    requestTable('GET', 'application/json', 'Monsters', monsterRequest => {
+        let monster = JSON.parse(monsterRequest.responseText)[0];
     
-    Object.keys(element).forEach(key => {
-        updateField(key, element[key]);
-    });
+        Object.keys(monster).forEach(key => {
+            updateField(key, monster[key]);
+        });
 
-    let foundIn = document.getElementById("foundIn");
+    /*
+    let foundIn = document.getmonstersById("foundIn");
     foundIn.innerHTML = "<th colspan='6'>Found In</th>";
 
     requestContent('GET', 'application/json', '/monster_biomes', request => {
@@ -28,7 +29,7 @@ function loadMonster(monsterID) {
         });
     });
 
-    let abilityList = document.getElementById("abilityList");
+    let abilityList = document.getmonstersById("abilityList");
     abilityList.innerHTML = "<th colspan='6'>Abiliites</th>";
     
     requestContent('GET', 'application/json', '/monster_abilities', request => {
@@ -40,5 +41,6 @@ function loadMonster(monsterID) {
             node = addNode(row, "td", ability.name);
             node.setAttribute("colspan", 4);
         });
-    });
+        */
+    }, 'monsterID', monsterID);
 }

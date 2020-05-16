@@ -1,4 +1,5 @@
 window.addEventListener("DOMContentLoaded", event => {
+    loadTable('Characters', characterKeys)
     loadCharacter(1);
 });
 
@@ -7,24 +8,19 @@ window.addEventListener("DOMContentLoaded", event => {
 * @param {Number} characterID primary key value of character to be loaded
 */
 function loadCharacter(characterID) {
-    //Replace with SQL request, gets an object
-    let element = context.find(element => {return element["characterID"] == characterID});
+    requestTable('GET', 'Characters', characterRequest => {
+        let character = JSON.parse(characterRequest.responseText)[0];
     
-    Object.keys(element).forEach(key => {
-        updateField(key, element[key]);
-    });
-
-    let encounters = document.getElementById("encounters");
-    encounters.innerHTML = "<th colspan='6'>Monsters Encountered</th>";
-
-    requestContent('GET', 'application/json', '/characters_monsters', request => {
-        let monsters = JSON.parse(request.responseText).character_monsters;
-        monsters.forEach(monster => {
-            let row = addNode(encounters, "tr", "");
-            let node = addNode(row, "th", "Monster");
-            node.setAttribute("colspan", 2);
-            node = addNode(row, "td", monster.name);
-            node.setAttribute("colspan", 4);
+        Object.keys(character).forEach(key => {
+            if(key != 'partyID') {
+                updateField(key, character[key]);
+            }
         });
-    });
+
+        requestTable('GET', 'Parties', partyRequest => {
+            updateField('partyID', JSON.parse(partyRequest.responseText)[0].name);
+        }, false, 'partyID', character.partyID);
+
+        //populateRelationshipSection("encounters", 6, "Monsters Encountered", "characters_monsters", "Monster");
+    }, false, 'characterID', characterID);
 }

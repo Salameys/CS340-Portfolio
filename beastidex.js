@@ -28,51 +28,83 @@ app.get('/index',function(req,res,next){
   res.render('home',context);
 });
 
-var getTable = function (res, table) {
-    var context = {};
-    mysql.pool.query('SELECT * FROM' + table, function (err, rows, fields) {
-        if (err) {
-            next(err);
-            return;
-        }
-        context.results = rows;
-        res.render(table, context);
+/**
+ * Gets the SQL table results for a given select
+ * @param {string} table data table name
+ * @param {string} where optional filter statement
+ * @param {string} where optional order by statement
+ */
+function getTable (table, where = false, orderBy = false) {
+  return new Promise(function(resolve, reject) {
+    let queryString = 'SELECT * FROM ' + table;
+    if(where) queryString += ' WHERE ' + where;
+    if(orderBy) queryString += ' ORDER BY ' + orderBy;
+    console.log(queryString);
+    mysql.pool.query(queryString, function (err, rows, fields) {
+      if (err) {
+          reject(Error(err))
+      } else {
+        resolve(JSON.parse(JSON.stringify(rows)));
+      }
     });
+  });
 };
 
 app.get('/monsters', function (req, res) {
-    getTable(res, 'monsters');
+  let context = {}
+  //Retrieves the character table and uses it as context to render /characters
+  getTable('Monsters').then(function (monsters) {
+    context.title = 'Monsters';
+    context.monsters= monsters;
+    
+    //Render the characters page
+    res.render('monsters', context)
+  });
 });
 
 app.get('/characters', function (req, res) {
-    getTable(res, 'characters');
+  let context = {}
+  //Retrieves the character table and uses it as context to render /characters
+  getTable('Characters').then(function (characters) {
+    context.title = 'Characters';
+    context.characters= characters;
+    
+    //Adds the party attribute to each character for initial page load
+    context.characters.forEach(character => {
+      getTable('Parties', 'partyID=' + character.partyID).then(function (party) {
+        character.party = party[0].name;
+      });
+    });
+
+    //Render the characters page
+    res.render('characters', context)
+  });
 });
 
-app.get('/abilities', function (req, res) {
-    getTable(res, 'abilities');
+/**
+ * Route to retrieve any database table as a JSON
+ * @param {string} table name of database table
+ * @param {string} attributeKey attribute key to filter by
+ * @param {string} attributeValue attribute value to filter by
+ * @param {string} orderBy attribute to order by
+ */
+app.get('/table', function (req, res) {
+  let table = req.get('dataTable');
+
+  let where = false;
+  if(req.get('attributeKey')) {
+    where = req.get('attributeKey') + '=' + req.get('attributeValue');
+  }
+
+  let orderBy = false;
+  if(req.get('orderBy')) {
+    orderBy = req.get('orderBy');
+  }
+
+  getTable(table, where).then(function (characters) {
+    res.json(characters);
+  });
 });
-
-app.get('/biomes', function (req, res) {
-    getTable(res, 'biomes');
-});
-
-app.get('/parties', function (req, res) {
-    getTable(res, 'parties');
-});
-
-app.get('/monster_biome', function (req, res) {
-    getTable(res, 'monster_biome');
-});
-
-app.get('/monster_ability', function (req, res) {
-    getTable(res, 'monster_ability');
-});
-
-app.get('/character_monster', function (req, res) {
-    getTable(res, 'character_monster');
-});
-
-
 
 
 /*
@@ -173,6 +205,7 @@ app.get('/characters',function(req,res,next){
   ];
 
   context.title = "Characters";
+  console.log(context);
   res.render('characters',context);
 });
 

@@ -1,16 +1,6 @@
 <script src="/js/sortTable.js"></script>
 <script src="/js/display.js"></script>
 <script src="/js/monster.js"></script>
-<script>
-    var context = '{{#each monsters}} { {{#each this}}{{#unless @last}}"{{@key}}":"{{this}}", {{/unless}}{{#if @last}}"{{@key}}":"{{this}}"{{/if}}{{/each}} }, {{/each}}';
-    context = context.split("},");
-    context.length = context.length-1;
-    for(var i = 0; i < context.length; i++) {
-        context[i] = context[i] + "}";
-        context[i] = context[i].replace("&#x27;", "'");
-        context[i] = JSON.parse(context[i]);
-    };
-</script>
 <link rel='stylesheet' type='text/css' href='/css/table.css' />
 
 <div class="viewport">
@@ -125,8 +115,8 @@
                 </tr>
                 <tr id="row-souce">
                     <th colspan='2'>Source</th>
-                    <td class='display' colspan='5' id="source-display">{{monsters.[0].source}}</td>
-                    <td class='input hidden' colspan='4' id="source"><input type="text" id="source" value={{monsters.[0].source}}></input></td>
+                    <td class='display' colspan='5' id="source_book-display">{{monsters.[0].source}}</td>
+                    <td class='input hidden' colspan='4' id="source_book"><input type="text" id="source_book" value={{monsters.[0].source_book}}></input></td>
                 </tr>
                 <tbody id="foundIn"></tbody>
                 <tbody id="abilityList"></tbody>

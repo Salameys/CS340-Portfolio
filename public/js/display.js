@@ -1,62 +1,6 @@
-var abilityKeys = ["name", "damage_type", "range", "damage_dice"];
-var biomeKeys = ["name"];
-var characterKeys = ["name", "race", "class", "level", "party"];
-var monsterKeys = ["name", "type", "challenge", "source"];
 
 /**
-* Loads an element into the display table
-* @param {Number} elementID primary key value of element to be loaded
-* @param {string} attributeID primary key attribute name
-*/
-function loadElement(elementID, attributeID) {
-    //Replace with SQL request, gets an object
-    var element = context.find(element => {return element[attributeID] == elementID});
-    Object.keys(element).forEach(key => {
-        updateField(key, element[key]);
-    });
-}
-
-/**
-* Submits a search query for an element of the given name and either shows an alert
-* if not found or loads the element into the display table as if clicked
-* @param {string} key attribute to search
-* @param {HTMLElement} searchField input containing search term
-* @param {string} attributeID primary key attribute name
-*/
-function tagSearch(key, searchField, attributeID) {
-    var element = context.find(element => {return element[key] == document.getElementById(searchField).value})
-    if(element) {
-        console.log(element[attributeID] + ", " + attributeID);
-        loadElement(element[attributeID], attributeID);
-    } else {
-        alert("Name not found");
-    }
-}
-
-/**
-* Filters list table for elements containing the matching tag
-* @param {string} table name of table listing elements
-* @param {string} key attribute to filter by
-* @param {*} value attribute value to filter by
-* @param {Array} keyList array listing attributes to be displayed
-*/
-function filterList(table, key, value, keyList) {
-    Array.from(document.getElementById(table)
-    .getElementsByTagName("tr"))
-    .forEach(row => {
-        if(row.classList.contains("clickable-row")) {
-            row.remove();
-        }
-    });
-    context.forEach(element => {
-        if(element[key] == value) {
-            addRow(table, element, keyList);
-        }
-    })
-}
-
-/**
-* Updates teh paired display and input fields of an attribute on the display table
+* Updates the paired display and input fields of an attribute on the display table
 * @param {string} key attribute key to be updated
 * @param {*} value attribute value be updated to
 */
@@ -111,7 +55,7 @@ function swapForm(form, swapTo) {
         displays.forEach(node => {
             node.classList.remove("hidden");
         });
-        loadElement(form.children[1].value, form.children[1].id);
+        displayElement(form.children[1].value, form.children[1].id);
     }
 }
 
@@ -162,80 +106,6 @@ function confirmChange(form, keysList, attributeID) {
 }
 
 /**
-* Deletes an element from the database and from the display table
-* @param {string} table name of table listing elements
-* @param {string} attributeID name of primary key attribute
-*/
-function deleteElement(table, attributeID) {
-    var table = document.getElementById(table);
-    //The display table has a hidden input with the attributeID as its ID attribute
-    var elementID = document.getElementById(attributeID).value;
-    var row;
-    //Run through the rows of the list table looking for the one matching the elementID
-    for(var node of table.firstElementChild.childNodes) {
-        if(node.id == elementID) {
-            row = node;
-            break;
-        }
-    }
-    row.remove();
-
-    //This will be outmoded by SQL, replaced by REMOVE
-    context = context.filter(element => {
-        return element[attributeID] !== elementID;
-    });
-
-    //Reloads the display table with the first table element
-    loadElement(context[0][attributeID], attributeID);
-}
-
-/**
-* Modifies a row of the table
-* @param {string} table name of table to be modified
-* @param {Object} element to be modified
-* @param {Array} keyList array of keys listing attributes to be displayed
-*/
-function modifyRow(table, element, elementID, keyList) {
-    var table = document.getElementById(table);
-    var row;
-    //Run through the rows of the list table looking for the one matching the elementID
-    for(var node of table.firstElementChild.childNodes) {
-        console.log(node);
-        if(node.id == elementID) {
-            row = node;
-            break;
-        }
-    }
-    
-    //Runs through each column in the row and updates its value
-    row = Array.from(row.getElementsByTagName("td"));
-    for(i = 0; i < keyList.length; i++) {
-        row[i].innerHTML = element[keyList[i]];
-    }
-}
-
-/**
-* Adds a row to the table
-* @param {string} table name of table to be added to
-* @param {Object} element to be added
-* @param {Array} keyList array listing attributes to be displayed
-*/
-function addRow(table, element, keyList, attributeID) {
-    var table = document.getElementById(table);
-
-    //Build the empty row
-    var row = addNode(table.firstElementChild, "tr", "")
-    row.setAttribute("class", "clickable-row");
-    row.setAttribute("id", element[attributeID]);
-    row.setAttribute("onclick", "loadElement(" + element[attributeID] + ", '" + attributeID + "')");
-
-    //Populate the row with each column
-    keyList.forEach(key => {
-        addNode(row, "td", element[key]);
-    });
-}
-
-/**
 * Adds a node to the DOM as a child of an existing node
 * @param {HTMLElement} parent node
 * @param {string} type of node
@@ -254,11 +124,85 @@ function addNode(parent, type, content) {
  * @param {string} type 
  * @param {string} url 
  * @param {function} func 
+ * @param {string} idAttribute
+ * @param {Number} idValue
  */
-function requestContent (action, type, url, func) {
+function requestTable (action, table, func, orderBy = false, attributeKey = false, attributeValue = null) {
 	var request = new XMLHttpRequest();
-	request.open(action, url);
-	request.setRequestHeader('Content-Type', type);
+	request.open(action, '/table');
+    request.setRequestHeader('Content-Type', 'application/json');
+    request.setRequestHeader('dataTable', table);
+    if(attributeKey) {
+        request.setRequestHeader('attributeKey', attributeKey)
+        request.setRequestHeader('attributeValue', attributeValue);
+    }
+    if(orderBy) {
+        request.setRequestHeader('orderBy', orderBy);
+    }
     request.addEventListener("load", response => {func(request)});
 	request.send();
+}
+
+/**
+ * Handles preventing duplicate entries in related dropdowns
+ * @param {string} group family of selects with same options
+ * @param {string} newOption option which has been selected
+ * @param {string} oldOption option which has been deselected
+ */
+function preventDuplicateSelection(group, newOption, oldOption) {
+    group = document.getElementById(group);
+    console.log(group);
+    group = group.getElementsByTagName("select");
+    console.log(group);
+}
+
+/**
+ * 
+ * @param {string} section name of DOM element rows will be placed in
+ * @param {*} width width of table
+ * @param {*} name header for relationship section
+ * @param {*} table name of relationship table in database
+ * @param {*} rowTitle title for each row
+ */
+function populateRelationshipSection(section, width, name, table, rowTitle) {
+    //Clear the section of any old data and reset it
+    section = document.getElementById(section);
+    while (section.firstChild) {
+        section.removeChild(section.firstChild);
+    }
+    section.innerHTML = "<th colspan='" + width + "'>" + name + "</th>";
+    
+    requestTable('GET', 'application/json', '/' + table + '_table', request => {
+        let entities = JSON.parse(request.responseText);
+        console.log(entities);
+        entities.forEach(entity => {
+            addRelationshipRow(section, width, rowTitle, entity.name);
+        });
+    });
+}
+
+/**
+ * Adds a row representing a multiple to multiple relationship to the section for that group
+ * @param {HTMLElement} section DOM element row is going in
+ * @param {Number} width width of whole table
+ * @param {string} title type of related entity
+ * @param {string} name name of related entity
+ * @param {boolean} display if rendering mode is display or input
+ */
+function addRelationshipRow(section, width, title, name, group, options, display=true) {
+    let row = addNode(section, "tr", "");
+    let node = addNode(row, "th", title);
+    node.setAttribute("colspan", 2);
+
+    //Display node
+    node = addNode(row, "td", name);
+    node.setAttribute("colspan", width - 2);
+    node.classList.add("display");
+    if(!display) node.classList.add("hidden");
+    
+    //Edit node
+    node = addNode(row, "td", "");
+    node.classList.add("input");
+    if(display) node.classList.add("hidden");
+    let select = addNode(node, "input", "");
 }
