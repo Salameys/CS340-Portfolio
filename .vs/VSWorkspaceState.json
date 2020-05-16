@@ -1,13 +1,7 @@
 {
   "ExpandedNodes": [
     "",
-    "\\images",
-    "\\public",
-    "\\public\\css",
-    "\\public\\js",
-    "\\views",
-    "\\views\\layouts",
-    "\\views\\partials"
+    "\\Database"
   ],
   "SelectedNode": "\\beastidex.js",
   "PreviewInSolutionExplorer": false
