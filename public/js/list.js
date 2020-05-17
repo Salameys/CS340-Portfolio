@@ -58,39 +58,6 @@ function loadTable(table, keyList, button, orderBy = "name") {
 }
 
 /**
- * Adds a row to the list table
- * @param {HTMLElement} table 
- * @param {Object} element 
- * @param {Array} keyList 
- * @param {string} attributeID 
- */
-function addRow(table, element, keyList, attributeID) {
-    
-    //Build the empty row
-    let row = addNode(table, "tr", "")
-    row.setAttribute("class", "clickable-row");
-    row.setAttribute("id", element[attributeID]);
-    row.setAttribute(
-        "onclick",
-        "load" + attributeID.substring(0, 1).toUpperCase() + attributeID.substring(1, attributeID.length-2)
-        + "(" + element[attributeID] + ", '" + attributeID + "')");
-
-    //Populate the row with each column
-    keyList.forEach(key => {
-        if(key[0] == '_') {
-            let divide = key.search(":");
-            let attribute = key.substring(1, divide);
-            let table = key.substring(divide + 1);
-            requestTable(table, request => {
-                addNode(row, "td", JSON.parse(request.responseText)[0].name);
-            }, false, attribute, element[attribute]);
-        } else {
-            addNode(row, "td", element[key]);
-        }
-    });
-}
-
-/**
 * Submits a search query for an element of the given name and either shows an alert
 * if not found or loads the element into the display table as if clicked
 * @param {string} key attribute to search

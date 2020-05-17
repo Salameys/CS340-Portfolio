@@ -81,6 +81,41 @@ app.get('/characters', function (req, res) {
   });
 });
 
+app.get('/abilities', function (req, res) {
+  let context = {};
+  getTable('Characters').then(function (characters) {
+    context.title = 'Characters';
+    context.characters= characters;
+    
+    context.characters.forEach(character => {
+      getTable('Parties', 'partyID=' + character.partyID).then(function (party) {
+        character.party = party[0].name;
+      });
+    });
+
+    //Render the characters page
+    res.render('characterTest', context)
+  });
+});
+
+app.get('/characterDisplay', function (req, res) {
+  let context = {layout:false};
+  let characterID = req.get('characterID');
+  context['mode'] = req.get('mode');
+  
+  if(context['mode'] == "add") res.render('characterModify', context);
+  
+  getTable('Characters', 'characterID=' + characterID).then(function (character) {
+    for(let key in character[0]) {
+      console.log(key);
+      context[key] = character[0][key];
+    }
+    context.monsters = [{name:'Jeffasaurus'}, {name:'Cat'}]
+    if(context['mode'] == "display") res.render('characterDisplay', context);
+    if(context['mode'] == "modify") res.render('characterModify', context);
+  });
+});
+
 /**
  * Route to retrieve any database table as a JSON
  * @param {string} table name of database table
