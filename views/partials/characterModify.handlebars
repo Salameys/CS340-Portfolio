@@ -1,0 +1,72 @@
+<table>
+    <tr>
+        <th>Name</th>
+        <td colspan=5><input type="text" value={{name}} /></td>
+    </tr>
+    <tr>
+        <th>Race</th>
+        <td colspan=5><input type="text" value={{race}} /></td>
+    </tr>
+    <tr>
+        <th>Class</th>
+        <td colspan=3><input type="text" value={{class}} /></td>
+        <th>Level</th>
+        <td class="center"><input type="number" value={{level}} /></td>
+    </tr>
+    <tr>
+        <th>STR</th>
+        <th>DEX</th>
+        <th>CON</th>
+        <th>INT</th>
+        <th>WIS</th>
+        <th>CHA</th>
+    </tr>
+    <tr>
+        <td class="center"><input type="number" value={{strength}} /></td>
+        <td class="center"><input type="number" value={{dexterity}} /></td>
+        <td class="center"><input type="number" value={{constitution}} /></td>
+        <td class="center"><input type="number" value={{intelligence}} /></td>
+        <td class="center"><input type="number" value={{wisdom}} /></td>
+        <td class="center"><input type="number" value={{charisma}} /></td>
+    </tr>
+    <tr>
+        <th>Party</th>
+        <td colspan=5>
+            <select id="partySelect">
+                <option>None</option>
+                {{#each parties}}
+                <option partyID={{this.partyID}}>{{this.name}}</option>
+                {{/each}}
+            </select>
+        </td>
+    </tr>
+    {{#if monsters}}
+    <tr>
+        <th colspan=6>Monsters Encountered</th>
+    </tr>
+    {{#each monsters}}
+    <tr id='monsters{{@index}}' >
+        <th>Monster</th>
+        <td colspan=4>
+            <select class="monsterSelect">
+                <option>None</option>
+                {{#each ../allMonsters}}
+                <option monsterID={{this.monsterID}}>{{this.name}}</option>
+                {{/each}}
+            </select>
+        </td>
+        <td class="center">
+            <button onclick="removeOption('monsters' + {{@index}} )">-</button>
+        </td>
+    </tr>
+    {{/each}}{{/if}}
+    <tr>
+        {{#if add}}
+        <td class="center" colspan=3><button onclick="addCharacter()">Add Character</button></td>
+        <td class="center" colspan=3><button onclick="loadCharacter({{characterID}})">Cancel</button></td>
+        {{else}}
+        <td class="center" colspan=3><button onclick="confirmCharacter()">Confirm Changes</button></td>
+        <td class="center" colspan=3><button onclick="loadCharacter({{characterID}})">Cancel</button></td>
+        {{/if}}
+    </tr>
+</table>

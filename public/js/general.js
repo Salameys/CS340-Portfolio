@@ -22,6 +22,24 @@ function requestTable (table, func, orderBy = false, attributeKey = false, attri
 	request.send();
 }
 
+function listElements (table) {
+    var request = new XMLHttpRequest();
+	request.open('get', '/elementList');
+    request.setRequestHeader('Content-Type', 'application/json');
+    request.setRequestHeader('table', table);
+    request.addEventListener("load", response => {
+        let list = document.getElementById("list");
+        list.innerHTML = request.responseText;
+    })
+    request.send();
+}
+
+function loadElement (table, attributeKey, attributeValue) {
+    requestTable(table, function (response){
+        console.log(request.responseText);
+    }, false, attributeKey, attributeValue);
+}
+
 /**
 * Adds a node to the DOM as a child of an existing node
 * @param {HTMLElement} parent node
@@ -35,3 +53,9 @@ function addNode(parent, type, content) {
     return node;
 }
 
+function removeOption(optionID) {
+    console.log(optionID);
+    let option = document.getElementById(optionID);
+    console.log(option);
+    option.remove();
+}

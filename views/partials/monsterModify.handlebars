@@ -1,0 +1,84 @@
+<table>
+    <tr>
+        <th>Name</th>
+        <td colspan=5><input type="text" value={{name}} /></td>
+    </tr>
+    <tr>
+        <th>Type</th>
+        <td colspan=3><input type="text" value={{type}} /></td>
+        <th>CR</th>
+        <td class="center"><input type="number" value={{challenge}} /></td>
+    </tr>
+    <tr>
+        <th>Desc.</th>
+        <td colspan=5><input type="text" value={{description}} /></td>
+    </tr>
+    <tr>
+        <th>STR</th>
+        <th>DEX</th>
+        <th>CON</th>
+        <th>INT</th>
+        <th>WIS</th>
+        <th>CHA</th>
+    </tr>
+    <tr>
+        <td class="center"><input type="number" value={{strength}} /></td>
+        <td class="center"><input type="number" value={{dexterity}} /></td>
+        <td class="center"><input type="number" value={{constitution}} /></td>
+        <td class="center"><input type="number" value={{intelligence}} /></td>
+        <td class="center"><input type="number" value={{wisdom}} /></td>
+        <td class="center"><input type="number" value={{charisma}} /></td>
+    </tr>
+    <tr>
+        <th>Party</th>
+        <td colspan=5><input type="text" value={{source}}></td>
+    </tr>
+    {{#if abilities}}
+    <tr>
+        <th colspan=6>Abilities</th>
+    </tr>
+    {{#each abilities}}
+    <tr id='abilities{{@index}}' >
+        <th>Ability</th>
+        <td colspan=4>
+            <select class="abilitySelect">
+                <option>None</option>
+                {{#each ../allAbilities}}
+                <option abilityID={{this.abilityID}}>{{this.name}}</option>
+                {{/each}}
+            </select>
+        </td>
+        <td class="center">
+            <button onclick="removeOption('abilities' + {{@index}} )">-</button>
+        </td>
+    </tr>
+    {{#if biomes}}
+    <tr>
+        <th colspan=6>Found In</th>
+    </tr>
+    {{#each biomes}}
+    <tr id='biomes{{@index}}' >
+        <th>Biome</th>
+        <td colspan=4>
+            <select class="biomeSelect">
+                <option>None</option>
+                {{#each ../allBiomes}}
+                <option biomeID={{this.biomeID}}>{{this.name}}</option>
+                {{/each}}
+            </select>
+        </td>
+        <td class="center">
+            <button onclick="removeOption('biomes' + {{@index}} )">-</button>
+        </td>
+    </tr>
+    {{/each}}{{/if}}
+    <tr>
+        {{#if add}}
+        <td class="center" colspan=3><button onclick="addMonster()">Add Character</button></td>
+        <td class="center" colspan=3><button onclick="loadMonster({{characterID}})">Cancel</button></td>
+        {{else}}
+        <td class="center" colspan=3><button onclick="confirmMonster()">Confirm Changes</button></td>
+        <td class="center" colspan=3><button onclick="loadMonster({{characterID}})">Cancel</button></td>
+        {{/if}}
+    </tr>
+</table>

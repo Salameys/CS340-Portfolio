@@ -1,0 +1,9 @@
+{{#each characters}}
+<tr class="clickable-row" onclick="loadCharacter({{this.characterID}})">
+    <td>{{this.name}}</td>
+    <td>{{this.race}}</td>
+    <td>{{this.class}}</td>
+    <td>{{this.level}}</td>
+    <td>{{this.party}}</td>
+</tr>
+{{/each}}

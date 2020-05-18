@@ -1,0 +1,8 @@
+{{#each monsters}}
+<tr class="clickable-row" onclick="loadMonster({{this.monsterID}})">
+    <td>{{this.name}}</td>
+    <td>{{this.type}}</td>
+    <td class="center">{{this.challenge}}</td>
+    <td>{{this.source_book}}</td>
+</tr>
+{{/each}}

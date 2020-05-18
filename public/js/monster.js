@@ -1,4 +1,5 @@
 window.addEventListener("DOMContentLoaded", event => {
+    listElements('Monsters');
     loadMonster(1);
 });
 
@@ -6,41 +7,29 @@ window.addEventListener("DOMContentLoaded", event => {
 * Loads an monster  into the display table
 * @param {Number} monsterID primary key value of monster to be loaded
 */
-function loadMonster(monsterID) {
-    requestTable('application/json', 'Monsters', monsterRequest => {
-        let monster = JSON.parse(monsterRequest.responseText)[0];
-    
-        Object.keys(monster).forEach(key => {
-            updateField(key, monster[key]);
-        });
-
-    /*
-    let foundIn = document.getmonstersById("foundIn");
-    foundIn.innerHTML = "<th colspan='6'>Found In</th>";
-
-    requestContent('application/json', '/monster_biomes', request => {
-        let biomes = JSON.parse(request.responseText).monster_biomes;
-        biomes.forEach(biome => {
-            let row = addNode(foundIn, "tr", "");
-            let node = addNode(row, "th", "Biome");
-            node.setAttribute("colspan", 2);
-            node = addNode(row, "td", biome.name);
-            node.setAttribute("colspan", 4);
-        });
-    });
-
-    let abilityList = document.getmonstersById("abilityList");
-    abilityList.innerHTML = "<th colspan='6'>Abiliites</th>";
-    
-    requestContent('application/json', '/monster_abilities', request => {
-        let abilities = JSON.parse(request.responseText).monster_abilities;
-        abilities.forEach(ability => {
-            let row = addNode(abilityList, "tr", "");
-            let node = addNode(row, "th", "Ability");
-            node.setAttribute("colspan", 2);
-            node = addNode(row, "td", ability.name);
-            node.setAttribute("colspan", 4);
-        });
+function loadMonster(monsterID, mode = "display") {
+    var request = new XMLHttpRequest();
+	request.open('get', '/monsterDisplay');
+    request.setRequestHeader('Content-Type', 'application/json');
+    request.setRequestHeader('monsterID', monsterID);
+    request.setRequestHeader('mode', mode);
+    request.addEventListener("load", reponse => {
+        let insert = document.getElementById("display");
+        insert.innerHTML = request.responseText;
+        /*
+        if(mode == 'modify') {
+            requestTable('Monster_Ability', request => {
+                let abilities = JSON.parse(request.responseText);
+                let abilitySelect = [...document.getElementsByClassName('monsterSelect')];
+                for(i = 0; i < abilities.length; i++) {
+                    let select = abilitySelect[i];
+                    let options = [...select.getElementsByTagName('option')];
+                    let option = options.find(option => option.getAttribute("abilityID") == abilities[i].abilityID);
+                    option.setAttribute("selected", "");
+                }
+            }, false, 'monsterID', monsterID);
+        }
         */
-    }, 'monsterID', monsterID);
+    });
+    request.send();
 }

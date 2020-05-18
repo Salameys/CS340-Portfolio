@@ -1,5 +1,4 @@
 <script src="/js/general.js"></script>
-<script src="/js/list.js"></script>
 <script src="/js/display.js"></script>
 <script src="/js/character.js"></script>
 <link rel='stylesheet' type='text/css' href='/css/table.css' />
@@ -35,10 +34,8 @@
                 <th onclick="loadTable('Characters', characterKeys, this, 'level')" data-ascending>Level</th>
                 <th onclick="loadTable('Characters', characterKeys, this, 'partyID')" data-ascending>Party</th>
             </tr>
-            <tbody id="listTable"></tbody>
+            <tbody id="list"></tbody>
         </table>
     </div>
-    <div class="viewcontainer" id="display">
-        <form id="insert"></form>
-    </div>
+    <div class="viewcontainer" id="display"></div>
 </div>

@@ -50,72 +50,6 @@ function getTable (table, where = false, orderBy = false) {
   });
 };
 
-app.get('/monsters', function (req, res) {
-  let context = {}
-  //Retrieves the character table and uses it as context to render /characters
-  getTable('Monsters').then(function (monsters) {
-    context.title = 'Monsters';
-    context.monsters= monsters;
-    
-    //Render the characters page
-    res.render('monsters', context)
-  });
-});
-
-app.get('/characters', function (req, res) {
-  let context = {}
-  //Retrieves the character table and uses it as context to render /characters
-  getTable('Characters').then(function (characters) {
-    context.title = 'Characters';
-    context.characters= characters;
-    
-    //Adds the party attribute to each character for initial page load
-    context.characters.forEach(character => {
-      getTable('Parties', 'partyID=' + character.partyID).then(function (party) {
-        character.party = party[0].name;
-      });
-    });
-
-    //Render the characters page
-    res.render('characters', context)
-  });
-});
-
-app.get('/abilities', function (req, res) {
-  let context = {};
-  getTable('Characters').then(function (characters) {
-    context.title = 'Characters';
-    context.characters= characters;
-    
-    context.characters.forEach(character => {
-      getTable('Parties', 'partyID=' + character.partyID).then(function (party) {
-        character.party = party[0].name;
-      });
-    });
-
-    //Render the characters page
-    res.render('characterTest', context)
-  });
-});
-
-app.get('/characterDisplay', function (req, res) {
-  let context = {layout:false};
-  let characterID = req.get('characterID');
-  context['mode'] = req.get('mode');
-  
-  if(context['mode'] == "add") res.render('characterModify', context);
-  
-  getTable('Characters', 'characterID=' + characterID).then(function (character) {
-    for(let key in character[0]) {
-      console.log(key);
-      context[key] = character[0][key];
-    }
-    context.monsters = [{name:'Jeffasaurus'}, {name:'Cat'}]
-    if(context['mode'] == "display") res.render('characterDisplay', context);
-    if(context['mode'] == "modify") res.render('characterModify', context);
-  });
-});
-
 /**
  * Route to retrieve any database table as a JSON
  * @param {string} table name of database table
@@ -149,6 +83,145 @@ app.post('/table_insert', function (req, res) {
 app.post('/table_modify', function (req, res) {
   let table = req.get('dataTable');
   let element = req.get('element');
+});
+
+app.get('/monsters', function (req, res) {
+  let context = {title:"Monsters"};
+  res.render('monsters', context)
+});
+
+app.get('/characters', function (req, res) {
+  let context = {title:"Characters"};
+  res.render('characters', context)
+});
+
+app.get('/biomes', function (req, res) {
+  let context = {title:"Biomes"};
+  res.render('biomes', context);
+});
+
+app.get('/abilities', function (req, res) {
+  let context = {title:"Abilities"};
+  res.render('abilities', context)
+});
+
+app.get('/elementList', function (req, res) {
+  let context = {layout:false}
+  let table = req.get('table');
+  getTable(table).then(function (elements) {
+    table = table.toLowerCase();
+    context[table] = elements;
+    table = table.substring(0, table.length-1);
+    res.render('partials/' + table + 'List', context);
+  });
+})
+
+app.get('/characterList', function (req, res) {
+  let context = {layout:false};
+  getTable('Characters').then(function (characters) {
+    context.characters = characters;
+    
+    context.characters.forEach(character => {
+      if(character.partyID != null && character.partyID) {
+        getTable('Parties', 'partyID=' + character.partyID).then(function (party) {
+          character.party = party[0].name;
+        });
+      }
+    });
+
+    res.render('partials/characterList', context);
+  });
+});
+
+app.get('/characterDisplay', function (req, res) {
+  let context = {layout:false};
+  let characterID = req.get('characterID');
+  let mode = req.get('mode');
+  
+  //Load list of all monsters
+  getTable('Monsters', false, "name").then(function (monsters) {
+    context['allMonsters'] = monsters;
+  })
+
+  //Load list of all parties
+  .then(getTable('Parties', false, "name").then(function (parties) {
+    context["parties"] = parties;
+  }))
+
+  //Actually do stuff
+  .then(function () {
+    //Render the add table with the first character of the table for reference if cancelled
+    if(mode == "add") {
+      getTable('Characters').then(function (characters) {
+        context['characterID'] = characters[0].characterID;
+        context['add'] = true;
+        res.render('partials/characterModify', context);
+      });
+    }
+    //Display or modify table with provided characterID reference
+    else { 
+      //Populate party name via party ID
+      getTable('Characters', 'characterID=' + characterID).then(function (character) {
+        for(let key in character[0]) {
+          context[key] = character[0][key];
+        }
+        if(context.partyID) {
+          context.party = context["parties"].find(party => party.partyID = context.partyID).name;
+        }
+      })
+      //Load list of monsters encountered and replace monsterIDs with monster objects
+      .then(getTable('Character_Monster', "characterID=" + characterID).then(function(monsters) {
+        context["monsters"] = [];
+        for (i = 0; i < monsters.length; i++) {
+          let monster = context["allMonsters"].find(monster => monster.monsterID == monsters[i].monsterID);
+          context["monsters"].push(monster);
+        }
+        if(mode == "display") res.render('partials/characterDisplay', context);
+        if(mode == "modify") res.render('partials/characterModify', context);
+      }));
+    }
+  });
+});
+
+app.get('/monsterDisplay', function (req, res) {
+  context = {layout:false};
+  let monsterID = req.get('monsterID');
+  let mode = req.get('mode');
+
+  res.render('partials/monsterDisplay', context);
+  getTable('Abilities', false, "name").then(function (abilities) {
+    context['allAbilities'] = abilities;
+  })
+  .then(getTable('Biomes', false, "name").then(function (biomes) {
+    context['allBiomes'] = biomes;
+  }))
+  .then(function () {
+    if(mode =="add") {
+      getTable('Monsters').then(function (monsters) {
+        context['monsterID'] = monsters[0].monsterID;
+        context['add'] = true;
+        //res.render('monsterModify', context);
+      })
+    }
+    else {
+      getTable('Monster_Ability', 'monsterID=' + monsterID).then(function (abilities) {
+        context['abilities'] = [];
+        for (i = 0; i < abilities.length; i++) {
+          let ability = context["allAbilities"].find(ability => ability.monsterID == abilities[i].abilityID);
+          context["abilities"].push(ability);
+        }
+        getTable('Monster_Biome', 'monsterID=' + monsterID).then(function (biomes) {
+          context['biomes'] = [];
+          for (i = 0; i < biomes.length; i++) {
+            let biome = context["allBiomes"].find(biome => biome.monsterID == biomes[i].abilityID);
+            context["biomes"].push(biome);
+          }
+          if(mode == "display") res.render('partials/monsterDisplay', context);
+          //if(mode == "modify") res.render('partials/monsterModify', context);
+        });
+      });
+    }
+  });
 });
 
 /*

@@ -49,8 +49,8 @@
     </tr>
     {{/each}}{{/if}}
     <tr>
-        <td class="center" colspan=2><button>Add New</button></td>
-        <td class="center" colspan=2><button>Modify</button></td>
-        <td class="center" colspan=2><button>Delete</button></td>
+        <td class="center" colspan=2><button onclick="loadCharacter(0, 'add')">Add New</button></td>
+        <td class="center" colspan=2><button onclick="loadCharacter({{characterID}}, 'modify')">Modify</button></td>
+        <td class="center" colspan=2><button onclick="deleteCharacter({{characterID}})">Delete</button></td>
     </tr>
 </table>

@@ -43,53 +43,9 @@
                 <th onclick="sortTable('abilities', 2, this)" data-int data-ascending>Range</th>
                 <th onclick="sortTable('abilities', 3, this)" data-ascending>Damage</th>
             </tr>
-            {{#each abilities}}
-            <tr class="clickable-row" id={{abilityID}} onclick="loadElement({{abilityID}}, 'abilityID')">
-                <td>{{name}}</td>
-                <td>{{damage_type}}</td>
-                <td>{{range}}</td>
-                <td>{{damage_dice}}</td>
-                </tr>
-            {{/each}}
+            <tbody id="list"></tbody>
         </table>
     </div>
-    <div class="viewcontainer">
-        <form id="ability-form">
-            <p class='hidden' id="abilityID-display">{{abilities.[0].abilityID}}</p>
-            <input class='hidden' type="number" id="abilityID" value={{abilities.[0].abilityID}}></input>
-            <table>
-                <tr id="row-name">
-                    <th>Name</th>
-                    <td class='display' colspan='6' id="name-display">{{abilities.[0].name}}</td>
-                    <td class='input hidden' colspan='6'><input type="text" id="name" value={{abilities.[0].name}}></input></td>
-                </tr>
-                <tr id="row-type">
-                    <th>Type</th>
-                    <td class='display' colspan='6' id="damage_type-display">{{abilities.[0].damage_type}}</td>
-                    <td class='input hidden' colspan='6'><input type="text" id="damage_type" value={{abilities.[0].damage_type}}></input></td>
-                </tr>
-                <tr id="row-damage">
-                    <th>Range</th>
-                    <td class='display' colspan='2' id="range-display">{{abilities.[0].range}}</td>
-                    <td class='input hidden' colspan='2'><input type="text" id="range" value={{abilities.[0].range}}></input></td>
-                    <th>Dice</th>
-                    <td class='display' colspan='2' id='damage_dice-display'>{{abilities.[0].damage_dice}}</td>
-                    <td class='input hidden' colspan='2'><input type="number" id="damage_dice" value={{abilities.[0].damage_dice}}></input></td>
-                </tr>
-                <tr>
-                    <td class="center" colspan=2>
-                        <input class='display'  type="button" onclick="swapForm('ability-form', 'add')" value="Add New">
-                        <input class='input hidden'  type="button" onclick="confirmChange('ability-form', 'abilityKeys', 'abilityID')" value="Confirm">
-                    </td>
-                    <td class="center" colspan=2>
-                        <input class='display' type="button" onclick="swapForm('ability-form', 'modify')" value="Modify">
-                        <input class='input hidden'  type="button" onclick="swapForm('ability-form', 'cancel')" value="Cancel">
-                    </td>
-                    <td class="center" colspan=2>
-                        <input type="button" onclick="deleteElement('abilities', 'abilityID')" value="Delete">
-                    </td>
-                </tr>
-            </table>
-    </div>
+    <div class="viewcontainer" id="display">
 </div>
 
