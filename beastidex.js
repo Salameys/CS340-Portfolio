@@ -188,7 +188,6 @@ app.get('/monsterDisplay', function (req, res) {
   let monsterID = req.get('monsterID');
   let mode = req.get('mode');
 
-  res.render('partials/monsterDisplay', context);
   getTable('Abilities', false, "name").then(function (abilities) {
     context['allAbilities'] = abilities;
   })
@@ -200,7 +199,7 @@ app.get('/monsterDisplay', function (req, res) {
       getTable('Monsters').then(function (monsters) {
         context['monsterID'] = monsters[0].monsterID;
         context['add'] = true;
-        //res.render('monsterModify', context);
+        res.render('monsterModify', context);
       })
     }
     else {
@@ -217,7 +216,7 @@ app.get('/monsterDisplay', function (req, res) {
             context["biomes"].push(biome);
           }
           if(mode == "display") res.render('partials/monsterDisplay', context);
-          //if(mode == "modify") res.render('partials/monsterModify', context);
+          if(mode == "modify") res.render('partials/monsterModify', context);
         });
       });
     }
