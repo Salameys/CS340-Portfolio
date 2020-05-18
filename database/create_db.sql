@@ -1,5 +1,3 @@
-
-
 DROP TABLE IF EXISTS `Monster_Biome`;
 DROP TABLE IF EXISTS `Monster_Ability`;
 DROP TABLE IF EXISTS `Character_Monster`;
@@ -59,7 +57,7 @@ PRIMARY KEY (`abilityID`)
 CREATE TABLE `Biomes` (
 `biomeID` int(11) NOT NULL AUTO_INCREMENT,
 `name` varchar(255) NOT NULL,
-`description` text NOT NULL,
+`description` varchar(255) NOT NULL,
 PRIMARY KEY (`biomeID`)
 ) ENGINE=InnoDB;
 
@@ -75,9 +73,11 @@ CREATE TABLE `Monster_Biome` (
 PRIMARY KEY (`monsterID`, `biomeID`),
 FOREIGN KEY fk_monster(`monsterID`)
 REFERENCES `Monsters`(`monsterID`)
+ON UPDATE CASCADE
 ON DELETE CASCADE,
 FOREIGN KEY fk_biome(`biomeID`)
 REFERENCES `Biomes`(`biomeID`)
+ON UPDATE CASCADE
 ON DELETE CASCADE);
 
 CREATE TABLE `Monster_Ability` (
@@ -86,9 +86,11 @@ CREATE TABLE `Monster_Ability` (
 PRIMARY KEY (`monsterID`, `abilityID`),
 FOREIGN KEY `fk_monster2`(`monsterID`)
 REFERENCES `Monsters`(`monsterID`)
+ON UPDATE CASCADE
 ON DELETE CASCADE,
 FOREIGN KEY `fk_ability`(`abilityID`)
 REFERENCES `Abilities`(`abilityID`)
+ON UPDATE CASCADE
 ON DELETE CASCADE);
 
 CREATE TABLE `Character_Monster` (
@@ -97,9 +99,11 @@ CREATE TABLE `Character_Monster` (
 PRIMARY KEY (`characterID`, `monsterID`),
 FOREIGN KEY `fk_character`(`characterID`)
 REFERENCES `Characters`(`characterID`)
+ON UPDATE CASCADE
 ON DELETE CASCADE,
 FOREIGN KEY `fk_monster3`(`monsterID`)
 REFERENCES `Monsters`(`monsterID`)
+ON UPDATE CASCADE
 ON DELETE CASCADE);
 
 
@@ -108,14 +112,18 @@ ADD FOREIGN KEY `partyID` (`partyID`)
 REFERENCES `Parties` (`partyID`);
 
 
-INSERT INTO `Parties`(`name`) VALUES ('Database Comrades');
+INSERT INTO `Parties`(`name`) 
+VALUES ('Database Comrades'),
+('Mighty Nein'),
+('The Fellowship');
 
 INSERT INTO `Monsters` (`name`, `description`, `size`, `type`, 
 `alignment`, `armor_class`, `hit_dice`, `speed`, 
 `fly_speed`, `strength`, `dexterity`, `constitution`,
 `intelligence`, `wisdom`, `charisma`, `challenge`, `source_book`) 
 VALUES ("Ancient White Dragon", "Terrifying beast of old", "Gargantuan", "Dragon", "CE", "20", "18d20", "40", "80", "26", "10", "26", "10", "13", "14", "20", "MM"),
-('Cat', 'Meow', 'Tiny', 'Beast', 'CN', '12', '1d4', '40', '0', '3', '15', '10', '3','12', '7', '0', 'PHB');
+('Cat', 'Meow', 'Tiny', 'Beast', 'CN', '12', '1d4', '40', '0', '3', '15', '10', '3','12', '7', '0', 'PHB'),
+('Lich', 'Super Evil, Super Undead, Lots of Magic, WOW', 'Medium', 'Undead', 'EE', '17', '18d8', '30', '0', '11', '16', '16', '20', '14', '16', '21', 'MM');
 
 INSERT INTO `Characters` (`name`, `race`, `level`, `class`, `strength`,
 `dexterity`, `constitution`, `intelligence`, `wisdom`, `charisma`, `partyID`)
@@ -124,11 +132,14 @@ VALUES ('Salah Salamey', 'Human', '20', 'Monk', '20', '20', '20', '20', '20', '2
 ('Jeffosaurus', 'Dinosaur', '20', 'Barbarian', '20', '20', '20', '20', '20', '20', NULL);
 
 INSERT INTO `Abilities` (`name`, `damage_type`, `range`, `damage_dice`)
-VALUES ('Claw', 'Slashing', 'Melee', '2d4'), ('Bite', 'Piercing', 'Melee', '2d6');
+VALUES ('Claw', 'Slashing', 'Melee', '2d4'), 
+('Bite', 'Piercing', 'Melee', '2d6'),
+('Paralyzing Touch', 'Cold', '5ft', '3d6');
 
 INSERT INTO `Biomes`(`name`, `description`)
 VALUES('Desert', "I hate that sand, it's coarse and it gets everywhere"), 
- ('Frozen Wastes', "It's cold, and full of waste!");
+ ('Frozen Wastes', "It's cold, and full of waste!"),
+ ('Jungle', "Home place of Tarzan and his less known counterpart George...of the Jungle");
 
 INSERT INTO `Monster_Biome` (`monsterID`, `biomeID`) 
 VALUES (1,2), (2,1), (2,2);
@@ -138,6 +149,9 @@ VALUES (1,1), (1,2), (2,1);
 
 INSERT INTO `Character_Monster` (`characterID`, `monsterID`)
 VALUES (1,1), (1,2), (2,1), (2,2);
+
+
+
 
 
 
