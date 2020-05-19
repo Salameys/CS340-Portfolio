@@ -6,7 +6,9 @@ var app = express();
 var handlebars = require('express-handlebars').create({
   defaultLayout:'main',
   partialsDir: ['views/partials/'],
-  helpers: {}
+  helpers: {
+    equal: function (left, right) { return (left == right)}
+  }
 });
 
 app.engine('handlebars', handlebars.engine);
@@ -105,16 +107,35 @@ app.get('/abilities', function (req, res) {
   res.render('abilities', context)
 });
 
+app.get('/parties', function (req, res) {
+  let context = {title:"Parties"};
+  res.render('parties', context)
+});
+
 app.get('/elementList', function (req, res) {
   let context = {layout:false}
   let table = req.get('table');
+  let partial = req.get('partial');
   getTable(table).then(function (elements) {
     table = table.toLowerCase();
     context[table] = elements;
-    table = table.substring(0, table.length-1);
-    res.render('partials/' + table + 'List', context);
+    res.render('partials/' + partial, context);
   });
 })
+
+app.get('/elementDisplay', function (req, res) {
+  let context = {layout:false}
+  let table = req.get('table');
+  let partial = req.get('partial');
+  let attributeKey = req.get('attributeKey');
+  let attributeValue = req.get('attributeValue');
+  getTable(table, attributeKey + "=" + attributeValue).then(function (element) {
+    for(let key in element[0]) {
+      context[key] = element[0][key];
+    }
+    res.render('partials/' + partial, context);
+  });
+});
 
 app.get('/characterList', function (req, res) {
   let context = {layout:false};
@@ -199,17 +220,23 @@ app.get('/monsterDisplay', function (req, res) {
       getTable('Monsters').then(function (monsters) {
         context['monsterID'] = monsters[0].monsterID;
         context['add'] = true;
-        res.render('monsterModify', context);
+        res.render('partials/monsterModify', context);
       })
     }
     else {
-      getTable('Monster_Ability', 'monsterID=' + monsterID).then(function (abilities) {
+      getTable('Monsters', 'monsterID=' + monsterID).then(function (monster) {
+        for(let key in monster[0]) {
+          context[key] = monster[0][key];
+        }
+      })
+      .then(getTable('Monster_Ability', 'monsterID=' + monsterID).then(function (abilities) {
         context['abilities'] = [];
         for (i = 0; i < abilities.length; i++) {
-          let ability = context["allAbilities"].find(ability => ability.monsterID == abilities[i].abilityID);
+          let ability = context['allAbilities'].find(ability => ability.abilityID == abilities[i].abilityID);
           context["abilities"].push(ability);
         }
-        getTable('Monster_Biome', 'monsterID=' + monsterID).then(function (biomes) {
+      }))
+      .then(getTable('Monster_Biome', 'monsterID=' + monsterID).then(function (biomes) {
           context['biomes'] = [];
           for (i = 0; i < biomes.length; i++) {
             let biome = context["allBiomes"].find(biome => biome.monsterID == biomes[i].abilityID);
@@ -217,10 +244,61 @@ app.get('/monsterDisplay', function (req, res) {
           }
           if(mode == "display") res.render('partials/monsterDisplay', context);
           if(mode == "modify") res.render('partials/monsterModify', context);
-        });
-      });
+      }))
     }
   });
+});
+
+app.get('/partyList', function (req, res) {
+  context = {layout: false};
+
+  getTable('Parties', false, "name").then(function (parties) {
+    context['parties'] = parties;
+    context['parties'].forEach(
+      party => party['members'] = 0
+    );
+  }).then(getTable('Characters', false).then(function (characters) {
+    characters.forEach(character => {
+      if(character.partyID) {
+        try {
+          let party = context['parties'].find(party => party.partyID == character.partyID);
+          party['members'] += 1;
+        }
+        catch (err) {
+          console.log(character.name + " has no party.");
+        }
+      }
+    });
+    res.render('partials/partyList', context);
+  }));
+});
+
+app.get('/partyDisplay', function (req, res) {
+  context = {layout: false};
+  let partyID = req.get("partyID");
+  let mode = req.get('mode');
+
+  getTable('Characters').then(function (characters) {
+    context['allCharacters'] = characters;
+
+    if(mode == "add") {
+      getTable('Parties').then(function (parties) {
+        context['partyID'] = parties[0].partyID;
+        context['add'] = true;
+        res.render('partials/partyModify', context);
+      });
+    } else {
+      getTable('Parties', "partyID=" + partyID).then(function (party) {
+        for(let key in party[0]) {
+          context[key] = party[0][key];
+        }
+      }).then(getTable('Characters', "partyID=" + partyID, "name").then(function (characters) {
+        context['characters'] = characters;
+        if(mode == "modify") res.render('partials/partyModify', context);
+        if(mode == "display") res.render('partials/partyDisplay', context);
+      }));
+    }
+  })
 });
 
 /*

@@ -31,7 +31,7 @@
     </tr>
     <tr>
         <th colspan=2>Source</th>
-        <td colspan=4>{{source}}</td>
+        <td colspan=4>{{source_book}}</td>
     </tr>
     {{#if abilities}}
     <tr>
@@ -42,7 +42,8 @@
         <th>Ability</th>
         <td colspan=5>{{this.name}}</td>
     </tr>
-    {{/each}}{{/if}}
+    {{/each}}
+    {{/if}}
     {{#if biomes}}
     <tr>
         <th colspan=6>Found In</th>
@@ -52,10 +53,11 @@
         <th>Biome</th>
         <td colspan=5>{{this.name}}</td>
     </tr>
-    {{/each}}{{/if}}
+    {{/each}}
+    {{/if}}
     <tr>
         <td class="center" colspan=2><button onclick="loadMonster(0, 'add')">Add New</button></td>
-        <td class="center" colspan=2><button onclick="loadMonster({{characterID}}, 'modify')">Modify</button></td>
-        <td class="center" colspan=2><button onclick="deleteMonster({{characterID}})">Delete</button></td>
+        <td class="center" colspan=2><button onclick="loadMonster({{monsterID}}, 'modify')">Modify</button></td>
+        <td class="center" colspan=2><button onclick="deleteMonster({{monsterID}})">Delete</button></td>
     </tr>
 </table>

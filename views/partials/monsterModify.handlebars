@@ -1,7 +1,7 @@
 <table>
     <tr>
         <th>Name</th>
-        <td colspan=5><input type="text" value={{name}} /></td>
+        <td colspan=5><input type="text" value='{{name}}' /></td>
     </tr>
     <tr>
         <th>Type</th>
@@ -11,7 +11,7 @@
     </tr>
     <tr>
         <th>Desc.</th>
-        <td colspan=5><input type="text" value={{description}} /></td>
+        <td colspan=5><input type="text" value='{{description}}' /></td>
     </tr>
     <tr>
         <th>STR</th>
@@ -30,10 +30,9 @@
         <td class="center"><input type="number" value={{charisma}} /></td>
     </tr>
     <tr>
-        <th>Party</th>
-        <td colspan=5><input type="text" value={{source}}></td>
+        <th>Source</th>
+        <td colspan=5><input type="text" value='{{source_book}}' ></td>
     </tr>
-    {{#if abilities}}
     <tr>
         <th colspan=6>Abilities</th>
     </tr>
@@ -44,7 +43,7 @@
             <select class="abilitySelect">
                 <option>None</option>
                 {{#each ../allAbilities}}
-                <option abilityID={{this.abilityID}}>{{this.name}}</option>
+                <option abilityID={{this.abilityID}} >{{this.name}}</option>
                 {{/each}}
             </select>
         </td>
@@ -52,7 +51,7 @@
             <button onclick="removeOption('abilities' + {{@index}} )">-</button>
         </td>
     </tr>
-    {{#if biomes}}
+    {{/each}}
     <tr>
         <th colspan=6>Found In</th>
     </tr>
@@ -63,7 +62,7 @@
             <select class="biomeSelect">
                 <option>None</option>
                 {{#each ../allBiomes}}
-                <option biomeID={{this.biomeID}}>{{this.name}}</option>
+                <option biomeID={{this.biomeID}} >{{this.name}}</option>
                 {{/each}}
             </select>
         </td>
@@ -71,14 +70,14 @@
             <button onclick="removeOption('biomes' + {{@index}} )">-</button>
         </td>
     </tr>
-    {{/each}}{{/if}}
+    {{/each}}
     <tr>
         {{#if add}}
-        <td class="center" colspan=3><button onclick="addMonster()">Add Character</button></td>
-        <td class="center" colspan=3><button onclick="loadMonster({{characterID}})">Cancel</button></td>
+        <td class="center" colspan=3><button onclick="addMonster()">Add Monster</button></td>
+        <td class="center" colspan=3><button onclick="loadMonster({{monsterID}})">Cancel</button></td>
         {{else}}
         <td class="center" colspan=3><button onclick="confirmMonster()">Confirm Changes</button></td>
-        <td class="center" colspan=3><button onclick="loadMonster({{characterID}})">Cancel</button></td>
+        <td class="center" colspan=3><button onclick="loadMonster({{monsterID}})">Cancel</button></td>
         {{/if}}
     </tr>
 </table>

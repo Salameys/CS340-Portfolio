@@ -1,5 +1,5 @@
 window.addEventListener("DOMContentLoaded", event => {
-    listElements('Monsters');
+    listElements('Monsters', 'monsterList');
     loadMonster(1);
 });
 
@@ -16,11 +16,11 @@ function loadMonster(monsterID, mode = "display") {
     request.addEventListener("load", reponse => {
         let insert = document.getElementById("display");
         insert.innerHTML = request.responseText;
-        /*
+        
         if(mode == 'modify') {
             requestTable('Monster_Ability', request => {
                 let abilities = JSON.parse(request.responseText);
-                let abilitySelect = [...document.getElementsByClassName('monsterSelect')];
+                let abilitySelect = [...document.getElementsByClassName('abilitySelect')];
                 for(i = 0; i < abilities.length; i++) {
                     let select = abilitySelect[i];
                     let options = [...select.getElementsByTagName('option')];
@@ -28,8 +28,18 @@ function loadMonster(monsterID, mode = "display") {
                     option.setAttribute("selected", "");
                 }
             }, false, 'monsterID', monsterID);
+
+            requestTable('Monster_Biome', request => {
+                let biomes = JSON.parse(request.responseText);
+                let biomeSelect = [...document.getElementsByClassName('biomeSelect')];
+                for(i = 0; i < biomes.length; i++) {
+                    let select = biomeSelect[i];
+                    let options = [...select.getElementsByTagName('option')];
+                    let option = options.find(option => option.getAttribute("biomeID") == biomes[i].biomeID);
+                    option.setAttribute("selected", "");
+                }
+            }, false, 'monsterID', monsterID);
         }
-        */
     });
     request.send();
 }

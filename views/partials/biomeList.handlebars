@@ -1,0 +1,6 @@
+{{#each biomes}}
+<tr class="clickable-row" onclick="loadElement('Biomes', 'biomeDisplay', 'biomeID', {{this.biomeID}} )">
+    <td class="biome_name">{{this.name}}</td>
+    <td class="biome_description">{{this.description}}</td>
+</tr>
+{{/each}}

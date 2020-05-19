@@ -1,0 +1,25 @@
+<table>
+    <tr>
+        <th>Name</th>
+        <td colspan=2>{{name}}</td>
+    </tr>
+    <tr>
+        <th colspan=3>Members</th>
+    </tr>
+    {{#if (equal members 0)}}
+    <tr>
+        <td colspan=3>None</td>
+    </tr>
+    {{else}}
+    {{#each characters}}
+    <tr>
+        <td colspan=3>{{this.name}}</td>
+    </tr>
+    {{/each}}
+    {{/if}}
+    <tr>
+        <td><button onclick="loadParty(0, 'add')" />Add New</td>
+        <td><button onclick="loadParty({{partyID}}, 'modify')" />Modify</td>
+        <td><button onclick="deleteElement('Party', {{partyID}})" />Delete</td>
+    </tr>
+</table>

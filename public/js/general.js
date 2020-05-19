@@ -22,11 +22,12 @@ function requestTable (table, func, orderBy = false, attributeKey = false, attri
 	request.send();
 }
 
-function listElements (table) {
+function listElements (table, partial) {
     var request = new XMLHttpRequest();
 	request.open('get', '/elementList');
     request.setRequestHeader('Content-Type', 'application/json');
     request.setRequestHeader('table', table);
+    request.setRequestHeader('partial', partial);
     request.addEventListener("load", response => {
         let list = document.getElementById("list");
         list.innerHTML = request.responseText;
@@ -34,10 +35,19 @@ function listElements (table) {
     request.send();
 }
 
-function loadElement (table, attributeKey, attributeValue) {
-    requestTable(table, function (response){
-        console.log(request.responseText);
-    }, false, attributeKey, attributeValue);
+function loadElement (table, partial, attributeKey, attributeValue) {
+    var request = new XMLHttpRequest();
+	request.open('get', '/elementDisplay');
+    request.setRequestHeader('Content-Type', 'application/json');
+    request.setRequestHeader('table', table);
+    request.setRequestHeader('partial', partial);
+    request.setRequestHeader('attributeKey', attributeKey);
+    request.setRequestHeader('attributeValue', attributeValue);
+    request.addEventListener("load", response => {
+        let display = document.getElementById("display");
+        display.innerHTML = request.responseText;
+    });
+    request.send();
 }
 
 /**
@@ -58,4 +68,35 @@ function removeOption(optionID) {
     let option = document.getElementById(optionID);
     console.log(option);
     option.remove();
+}
+
+/**
+ * Handles preventing duplicate entries in related dropdowns
+ * @param {string} group family of selects with same options
+ * @param {string} newOption option which has been selected
+ * @param {string} oldOption option which has been deselected
+ */
+function preventDuplicateSelection(group, newOption, oldOption) {
+    group = document.getElementById(group);
+    console.log(group);
+    group = group.getElementsByTagName("select");
+    console.log(group);
+}
+
+/**
+ * Adds a row representing a multiple to multiple relationship to the section for that group
+ * @param {HTMLElement} section DOM element row is going in
+ * @param {Number} width width of whole table
+ * @param {string} title type of related entity
+ * @param {string} name name of related entity
+ */
+function addRelationshipRow(section, width, title, name) {
+    let row = addNode(section, "tr", "");
+    let node = addNode(row, "th", title);
+    node.setAttribute("colspan", 2);
+
+    node = addNode(row, "td", name);
+    node.setAttribute("colspan", width - 2);
+    node.classList.add("display");
+    if(displayState != "display") node.classList.add("hidden");
 }

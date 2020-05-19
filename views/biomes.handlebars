@@ -1,14 +1,9 @@
-<script src="/js/sortTable.js"></script>
-<script src="/js/display.js"></script>
+<script src="/js/general.js"></script>
 <script>
-    var context = '{{#each biomes}} { {{#each this}}{{#unless @last}}"{{@key}}":"{{this}}", {{/unless}}{{#if @last}}"{{@key}}":"{{this}}"{{/if}}{{/each}} }, {{/each}}';
-    context = context.split("},");
-    context.length = context.length-1;
-    for(var i = 0; i < context.length; i++) {
-        context[i] = context[i] + "}";
-        context[i] = context[i].replace("&#x27;", "'");
-        context[i] = JSON.parse(context[i]);
-    };
+    window.addEventListener("DOMContentLoaded", event => {
+        listElements('Biomes', 'biomeList');
+        loadElement('Biomes', 'biomeDisplay', 'biomeID', 1);
+    });
 </script>
 <link rel='stylesheet' type='text/css' href='/css/table.css' />
 
@@ -25,41 +20,8 @@
                 <th class="headerSortUp" onclick="sortTable('biomes', 0, this)" data-ascending>Name</th>
                 <th class="headerSortUp" onclick="sortTable('biomes', 1, this)" data-ascending>Description</th>
             </tr>
-            {{#each biomes}}
-            <tr class="clickable-row" id={{biomeID}} onclick="loadElement({{biomeID}}, 'biomeID')">
-                <td class="biome_name">{{name}}</td>
-                <td class="biome_description">{{description}}</td>
-            </tr>
-            {{/each}}
+            <tbody id="list" />
         </table>
     </div>
-    <div class="viewcontainer">
-        <table>
-            <p class='hidden' id="biomeID-display">{{biomes.[0].biomeID}}</p>
-            <input class='hidden' type="number" id="biomeID" value={{biomes.[0].biomeID}}></input>
-            <tr>
-                <th>Biome Name</th>
-                <td class="display" id="name-display">{{biomes.[0].name}}</td>
-                <td class="input hidden"><input type="text" id="name" value={{biomes.[0].name}}></td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td class="display" id="description-display">{{biomes.[0].description}}</td>
-                <td class="input hidden"><input type="text" id="description" value={{biomes.[0].description}}></td>
-            </tr>
-            <tr>
-                <td class="center" colspan=2>
-                    <input class='display'  type="button" onclick="swapForm('biome-form', 'add')" value="Add New">
-                    <input class='input hidden'  type="button" onclick="confirmChange('biome-form', 'biomeKeys', 'biomeID')" value="Confirm">
-                </td>
-                <td class="center" colspan=2>
-                    <input class='display' type="button" onclick="swapForm('biome-form', 'modify')" value="Modify">
-                    <input class='input hidden'  type="button" onclick="swapForm('biome-form', 'cancel')" value="Cancel">
-                </td>
-                <td class="center" colspan=2>
-                    <input type="button" onclick="deleteElement('biomes', 'biomeID')" value="Delete">
-                </td>
-            </tr>
-        </table>
-    </div>
+    <div class="viewcontainer" id="display" />
 </div>

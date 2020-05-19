@@ -1,14 +1,9 @@
-<script src="/js/sortTable.js"></script>
-<script src="/js/display.js"></script>
+<script src="/js/general.js"></script>
 <script>
-    var context = '{{#each abilities}} { {{#each this}}{{#unless @last}}"{{@key}}":"{{this}}", {{/unless}}{{#if @last}}"{{@key}}":"{{this}}"{{/if}}{{/each}} }, {{/each}}';
-    context = context.split("},");
-    context.length = context.length-1;
-    for(var i = 0; i < context.length; i++) {
-        context[i] = context[i] + "}";
-        context[i] = context[i].replace("&#x27;", "'");
-        context[i] = JSON.parse(context[i]);
-    };
+    window.addEventListener("DOMContentLoaded", event => {
+        listElements('Abilities', 'abilityList');
+        loadElement('Abilities', 'abilityDisplay', 'abilityID', 1);
+    });
 </script>
 <link rel='stylesheet' type='text/css' href='/css/table.css' />
 

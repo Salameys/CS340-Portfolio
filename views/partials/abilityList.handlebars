@@ -1,0 +1,8 @@
+{{#each abilities}}
+<tr class="clickable-row" onclick="loadElement('Abilities', 'abilityDisplay', 'abilityID', {{abilityID}})">
+    <td class="ability_name">{{name}}</td>
+    <td class="damage_type">{{damage_type}}</td>
+    <td class="range">{{range}}</td>
+    <td class="damage_dice">{{damage_dice}}</td>
+</tr>
+{{/each}}
