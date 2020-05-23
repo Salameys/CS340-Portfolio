@@ -1,7 +1,12 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\database",
+    "\\public",
+    "\\public\\js",
+    "\\views",
+    "\\views\\partials"
   ],
-  "SelectedNode": "\\beastidex.js",
+  "SelectedNode": "\\views\\partials\\monsterDisplay.handlebars",
   "PreviewInSolutionExplorer": false
 }
