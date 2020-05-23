@@ -90,56 +90,39 @@ var insertIntoTable = function (table, body) {
  * @param {string} orderBy attribute to order by
  */
 app.get('/table', function (req, res) {
-  let table = req.get('dataTable');
+    let table = req.get('dataTable');
+    let elements = req.get('elements');
 
-  let where = false;
-  if(req.get('attributeKey')) {
-    where = req.get('attributeKey') + '=' + req.get('attributeValue');
-  }
+    let where = false;
+    if(req.get('attributeKey')) {
+        where = req.get('attributeKey') + '=' + req.get('attributeValue');
+    }
 
-  let orderBy = false;
-  if(req.get('orderBy')) {
-    orderBy = req.get('orderBy');
-  }
+    let orderBy = false;
+    if(req.get('orderBy')) {
+        orderBy = req.get('orderBy');
+    }
 
-    getTable(table, where, order).then(function (monsters) {
-        res.json(monsters);
+    getTable(table, where, order).then(function (elements) {
+        res.json(elements);
     }); 
 
-    getTable(table, where, orderBy).then(function (characters) {
-        res.json(characters);
-    });
+});
 
-    getTable(table, where, order).then(function (abilities) {
-        res.json(abilities);
-    });
-
-    getTable(table, where, order).then(function (biomes) {
-        res.json(biomes);
-    }); 
+app.get('/searchQuery', function (req, res) {
+    let table = req.get('dataTable');
+    let elements = req.get('elements');
 
 });
 
 app.post('/table_insert', function (req, res) {
     let table = req.get('dataTable');
-    //Need to req.body to get data
-    //let element = req.get('element');
+    let elements = req.get('elements');
 
-    insertIntoTable(table, req.body).then(function (monsters) {
-        res.json(monsters);
+    insertIntoTable(table, req.body).then(function (elements) {
+        res.json(elements);
     });
 
-    insertIntoTable(table, req.body).then(function (characters) {
-        res.json(characters);
-    });
-
-    insertIntoTable(table, req.body).then(function (abilities) {
-        res.json(abilities);
-    });
-
-    insertIntoTable(table, req.body).then(function (biomes) {
-        res.json(biomes);
-    });
 });
 
 app.post('/table_modify', function (req, res) {
