@@ -1,0 +1,21 @@
+<table>
+    <tr>
+        <th cosplan=2>Name</th>
+        <td colspan=4><input id="name" type="text" value={{name}} ></td>
+    </tr>
+    <tr>
+        <th colspan=6>Description</th>
+    </tr>
+    <tr>
+        <td colspan=6><input id="description" type="text" value={{description}} ></td>
+    </tr>
+    <tr>
+        {{#if add}}
+        <td colspan=3><button onclick="addElement('Biomes', 'biomeList', 'biomeID', ['name', 'description'])">Confirm</button></td>
+        <td colspan=3><button onclick="loadElement('Biomes', 'biomeDisplay', 'biomeID', {{biomeID}} )">Cancel</button></td>
+        {{else}}
+        <td><button>Confirm</button></td>
+        <td><button onclick="loadElement('Biomes', 'biomeDisplay', 'biomeID', {{biomeID}} )">Cancel</button></td>
+        {{/if}}
+    </tr>
+</table>

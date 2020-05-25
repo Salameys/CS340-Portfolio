@@ -186,12 +186,22 @@ app.get('/elementDisplay', function (req, res) {
   let partial = req.get('partial');
   let attributeKey = req.get('attributeKey');
   let attributeValue = req.get('attributeValue');
-  getTable(table, attributeKey + "=" + attributeValue).then(function (element) {
-    for(let key in element[0]) {
-      context[key] = element[0][key];
-    }
-    res.render('partials/' + partial, context);
-  });
+  let mode = req.get('mode');
+
+  if(mode == 'add') {
+    getTable(table).then(function (elements) {
+      context[attributeKey] = elements[0][attributeKey];
+      context['add'] = true;
+      res.render('partials/' + partial, context);
+    });
+  } else {
+    getTable(table, attributeKey + "=" + attributeValue).then(function (element) {
+      for(let key in element[0]) {
+        context[key] = element[0][key];
+      }
+      res.render('partials/' + partial, context);
+    });
+  }
 });
 
 app.get('/characterList', function (req, res) {
@@ -320,12 +330,18 @@ app.get('/monsterDisplay', function (req, res) {
 app.get('/partyList', function (req, res) {
   context = {layout: false};
 
-  getTable('Parties', false, "name").then(function (parties) {
+  let where = false;
+  if(req.get('attributeKey')) {
+      where = req.get('attributeKey') + '=' + req.get('attributeValue');
+  }
+
+  getTable('Parties', where, "name").then(function (parties) {
     context['parties'] = parties;
     context['parties'].forEach(
       party => party['members'] = 0
     );
   }).then(getTable('Characters', false).then(function (characters) {
+    console.log(context.parties);
     characters.forEach(character => {
       if(character.partyID) {
         try {
@@ -333,6 +349,7 @@ app.get('/partyList', function (req, res) {
           party['members'] += 1;
         }
         catch (err) {
+          console.log(err);
           console.log(character.name + " has no party.");
         }
       }

@@ -1,51 +1,36 @@
 <table>
     <tr>
         <th>Name</th>
-        <td colspan=3><input type="text" id="name" value={{name}}></td>
+        <td colspan=8><input type="text" id="name" value={{name}}></td>
     </tr>
-    <tr>
-        <th colspan=4>Members</th>
-    </tr>
-    {{#if add}}
-    <tr>
-        <td colspan=3>
-            <select class="member" id="member0">
-                <option>None</option>
-                {{#each allCharacters}}
-                <option characterID={{this.characterID}} >{{this.name}}</option>
-                {{/each}}
-            </select>
-        </td>
-        <td class="center">
-            <button onclick="removeOption('member0')">-</button>
-        </td>
-    </tr>
-    <tr>
-        <td colspan=2><button />Confirm</td>
-        <td colspan=2><button onclick="loadParty({{partyID}})" />Cancel</td>
-    </tr>
-    {{else}}
-    {{#if (equal members 0)}}
-    {{else}}
-    {{#each characters}}
-    <tr>
-        <td colspan=3>
-            <select class="member" id="member{{@index}}">
-                <option>None</option>
-                {{#each ../allCharacters}}
-                <option characterID={{this.characterID}} >{{this.name}}</option>
-                {{/each}}
-            </select>
-        </td>
-        <td class="center">
-            <button onclick="removeOption('member' + {{@index}} )">-</button>
-        </td>
-    </tr>
+    <tbody id="memberSelects">
+        <tr>
+            <th colspan=8>Members</th>
+        </tr>
+        {{#each characters}}
+        <tr>
+            <th>Character</th>
+            <td colspan=4>
+                <select class="member" id="c{{@index}}">
+                    <option>None</option>
+                    {{#each ../allCharacters}}
+                    <option characterID={{this.characterID}} >{{this.name}}</option>
+                    {{/each}}
+                </select>
+            </td>
+            <td class="center">
+                <button onclick="removeOption('c' + {{@index}} )">-</button>
+            </td>
+        </tr>
     {{/each}}
-    {{/if}}
+    </tbody>
     <tr>
-        <td colspan=2><button />Confirm</td>
-        <td colspan=2><button onclick="loadParty({{partyID}})" />Cancel</td>
+        {{#if add}}
+        <td class="center" colspan=3><button onclick="addParty()">Add Party</button></td>
+        <td class="center" colspan=3><button onclick="loadParty({{partyID}})">Cancel</button></td>
+        {{else}}
+        <td class="center" colspan=3><button onclick="confirmCharacter()">Confirm Changes</button></td>
+        <td class="center" colspan=3><button onclick="loadParty({{partyID}})">Cancel</button></td>
+        {{/if}}
     </tr>
-    {{/if}}
 </table>

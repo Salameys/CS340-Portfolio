@@ -55,7 +55,6 @@ function listCharacters() {
 }
 
 function addCharacter() {
-    //let formElements = document.getElementById("inputForm").elements;
     let keys = [
         "name", "race", "class", "level",
         "strength", "dexterity", "constitution",
