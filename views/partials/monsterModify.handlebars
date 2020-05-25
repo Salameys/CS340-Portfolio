@@ -1,17 +1,31 @@
 <table>
     <tr>
         <th>Name</th>
-        <td colspan=5><input type="text" value='{{name}}' /></td>
+        <td colspan=5><input id="name" type="text" value={{name}} ></td>
     </tr>
     <tr>
         <th>Type</th>
-        <td colspan=3><input type="text" value={{type}} /></td>
-        <th>CR</th>
-        <td class="center"><input type="number" value={{challenge}} /></td>
+        <td colspan=5><input id="type" type="text" value={{type}} ></td>
     </tr>
     <tr>
         <th>Desc.</th>
-        <td colspan=5><input type="text" value='{{description}}' /></td>
+        <td colspan=5><input id="description" type="text" value={{description}} ></td>
+    </tr>
+    <tr>
+        <th>CR</th>
+        <th>AC</th>
+        <th>HD</th>
+        <th>ALN</th>
+        <th>SPD</th>
+        <th>FLY</th>
+    </tr>
+    <tr>
+        <td class="center"><input id="challenge" type="number" value={{challenge}} ></td>
+        <td class="center"><input id="armor_class" type="number" value={{armor_class}} ></td>
+        <td class="center"><input id="hit_dice" type="text" value={{hit_dice}} ></td>
+        <td class="center"><input id="alignment" type="text" value={{alignment}} ></td>
+        <td class="center"><input id="speed" type="number" value={{speed}} ></td>
+        <td class="center"><input id="fly_speed" type="number" {{#if fly_speed}}value={{fly_speed}}{{else}}value="-1"{{/if}} ></td>
     </tr>
     <tr>
         <th>STR</th>
@@ -22,55 +36,59 @@
         <th>CHA</th>
     </tr>
     <tr>
-        <td class="center"><input type="number" value={{strength}} /></td>
-        <td class="center"><input type="number" value={{dexterity}} /></td>
-        <td class="center"><input type="number" value={{constitution}} /></td>
-        <td class="center"><input type="number" value={{intelligence}} /></td>
-        <td class="center"><input type="number" value={{wisdom}} /></td>
-        <td class="center"><input type="number" value={{charisma}} /></td>
+        <td class="center"><input id="strength" type="number" value={{strength}} ></td>
+        <td class="center"><input id="dexterity" type="number" value={{dexterity}} ></td>
+        <td class="center"><input id="constitution" type="number" value={{constitution}} ></td>
+        <td class="center"><input id="intelligence" type="number" value={{intelligence}} ></td>
+        <td class="center"><input id="wisdom" type="number" value={{wisdom}} ></td>
+        <td class="center"><input id="charisma" type="number" value={{charisma}} ></td>
     </tr>
     <tr>
         <th>Source</th>
-        <td colspan=5><input type="text" value='{{source_book}}' ></td>
+        <td colspan=5><input id="source_book" type="text" value={{source_book}} ></td>
     </tr>
-    <tr>
-        <th colspan=6>Abilities</th>
-    </tr>
-    {{#each abilities}}
-    <tr id='abilities{{@index}}' >
-        <th>Ability</th>
-        <td colspan=4>
-            <select class="abilitySelect">
-                <option>None</option>
-                {{#each ../allAbilities}}
-                <option abilityID={{this.abilityID}} >{{this.name}}</option>
-                {{/each}}
-            </select>
-        </td>
-        <td class="center">
-            <button onclick="removeOption('abilities' + {{@index}} )">-</button>
-        </td>
-    </tr>
-    {{/each}}
-    <tr>
-        <th colspan=6>Found In</th>
-    </tr>
-    {{#each biomes}}
-    <tr id='biomes{{@index}}' >
-        <th>Biome</th>
-        <td colspan=4>
-            <select class="biomeSelect">
-                <option>None</option>
-                {{#each ../allBiomes}}
-                <option biomeID={{this.biomeID}} >{{this.name}}</option>
-                {{/each}}
-            </select>
-        </td>
-        <td class="center">
-            <button onclick="removeOption('biomes' + {{@index}} )">-</button>
-        </td>
-    </tr>
-    {{/each}}
+    <tbody id="abilitySelects">
+        <tr>
+            <th colspan=6>Abilities <button onclick="addOption('abilitySelects', 'Abilities')">+</button></th>
+        </tr>
+        {{#each abilities}}
+        <tr id='abilities{{@index}}' >
+            <th>Ability</th>
+            <td colspan=4>
+                <select class="abilitySelect">
+                    <option>None</option>
+                    {{#each ../allAbilities}}
+                    <option abilityID={{this.abilityID}} >{{this.name}}</option>
+                    {{/each}}
+                </select>
+            </td>
+            <td class="center">
+                <button onclick="removeOption('abilities' + {{@index}} )">-</button>
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+    <tbody id="biomeSelects">
+        <tr>
+            <th colspan=6>Found In <button onclick="addOption('biomeSelects', 'Biomes')">+</button></th>
+        </tr>
+        {{#each biomes}}
+        <tr id='biomes{{@index}}' >
+            <th>Biome</th>
+            <td colspan=4>
+                <select class="biomeSelect">
+                    <option>None</option>
+                    {{#each ../allBiomes}}
+                    <option biomeID={{this.biomeID}} >{{this.name}}</option>
+                    {{/each}}
+                </select>
+            </td>
+            <td class="center">
+                <button onclick="removeOption('biomes' + {{@index}} )">-</button>
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
     <tr>
         {{#if add}}
         <td class="center" colspan=3><button onclick="addMonster()">Add Monster</button></td>

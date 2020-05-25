@@ -1,17 +1,17 @@
 <table>
     <tr>
         <th>Name</th>
-        <td colspan=5><input type="text" value={{name}} /></td>
+        <td colspan=5><input id="name" type="text" value={{name}} ></td>
     </tr>
     <tr>
         <th>Race</th>
-        <td colspan=5><input type="text" value={{race}} /></td>
+        <td colspan=5><input id="race" type="text" value={{race}} ></td>
     </tr>
     <tr>
         <th>Class</th>
-        <td colspan=3><input type="text" value={{class}} /></td>
+        <td colspan=3><input id="class" type="text" value={{class}} ></td>
         <th>Level</th>
-        <td class="center"><input type="number" value={{level}} /></td>
+        <td class="center"><input id="level" type="number" value={{level}} min="1"></td>
     </tr>
     <tr>
         <th>STR</th>
@@ -22,12 +22,12 @@
         <th>CHA</th>
     </tr>
     <tr>
-        <td class="center"><input type="number" value={{strength}} /></td>
-        <td class="center"><input type="number" value={{dexterity}} /></td>
-        <td class="center"><input type="number" value={{constitution}} /></td>
-        <td class="center"><input type="number" value={{intelligence}} /></td>
-        <td class="center"><input type="number" value={{wisdom}} /></td>
-        <td class="center"><input type="number" value={{charisma}} /></td>
+        <td class="center"><input id="strength" type="number" value={{strength}} min="1"} ></td>
+        <td class="center"><input id="dexterity" type="number" value={{dexterity}} min="1"></td>
+        <td class="center"><input id="constitution" type="number" value={{constitution}} min="1"></td>
+        <td class="center"><input id="intelligence" type="number" value={{intelligence}} min="1"></td>
+        <td class="center"><input id="wisdom" type="number" value={{wisdom}} min="1"></td>
+        <td class="center"><input id="charisma" type="number" value={{charisma}} min="1"></td>
     </tr>
     <tr>
         <th>Party</th>
@@ -40,26 +40,28 @@
             </select>
         </td>
     </tr>
-    {{#if monsters}}
-    <tr>
-        <th colspan=6>Monsters Encountered</th>
-    </tr>
-    {{#each monsters}}
-    <tr id='monsters{{@index}}' >
-        <th>Monster</th>
-        <td colspan=4>
-            <select class="monsterSelect">
-                <option>None</option>
-                {{#each ../allMonsters}}
-                <option monsterID={{this.monsterID}}>{{this.name}}</option>
-                {{/each}}
-            </select>
-        </td>
-        <td class="center">
-            <button onclick="removeOption('monsters' + {{@index}} )">-</button>
-        </td>
-    </tr>
-    {{/each}}{{/if}}
+    <tbody id="monsterSelects">
+        <tr>
+            <th colspan=6>Monsters Encountered <button onclick="addOption('monsterSelects', 'Monsters')">+</button></th>
+        </tr>
+        {{#if monsters}}
+        {{#each monsters}}
+        <tr id='m{{@index}}' >
+            <th>Monster</th>
+            <td colspan=4>
+                <select class="monsterSelect">
+                    <option>None</option>
+                    {{#each ../allMonsters}}
+                    <option monsterID={{this.monsterID}}>{{this.name}}</option>
+                    {{/each}}
+                </select>
+            </td>
+            <td class="center">
+                <button onclick="removeOption('m' + {{@index}} )">-</button>
+            </td>
+        </tr>
+        {{/each}}{{/if}}
+    </tbody>
     <tr>
         {{#if add}}
         <td class="center" colspan=3><button onclick="addCharacter()">Add Character</button></td>

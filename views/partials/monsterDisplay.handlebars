@@ -13,6 +13,21 @@
         <th>Desc.</th>
         <td colspan=5>{{description}}</td>
     </tr>
+        <th>CR</th>
+        <th>AC</th>
+        <th>HD</th>
+        <th>ALN</th>
+        <th>SPD</th>
+        <th>FLY</th>
+    </tr>
+    <tr>
+        <td class="center">{{challenge}}</td>
+        <td class="center">{{armor_class}}</td>
+        <td class="center">{{hit_dice}}</td>
+        <td class="center">{{alignment}}</td>
+        <td class="center">{{speed}}</td>
+        <td class="center">{{#if fly_speed}}{{fly_speed}}{{else}}-{{/if}}</td>
+    </tr>
     <tr>
         <th>STR</th>
         <th>DEX</th>

@@ -53,21 +53,12 @@ function getTable (table, where = false, orderBy = false) {
   });
 };
 
-function getCharacterFilters(res, mysql, context, complete) {
-    mysql.pool.query("SELECT DISTINCT `race`, `class`, `partyID` FROM `Characters`", function (error, results, fields) {
-        if (error) {
-            res.write(JSON.stringify(error));
-            res.end();
-        }
-        context.filters = results;
-    });
-}
-
 /**
  * Inserts new row into table
  *
  */
 var insertIntoTable = function (table, body) {
+  return new Promise(function(resolve, reject) {
     let keys = [];
     let values = [];
     let queryString = '';
@@ -77,9 +68,9 @@ var insertIntoTable = function (table, body) {
         values.push("'" + body[key] + "'");
     }
 
-    queryString = "INSERT INTO" + table;
-    queryString += "(" + keys.join(",") + ");";
-    queryString += " VALUES (" + values.join(",") + ");";
+    queryString = "INSERT INTO " + table;
+    queryString += "(`" + keys.join("`,`") + "`) ";
+    queryString += "VALUES (" + values.join(",") + ");";
     console.log(queryString);
 
     mysql.pool.query(queryString, function (err, rows, fields) {
@@ -89,6 +80,7 @@ var insertIntoTable = function (table, body) {
             resolve(JSON.parse(JSON.stringify(rows)));
         }
     });
+  });
 };
 
 
@@ -113,67 +105,31 @@ app.get('/table', function (req, res) {
         orderBy = req.get('orderBy');
     }
 
-    getTable(table, where, order).then(function (elements) {
+    getTable(table, where, orderBy).then(function (elements) {
         res.json(elements);
     }); 
 
 });
 
-//Used for search bar looking for specific entry
-app.get('/searchBarQuery', function (req, res) {
-    let table = req.get('dataTable');
-    let elements = req.get('elements');
-
-    let where = true;
-    if (req.get('attributeKey')) {
-        where = req.get('attributeKey') + '=' + req.get('attributeValue');
-    }
-
-    let orderBy = false;
-    if (req.get('orderBy')) {
-        orderBy = req.get('orderBy');
-    }
-
-    getTable(table, where, order).then(function (elements) {
-        res.json(elements);
-    });
+app.get('/searchQuery', function (req, res) {
+    let table = req.get('table');
+    let element = req.get('element');
 
 });
 
-/*Still working on this
-//Filter by
-app.get('/filterBy', function (req, res) {
-    let table = req.get('dataTable');
-    let elements = req.get('elements');
-
-    let where = true;
-    if (req.get('attributeKey')) {
-        where = req.get('attributeKey') + '=' + req.get('attributeValue');
-    }
-
-    let orderBy = true;
-    if (req.get('orderBy')) {
-        orderBy = req.get('orderBy');
-    }
-
-    getTable(table, where, order).then(function (elements) {
-        res.json(elements);
-    });
-})
-*/
-
 app.post('/table_insert', function (req, res) {
-    let table = req.get('dataTable');
-    let elements = req.get('elements');
+    let table = req.get('table');
+    let element = JSON.parse(req.get('element'));
 
-    insertIntoTable(table, req.body).then(function (elements) {
-        res.json(elements);
+    insertIntoTable(table, element).then(function (response) {
+        console.log(response);
+        res.json(response);
     });
 
 });
 
 app.post('/table_modify', function (req, res) {
-  let table = req.get('dataTable');
+  let table = req.get('table');
   let element = req.get('element');
 });
 
@@ -206,7 +162,18 @@ app.get('/elementList', function (req, res) {
   let context = {layout:false}
   let table = req.get('table');
   let partial = req.get('partial');
-  getTable(table).then(function (elements) {
+
+  let where = false;
+  if(req.get('attributeKey')) {
+      where = req.get('attributeKey') + '=' + req.get('attributeValue');
+  }
+
+  let orderBy = false;
+  if(req.get('orderBy')) {
+      orderBy = req.get('orderBy');
+  }
+  
+  getTable(table, where, orderBy).then(function (elements) {
     table = table.toLowerCase();
     context[table] = elements;
     res.render('partials/' + partial, context);
@@ -229,7 +196,18 @@ app.get('/elementDisplay', function (req, res) {
 
 app.get('/characterList', function (req, res) {
   let context = {layout:false};
-  getTable('Characters').then(function (characters) {
+
+  let where = false;
+  if(req.get('attributeKey')) {
+      where = req.get('attributeKey') + '=' + req.get('attributeValue');
+  }
+
+  let orderBy = false;
+  if(req.get('orderBy')) {
+      orderBy = req.get('orderBy');
+  }
+
+  getTable('Characters', where, orderBy).then(function (characters) {
     context.characters = characters;
     
     context.characters.forEach(character => {
