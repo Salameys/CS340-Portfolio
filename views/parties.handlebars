@@ -7,12 +7,6 @@
     <div class="listcontainer">
         <table id="parties">
             <tr>
-               <form id="search-form" onsubmit="listElements('Parties', 'partyList', 'name'); return false;" method="post">
-                   <td><input id="search-field" type="text"></input></td>
-                   <td><input type="submit" value="Search"></td>
-                </form> 
-            </tr>
-            <tr>
                 <th onclick="listParties('name')" data-ascending>Name</th>
                 <th onclick="listParties('members')" data-ascending>Members</th>
             </tr>

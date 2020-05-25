@@ -31,8 +31,8 @@ function loadParty(partyID, mode = "display") {
 }
 
 function listParties() {
-    var request = new XMLHttpRequest();
-	request.open('get', '/partyList');
+    let request = new XMLHttpRequest();
+    request.open('get', '/partyList');
     request.setRequestHeader('Content-Type', 'application/json');
     request.addEventListener("load", response => {
         let list = document.getElementById("list");

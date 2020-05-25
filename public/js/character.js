@@ -49,7 +49,7 @@ function listCharacters(attributeKey) {
     request.setRequestHeader('Content-Type', 'application/json');
     if (attributeKey) {
         request.setRequestHeader('attributeKey', attributeKey);
-        let attributeValue = '"' + document.getElementById("searchName").value + '"';
+        let attributeValue = '"' + document.getElementById("search-field").value + '"';
         request.setRequestHeader('attributeValue', attributeValue);
     }
     request.addEventListener("load", response => {

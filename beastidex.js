@@ -318,9 +318,20 @@ app.get('/monsterDisplay', function (req, res) {
 });
 
 app.get('/partyList', function (req, res) {
-  context = {layout: false};
+    context = { layout: false };
 
-  getTable('Parties', false, "name").then(function (parties) {
+    let where = false;
+    if (req.get('attributeKey')) {
+        where = req.get('attributeKey') + '=' + req.get('attributeValue');
+    }
+
+    let orderBy = false;
+    if (req.get('orderBy')) {
+        orderBy = req.get('orderBy');
+    }
+
+
+  getTable('Parties', where, "name").then(function (parties) {
     context['parties'] = parties;
     context['parties'].forEach(
       party => party['members'] = 0
