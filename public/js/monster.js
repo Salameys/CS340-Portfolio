@@ -40,6 +40,109 @@ function loadMonster(monsterID, mode = "display") {
                 }
             }, false, 'monsterID', monsterID);
         }
+
+        if(mode != 'display') {
+            addOption('abilitySelects', 'Abilities');
+            addOption('biomeSelects', 'Biomes');
+        }
     });
     request.send();
+}
+
+function addMonster() {
+    //let formElements = document.getElementById("inputForm").elements;
+    let keys = [
+        "name", "description",
+        "challenge", "armor_class", "hit_dice",
+        "alignment", "speed",
+        "strength", "dexterity", "constitution",
+        "intelligence", "wisdom", "charisma",
+        "source_book"
+    ];
+    
+    //Build monster with mandatory keys
+    let monster = {};
+    let failures = [];
+    keys.forEach(key => {
+        console.log(key);
+        monster[key] = document.getElementById(key).value;
+        if(monster[key].length == 0) {
+            failures.push(key);
+        }
+    });
+
+    //Add nonmandatory keys as relevant
+    let fly_speed = document.getElementById("fly_speed").value;
+    if(fly_speed >= 0) monster["fly_speed"] = fly_speed;
+
+    //Check if monster is valid and cancel operation if not
+    if(failures.length > 0) {
+        if(failures.length == 1) {
+            alert ("The key " + failures[0] + " is mandatory. Monster not saved.");
+        } else {
+            let alertString = "The keys ";
+            for(i = 0; i < failures.length - 1; i++) {
+                alertString += failures[i] + ", ";
+            }
+            alertString += " and " + failures[failures.lastIndexOf] + " are mandatory. Monster not saved.";
+            alert(alertString);
+        }
+        return;
+    }
+    
+    //Submit monster to server
+    let request = new XMLHttpRequest();
+	request.open('post', '/table_insert');
+    request.setRequestHeader('Content-Type', 'application/json');
+    request.setRequestHeader('table', 'Abilities');
+    request.setRequestHeader('element', JSON.stringify(monster));
+    request.addEventListener("load", response => {
+        let monsterID = JSON.parse(request.responseText).insertId;
+        loadMonster(monsterID);
+
+        let abilitySelects = [...document.getElementsByClassName("abilitySelect")];
+        abilitySelects.forEach(select => {
+            if(select.value != "None") {
+                let abilityId;
+                for(i = 0; i < select.options.length; i++) {
+                    let option = select[i];
+                    if(option.selected == true) {
+                        abilityId = option.getAttribute("abilityId");
+                        break;
+                    }
+                }
+                
+                let selectRequest = new XMLHttpRequest();
+                selectRequest.open('post', '/table_insert');
+                selectRequest.setRequestHeader('Content-Type', 'application/json');
+                selectRequest.setRequestHeader('table', 'Monster_Ability');
+                selectRequest.setRequestHeader('element', JSON.stringify({monsterID:monsterID, abilityId:abilityId}));
+                selectRequest.send();
+            }
+        });
+
+        let biomeSelects = [...document.getElementsByClassName("biomeSelect")];
+        biomeSelects.forEach(select => {
+            if(select.value != "None") {
+                let biomeId;
+                for(i = 0; i < select.options.length; i++) {
+                    let option = select[i];
+                    if(option.selected == true) {
+                        biomeId = option.getAttribute("biomeId");
+                        break;
+                    }
+                }
+                
+                let selectRequest = new XMLHttpRequest();
+                selectRequest.open('post', '/table_insert');
+                selectRequest.setRequestHeader('Content-Type', 'application/json');
+                selectRequest.setRequestHeader('table', 'Monster_Biome');
+                selectRequest.setRequestHeader('element', JSON.stringify({monsterID:monsterID, biomeId:biomeId}));
+                selectRequest.send();
+            }
+        });
+    });
+    request.send();
+
+    listElements('Monsters');
 }

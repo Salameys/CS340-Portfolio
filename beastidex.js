@@ -58,6 +58,7 @@ function getTable (table, where = false, orderBy = false) {
  *
  */
 var insertIntoTable = function (table, body) {
+  return new Promise(function(resolve, reject) {
     let keys = [];
     let values = [];
     let queryString = '';
@@ -67,9 +68,9 @@ var insertIntoTable = function (table, body) {
         values.push("'" + body[key] + "'");
     }
 
-    queryString = "INSERT INTO" + table;
-    queryString += "(" + keys.join(",") + ");";
-    queryString += " VALUES (" + values.join(",") + ");";
+    queryString = "INSERT INTO " + table;
+    queryString += "(`" + keys.join("`,`") + "`) ";
+    queryString += "VALUES (" + values.join(",") + ");";
     console.log(queryString);
 
     mysql.pool.query(queryString, function (err, rows, fields) {
@@ -79,6 +80,7 @@ var insertIntoTable = function (table, body) {
             resolve(JSON.parse(JSON.stringify(rows)));
         }
     });
+  });
 };
 
 
@@ -103,30 +105,31 @@ app.get('/table', function (req, res) {
         orderBy = req.get('orderBy');
     }
 
-    getTable(table, where, order).then(function (elements) {
+    getTable(table, where, orderBy).then(function (elements) {
         res.json(elements);
     }); 
 
 });
 
 app.get('/searchQuery', function (req, res) {
-    let table = req.get('dataTable');
-    let elements = req.get('elements');
+    let table = req.get('table');
+    let element = req.get('element');
 
 });
 
 app.post('/table_insert', function (req, res) {
-    let table = req.get('dataTable');
-    let elements = req.get('elements');
+    let table = req.get('table');
+    let element = JSON.parse(req.get('element'));
 
-    insertIntoTable(table, req.body).then(function (elements) {
-        res.json(elements);
+    insertIntoTable(table, element).then(function (response) {
+        console.log(response);
+        res.json(response);
     });
 
 });
 
 app.post('/table_modify', function (req, res) {
-  let table = req.get('dataTable');
+  let table = req.get('table');
   let element = req.get('element');
 });
 

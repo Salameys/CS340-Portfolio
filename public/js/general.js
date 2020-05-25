@@ -56,17 +56,57 @@ function loadElement (table, partial, attributeKey, attributeValue) {
 * @param {string} type of node
 * @param {string} content of node
 */
-function addNode(parent, type, content) {
+function addNode(parent, type, content = '') {
     var node = document.createElement(type);
     parent.appendChild(node);
-    node.innerHTML = content;
+    if(content) node.innerHTML = content;
     return node;
 }
 
+/**
+ * Adds a select row populated with all available options
+ * @param {string} selects name of tbody element select row will be child to
+ * @param {string} table name of table in database
+ */
+function addOption(selects, table) {
+    let tbody = document.getElementById(selects);
+    selects = [...tbody.getElementsByTagName("tr")];
+
+    let index = 0;
+    for(i = 0; i < selects.length; i++)  {
+        let derp = Number.parseInt(selects[i].id.substring(1));
+        if(!isNaN(derp) && derp > index) index = derp;
+    }
+    index += 1;
+    
+    let rowID = table.substring(0, 1) + index;  //Would cause a collision if two tables related to entity had the same first letter
+    let row = addNode(tbody, "tr");
+    row.setAttribute("id", rowID);
+    addNode(row, "th", table.substring(0, table.length - 1));
+
+    let select = addNode(row, "td");
+    select.setAttribute("colspan", 4); //May need to be changed if something without stats has a relationship box
+    select = addNode(select, "select");
+    addNode(select, "option", "None");
+
+    requestTable(table, request => {
+        let options = JSON.parse(request.responseText);
+        options.forEach(option => {
+            let node = addNode(select, "option", option["name"]);
+            let id = table.toLowerCase().substring(0, table.length - 1) + "id";
+            node.setAttribute(id, option[id]);
+        });
+    });
+
+    let button = addNode(row, "td");
+    button.classList.add("center");
+    button = addNode(button, "button", "-");
+    button.setAttribute("onClick", "removeOption('" + rowID + "')");
+    console.log(button.getAttribute("onClick"));
+}
+
 function removeOption(optionID) {
-    console.log(optionID);
     let option = document.getElementById(optionID);
-    console.log(option);
     option.remove();
 }
 
@@ -81,22 +121,4 @@ function preventDuplicateSelection(group, newOption, oldOption) {
     console.log(group);
     group = group.getElementsByTagName("select");
     console.log(group);
-}
-
-/**
- * Adds a row representing a multiple to multiple relationship to the section for that group
- * @param {HTMLElement} section DOM element row is going in
- * @param {Number} width width of whole table
- * @param {string} title type of related entity
- * @param {string} name name of related entity
- */
-function addRelationshipRow(section, width, title, name) {
-    let row = addNode(section, "tr", "");
-    let node = addNode(row, "th", title);
-    node.setAttribute("colspan", 2);
-
-    node = addNode(row, "td", name);
-    node.setAttribute("colspan", width - 2);
-    node.classList.add("display");
-    if(displayState != "display") node.classList.add("hidden");
 }
