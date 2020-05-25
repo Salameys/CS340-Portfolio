@@ -53,6 +53,16 @@ function getTable (table, where = false, orderBy = false) {
   });
 };
 
+function getCharacterFilters(res, mysql, context, complete) {
+    mysql.pool.query("SELECT DISTINCT `race`, `class`, `partyID` FROM `Characters`", function (error, results, fields) {
+        if (error) {
+            res.write(JSON.stringify(error));
+            res.end();
+        }
+        context.filters = results;
+    });
+}
+
 /**
  * Inserts new row into table
  *
@@ -109,11 +119,48 @@ app.get('/table', function (req, res) {
 
 });
 
-app.get('/searchQuery', function (req, res) {
+//Used for search bar looking for specific entry
+app.get('/searchBarQuery', function (req, res) {
     let table = req.get('dataTable');
     let elements = req.get('elements');
 
+    let where = true;
+    if (req.get('attributeKey')) {
+        where = req.get('attributeKey') + '=' + req.get('attributeValue');
+    }
+
+    let orderBy = false;
+    if (req.get('orderBy')) {
+        orderBy = req.get('orderBy');
+    }
+
+    getTable(table, where, order).then(function (elements) {
+        res.json(elements);
+    });
+
 });
+
+/*Still working on this
+//Filter by
+app.get('/filterBy', function (req, res) {
+    let table = req.get('dataTable');
+    let elements = req.get('elements');
+
+    let where = true;
+    if (req.get('attributeKey')) {
+        where = req.get('attributeKey') + '=' + req.get('attributeValue');
+    }
+
+    let orderBy = true;
+    if (req.get('orderBy')) {
+        orderBy = req.get('orderBy');
+    }
+
+    getTable(table, where, order).then(function (elements) {
+        res.json(elements);
+    });
+})
+*/
 
 app.post('/table_insert', function (req, res) {
     let table = req.get('dataTable');
