@@ -43,10 +43,15 @@ function loadCharacter(characterID, mode = 'display') {
 	request.send();
 }
 
-function listCharacters() {
+function listCharacters(attributeKey, attributeValue) {
     let request = new XMLHttpRequest();
 	request.open('get', '/characterList');
     request.setRequestHeader('Content-Type', 'application/json');
+    if (attributeKey) {
+        request.setRequestHeader('attributeKey', attributeKey);
+        let attributeValue = '"' + document.getElementById("searchName").value + '"';
+        request.setRequestHeader('attributeValue', attributeValue);
+    }
     request.addEventListener("load", response => {
         let list = document.getElementById("list");
         list.innerHTML = request.responseText;
@@ -55,6 +60,7 @@ function listCharacters() {
 }
 
 function addCharacter() {
+    //let formElements = document.getElementById("inputForm").elements;
     let keys = [
         "name", "race", "class", "level",
         "strength", "dexterity", "constitution",

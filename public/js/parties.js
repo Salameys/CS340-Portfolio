@@ -26,7 +26,6 @@ function loadParty(partyID, mode = "display") {
                 }
             }, false, 'partyID', partyID);
         }
-        if(mode != 'display') addOption('memberSelects', 'Characters');;
     });
     request.send();
 }
@@ -40,26 +39,4 @@ function listParties() {
         list.innerHTML = request.responseText;
     })
     request.send();
-}
-
-function addParty() {
-    let party = {name: document.getElementById("name").value};
-    if(party.name.length == 0)
-    {
-        alert("A party must have a name. Party not saved.");
-        return;
-    }
-
-    let request = new XMLHttpRequest();
-	request.open('post', '/table_insert');
-    request.setRequestHeader('Content-Type', 'application/json');
-    request.setRequestHeader('table', 'Parties');
-    request.setRequestHeader('element', JSON.stringify(party));
-    request.addEventListener("load", response => {
-        let partyID = JSON.parse(request.responseText).insertId;
-        loadParty(partyID);
-    });
-    request.send();
-
-    listParties();
 }

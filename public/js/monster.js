@@ -52,7 +52,7 @@ function loadMonster(monsterID, mode = "display") {
 function addMonster() {
     //let formElements = document.getElementById("inputForm").elements;
     let keys = [
-        "name", "type", "description",
+        "name", "description",
         "challenge", "armor_class", "hit_dice",
         "alignment", "speed",
         "strength", "dexterity", "constitution",
@@ -64,6 +64,7 @@ function addMonster() {
     let monster = {};
     let failures = [];
     keys.forEach(key => {
+        console.log(key);
         monster[key] = document.getElementById(key).value;
         if(monster[key].length == 0) {
             failures.push(key);
@@ -93,7 +94,7 @@ function addMonster() {
     let request = new XMLHttpRequest();
 	request.open('post', '/table_insert');
     request.setRequestHeader('Content-Type', 'application/json');
-    request.setRequestHeader('table', 'Monsters');
+    request.setRequestHeader('table', 'Abilities');
     request.setRequestHeader('element', JSON.stringify(monster));
     request.addEventListener("load", response => {
         let monsterID = JSON.parse(request.responseText).insertId;
@@ -143,5 +144,5 @@ function addMonster() {
     });
     request.send();
 
-    listElements('Monsters', 'monsterList');
+    listElements('Monsters');
 }
