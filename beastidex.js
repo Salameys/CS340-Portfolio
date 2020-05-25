@@ -162,7 +162,18 @@ app.get('/elementList', function (req, res) {
   let context = {layout:false}
   let table = req.get('table');
   let partial = req.get('partial');
-  getTable(table).then(function (elements) {
+
+  let where = false;
+  if(req.get('attributeKey')) {
+      where = req.get('attributeKey') + '=' + req.get('attributeValue');
+  }
+
+  let orderBy = false;
+  if(req.get('orderBy')) {
+      orderBy = req.get('orderBy');
+  }
+  
+  getTable(table, where, orderBy).then(function (elements) {
     table = table.toLowerCase();
     context[table] = elements;
     res.render('partials/' + partial, context);
@@ -185,7 +196,18 @@ app.get('/elementDisplay', function (req, res) {
 
 app.get('/characterList', function (req, res) {
   let context = {layout:false};
-  getTable('Characters').then(function (characters) {
+
+  let where = false;
+  if(req.get('attributeKey')) {
+      where = req.get('attributeKey') + '=' + req.get('attributeValue');
+  }
+
+  let orderBy = false;
+  if(req.get('orderBy')) {
+      orderBy = req.get('orderBy');
+  }
+
+  getTable('Characters', where, orderBy).then(function (characters) {
     context.characters = characters;
     
     context.characters.forEach(character => {
