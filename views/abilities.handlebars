@@ -11,26 +11,10 @@
     <div class="listcontainer">
         <table id="abilities">
             <tr>
-               <form id="search-form" onsubmit="tagSearch('name', 'search-field', 'abilityID'); return false;" method="post">
+               <form id="search-form" onsubmit="listElements('Abilities', 'abilityList', 'name'); return false;" method="post">
                    <td colspan='3'><input id="search-field" type="text"></input></td>
                    <td><input type="submit" value="Search"></td>
                 </form> 
-            </tr>
-            <tr>
-                <td class="wrappable" colspan='4' id="filter-row">
-                    <div >
-                        <button onclick="filterList('abilities', 'type', 'Bludgeoning', abilityKeys)">Bludgeoning</button> 
-                        <button onclick="filterList('abilities', 'type', 'Fire', abilityKeys)">Fire</button> 
-                        <button onclick="filterList('abilities', 'type', 'Piercing', abilityKeys)">Piercing</button> 
-                        <button onclick="filterList('abilities', 'type', 'Slashing', abilityKeys)">Slashing</button> 
-                        <button onclick="filterList('abilities', 'range', 'Melee', abilityKeys)">Melee</button> 
-                        <button onclick="filterList('abilities', 'range', '30ft', abilityKeys)">30ft</button> 
-                        <button onclick="filterList('abilities', 'damage', '1d8', abilityKeys)">1d8</button> 
-                        <button onclick="filterList('abilities', 'damage', '2d4', abilityKeys)">2d4</button> 
-                        <button onclick="filterList('abilities', 'damage', '2d6', abilityKeys)">2d6</button> 
-                        <button onclick="filterList('abilities', 'damage', '3d6', abilityKeys)">3d6</button>
-                    </div>
-                </td>
             </tr>
             <tr class="listheader">
                 <th class="headerSortUp" onclick="sortTable('abilities', 0, this)" data-ascending>Name</th>

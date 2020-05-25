@@ -23,14 +23,18 @@ function requestTable (table, func, orderBy = false, attributeKey = false, attri
 	request.send();
 }
 
-function listElements (table, partial) {
+function listElements (table, partial, attributeKey) {
     var request = new XMLHttpRequest();
 	request.open('get', '/elementList');
     request.setRequestHeader('Content-Type', 'application/json');
     request.setRequestHeader('table', table);
     request.setRequestHeader('partial', partial);
-    request.setRequestHeader('attributeKey', attributeKey);
-    request.setRequestHeader('attributeValue', attributeValue);
+    if (attributeKey) {
+        request.setRequestHeader('attributeKey', attributeKey);
+        let attributeValue = '"' + document.getElementById("search-field").value + '"';
+        request.setRequestHeader('attributeValue', attributeValue);
+    }
+
     request.addEventListener("load", response => {
         let list = document.getElementById("list");
         list.innerHTML = request.responseText;

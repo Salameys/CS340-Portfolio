@@ -43,7 +43,7 @@ function loadCharacter(characterID, mode = 'display') {
 	request.send();
 }
 
-function listCharacters(attributeKey, attributeValue) {
+function listCharacters(attributeKey) {
     let request = new XMLHttpRequest();
 	request.open('get', '/characterList');
     request.setRequestHeader('Content-Type', 'application/json');
