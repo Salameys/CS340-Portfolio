@@ -1,77 +1,70 @@
---Using colon : character to denote variables that will have data from the backend
+-- Using colon : character to denote variables that will have data from the backend
 
---SQL calls that relate to `Monsters` table
+-- SQL calls that relate to `Monsters` table
 
---Get all data for a monster
+-- Get all data for a monster
 SELECT `monsterID`, `name`, `description`, `size`, `type`, `alignment`, `armor_class`, `hit_dice`, `speed`, `fly_speed`, `strength`,
 `dexterity`, `constitution`, `intelligence`, `wisdom`, `charisma`, `challenge`, `source_book` FROM `Monsters`
 
---Add a new monster to `Monsters` table
+-- Add a new monster to `Monsters` table
 INSERT INTO `Monsters` (`name`, `description`, `size`, `type`, `alignment`, `armor_class`, `hit_dice`, `speed`, `fly_speed`, `strength`,
 `dexterity`, `constitution`, `intelligence`, `wisdom`, `charisma`, `challenge`, `source_book`)
 VALUES (:nameInput, :descriptionInput, :sizeInput, :typeInput, :alignmentInput, :armor_classInput, :hit_diceInput, :speedInput, :fly_speedInput,
 :strengthInput, :dexterityInput, :constitutionInput, :intelligenceInput, :wisdomInput, :charismaInput, :challengeInput, :source_bookInput);
 
---Update a monster from the row selected by User
+-- Update a monster from the row selected by User
 UPDATE `Monsters` SET `name` = :nameInput, `description` = :descriptionInput, `size` = :sizeInput, `type` = :typeInput, `alignment` = alignmentInput, 
 `armor_class` = :armor_classInput, `hit_dice` = :hit_diceInput, `speed` = :speedInput, `fly_speed` = :fly_speedInput, `strength` = :strengthInput,
 `dexterity` = :dexterityInput, `constitution` = :constitutionInput, `intelligence` = :intelligenceInput, `wisdom` = :wisdomInput, 
 `charisma` = :charismaInput, `challenge` =:challengeInput, `source_book` = :source_bookInput WHERE monsterID= monsterID_of_selected_row;
 
---Deletes monster from the selected row
+-- Deletes monster from the selected row
 DELETE FROM `Monsters` WHERE monsterID= monsterID_of_selected_row;
 
---Filter monsters by specified column
+-- Filter monsters by specified column
 SELECT * FROM `Monsters` WHERE `type` = ":typeInput" ORDER BY `type` ASC;
 SELECT * FROM `Monsters` WHERE `challenge`= ":challengeInput" ORDER BY `challenge` ASC;
 SELECT * FROM `Monsters` WHERE `source_book` = ":source_bookInput" ORDER BY `source_book` ASC;
 
---Populate dropdown menu for filters
-SELECT DISTINCT `type` FROM `Monsters`;
-SELECT DISTINCT`challenge` FROM `Monsters`;
-SELECT DISTINCT `source_book` FROM `Monsters`;
-
+-- Populate dropdown menu for filters
+SELECT DISTINCT `type`, `challenge`, `source_book` FROM `Monsters`;
 
 -------------------------------------------------------------------
 
---SQL calls that relate to `Characters` table
+-- SQL calls that relate to `Characters` table
 
---Get all data for a character
+-- Get all data for a character
 SELECT `characterID`, `name`, `race`, `level`, `class`, `strength`, `dexterity`, `constitution`, `intelligence`, `wisdom`, `charisma`, 
 `partyID` FROM `Characters`;
 
---Add new character to `Characters` table
+-- Add new character to `Characters` table
 INSERT INTO `Characters` (`name`, `race`, `level`, `class`, `strength`, `dexterity`, `constitution`, `intelligence`, `wisdom`, `charisma`, 
 `partyID` )
 VALUES (:nameInput, :raceInput, :levelInput, :classInput, :strengthInput, :dexterityInput, :constitutionInput, :intelligenceInput, 
 :wisdomInput, :charismaInput, :partyID);
 
---Update a character from row selected by User
+-- Update a character from row selected by User
 UPDATE `Characters` SET `name` = :nameInput, `race` = :raceInput, `level` = :levelInput, `class` = :classInput, `strength` = :strengthInput,
 `dexterity` = :dexterityInput, `constitution` = :constitutionInput, `intelligence` = :intelligenceInput, `wisdom` = :wisdomInput, 
 `charisma` = :charismaInput, `partyID` = :partyIDInput WHERE characterID= characterID_of_selected_row;
 
---Deletes character from the selected row
+-- Deletes character from the selected row
 DELETE FROM `Characters` WHERE characterID= characterID_of_selected_row;
 
---Filter characters by specified column
+-- Filter characters by specified column
 SELECT * FROM `Characters` WHERE `race` = ":raceInput" ORDER BY `race` ASC;
 SELECT * FROM `Characters` WHERE `class`= ":classInput" ORDER BY `class` ASC;
 SELECT * FROM `Characters` WHERE `partyID` = ":partyIDInput" ORDER BY `name` ASC;
 
---Populate dropdown menu for filters
-SELECT DISTINCT `race` FROM `Characters`;
-SELECT DISTINCT `class` FROM `Characters`;
-SELECT DISTINCT `partyID` FROM `Characters`;
-
-
+-- Populate dropdown menu for filters
+SELECT DISTINCT `race`, `class`, `partyID` FROM `Characters`;
 
 --------------------------------------------------------------------
 
 
---SQL calls that relate to `Abilities` table
+-- SQL calls that relate to `Abilities` table
 
---Get all data for an ability
+-- Get all data for an ability
 SELECT `abilityID`, `name`, `damage_type`, `range`, `damage_dice` FROM `Abilities`;
 
 --Add a new ability to `Abilities` table
@@ -90,9 +83,7 @@ SELECT * FROM `Abilities` WHERE `type` = ":typeInput" ORDER BY `type` ASC;
 SELECT * FROM `Abilities` WHERE `range`= ":rangeInput" ORDER BY `range` ASC;
 
 --Populate dropdown menu for filters
-SELECT DISTINCT `type` FROM `Abilities`;
-SELECT DISTINCT `range` FROM `Abilities`;
-
+SELECT DISTINCT `type`, `range` FROM `Abilities`;
 
 ----------------------------------------------------------------------
 
@@ -112,7 +103,6 @@ WHERE biomeID= biomeID_of_selected_row;
 
 --Delete biome from selected row
 DELETE FROM `Biomes` WHERE biomeID= biomeID_of_selected_row;
-
 
 -----------------------------------------------------------------------
 
