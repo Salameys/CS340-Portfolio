@@ -5,8 +5,9 @@
     "\\public",
     "\\public\\js",
     "\\views",
+    "\\views\\layouts",
     "\\views\\partials"
   ],
-  "SelectedNode": "\\views\\partials\\partyModify.handlebars",
+  "SelectedNode": "\\beastidex.js",
   "PreviewInSolutionExplorer": false
 }

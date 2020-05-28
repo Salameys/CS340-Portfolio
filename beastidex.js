@@ -181,18 +181,28 @@ app.get('/elementList', function (req, res) {
 })
 
 app.get('/elementDisplay', function (req, res) {
-  let context = {layout:false}
-  let table = req.get('table');
-  let partial = req.get('partial');
-  let attributeKey = req.get('attributeKey');
-  let attributeValue = req.get('attributeValue');
-  getTable(table, attributeKey + "=" + attributeValue).then(function (element) {
-    for(let key in element[0]) {
-      context[key] = element[0][key];
+    let context = { layout: false };
+    let table = req.get('table');
+    let partial = req.get('partial');
+    let attributeKey = req.get('attributeKey');
+    let attributeValue = req.get('attributeValue');
+    let mode = req.get('mode');
+    if (mode == 'add') {
+        getTable(table).then(function (elements) {
+            context[attributeKey] = elements[0][attributeKey];
+            context['add'] = true;
+            res.render('partials/' + partial, context);
+        });
+    } else {
+        getTable(table, attributeKey + "=" + attributeValue).then(function (element) {
+            for (let key in element[0]) {
+                context[key] = element[0][key];
+            }
+            res.render('partials/' + partial, context);
+        });
     }
-    res.render('partials/' + partial, context);
-  });
 });
+
 
 app.get('/characterList', function (req, res) {
   let context = {layout:false};

@@ -1,3 +1,4 @@
 window.addEventListener("DOMContentLoaded", event => {
-    console.log("DERP")
+    loadElement('Abilities', 'abilityDisplay', 'abilityId', 1);
+    listElements('Abilities', 'abilityList');
 });
