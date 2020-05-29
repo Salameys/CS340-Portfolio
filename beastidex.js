@@ -133,6 +133,59 @@ app.post('/table_modify', function (req, res) {
   let element = req.get('element');
 });
 
+app.delete('/table_delete', function (req, res) {
+    return new Promise(function (resolve, reject) {
+        let table = req.get('table');
+        let element = req.get('element');
+        let elementID = req.get('elementID');
+
+        let queryString = 'DELETE FROM ' + table;
+        queryString += ' WHERE ' + element + '= ';
+        queryString += "'" + elementID + "'";
+        console.log(queryString);
+
+        mysql.pool.query(queryString, function (err, rows, fields) {
+            if (err) {
+                reject(Error(err))
+            } else {
+                resolve(JSON.parse(JSON.stringify(rows)));
+            }
+        });
+    });
+});
+
+app.delete('/delete_party', function (req, res) {
+    return new Promise(function (resolve, reject) {
+        let partyID = req.get('partyID');
+
+        let updateQuery = 'UPDATE Characters FROM Characters';
+        updateQuery += ' SET partyID=' + "'None'";
+        updateQuery += ' WHERE partyID=' + partyID;
+        console.log(updateQuery);
+
+        mysql.pool.query(updateQuery, function (err, rows, fields) {
+            if (err) {
+                reject(Error(err))
+            } else {
+                resolve(JSON.parse(JSON.stringify(rows)));
+            }
+        });
+
+        let deleteQuery = 'DELETE FROM Parties';
+        deleteQuery += ' WHERE partyID=' + partyID;
+        console.log(deleteQuery);
+
+        mysql.pool.query(deleteQuery, function (err, rows, fields) {
+            if (err) {
+                reject(Error(err))
+            } else {
+                resolve(JSON.parse(JSON.stringify(rows)));
+            }
+        });
+
+    })
+})
+
 app.get('/monsters', function (req, res) {
   let context = {title:"Monsters"};
   res.render('monsters', context)

@@ -8,6 +8,6 @@
     "\\views\\layouts",
     "\\views\\partials"
   ],
-  "SelectedNode": "\\beastidex.js",
+  "SelectedNode": "\\views\\partials\\abilityDisplay.handlebars",
   "PreviewInSolutionExplorer": false
 }

@@ -108,6 +108,7 @@ ON DELETE CASCADE);
 
 
 ALTER TABLE `Characters`
+ADD CONSTRAINT `party_idfk_1`
 ADD FOREIGN KEY `partyID` (`partyID`) 
 REFERENCES `Parties` (`partyID`);
 

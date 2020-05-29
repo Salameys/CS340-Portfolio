@@ -146,3 +146,18 @@ function addMonster() {
 
     listElements('Monsters', 'monsterList');
 }
+
+function deleteMonster(monsterID) {
+    let request = new XMLHttpRequest();
+    request.open('delete', '/table_delete');
+    request.setRequestHeader('table', 'Monsters');
+    request.setRequestHeader('element', 'monsterID');
+    request.setRequestHeader('elementID', monsterID);
+    request.addEventListener("load", response => {
+        let list = document.getElementById("list");
+        list.innerHTML = request.responseText;
+    })
+    request.send();
+
+    listElements('Monsters', 'monsterList');
+}

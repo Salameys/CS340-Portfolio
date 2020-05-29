@@ -64,3 +64,16 @@ function addParty() {
 
     listParties();
 } 
+
+function deleteParty(partyID) {
+    let request = new XMLHttpRequest();
+    request.open('delete', '/delete_party');
+    request.setRequestHeader('partyID', partyID);
+    request.addEventListener("load", response => {
+        let list = document.getElementById("list");
+        list.innerHTML = request.responseText;
+    })
+    request.send();
+
+    listParties();
+}

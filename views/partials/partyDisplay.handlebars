@@ -18,8 +18,8 @@
     {{/each}}
     {{/if}}
     <tr>
-        <td><button onclick="loadParty(0, 'add')" />Add New</td>
-        <td><button onclick="loadParty({{partyID}}, 'modify')" />Modify</td>
-        <td><button onclick="deleteElement('Party', {{partyID}})" />Delete</td>
+        <td><button onclick="loadParty(0, 'add')">Add New</button></td>
+        <td><button onclick="loadParty({{partyID}}, 'modify')">Modify </button></td>
+        <td><button onclick="deleteParty({{partyID}})">Delete</button></td>
     </tr>
 </table>

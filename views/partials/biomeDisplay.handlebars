@@ -10,8 +10,8 @@
         <td colspan=3>{{description}}</td>
     </tr>
     <tr>
-        <td class="center"><button  onclick="loadElement('Biomes', 'biomeModify', 'biomeID', 0, 'add')">Add New</button></td>
+        <td class="center"><button onclick="loadElement('Biomes', 'biomeModify', 'biomeID', 0, 'add')">Add New</button></td>
         <td class="center"><button>Modify</button></td>
-        <td class="center"><button>Delete</button></td>
+        <td class="center"><button onclick="deleteBiome({{biomeID}})">Delete</button></td>
     </tr>
 </table>

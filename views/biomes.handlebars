@@ -4,6 +4,21 @@
         listElements('Biomes', 'biomeList');
         loadElement('Biomes', 'biomeDisplay', 'biomeID', 1);
     });
+
+    function deleteBiome(biomeID) {
+        let request = new XMLHttpRequest();
+        request.open('delete', '/table_delete');
+        request.setRequestHeader('table', 'Biomes');
+        request.setRequestHeader('element', 'biomeID');
+        request.setRequestHeader('elementID', biomeID);
+        request.addEventListener("load", response => {
+            let list = document.getElementById("list");
+            list.innerHTML = request.responseText;
+        })
+        request.send();
+
+        listElements('Biomes', 'biomeList');
+    }
 </script>
 <link rel='stylesheet' type='text/css' href='/css/table.css' />
 
