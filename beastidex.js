@@ -158,8 +158,8 @@ app.delete('/delete_party', function (req, res) {
     return new Promise(function (resolve, reject) {
         let partyID = req.get('partyID');
 
-        let updateQuery = 'UPDATE Characters FROM Characters';
-        updateQuery += ' SET partyID=' + "'None'";
+        let updateQuery = 'UPDATE Characters';
+        updateQuery += ' SET partyID=NULL'
         updateQuery += ' WHERE partyID=' + partyID;
         console.log(updateQuery);
 
