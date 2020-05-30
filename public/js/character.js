@@ -150,3 +150,20 @@ function deleteCharacter(characterID) {
 
     listCharacters();
 }
+
+/*
+ * Work in Progress
+ */
+function deleteRelationship(characterID, monsterID) {
+    let request = new XMLHttpRequest();
+    request.open('delete', '/delete_relationship');
+    request.setRequestHeader('characterID', characterID);
+    request.setRequestHeader('monsterID', monsterID);
+    request.addEventListener("load", response => {
+        let list = document.getElementById("list");
+        list.innerHTML = request.responseText;
+    })
+    request.send();
+
+   loadCharacter();
+}

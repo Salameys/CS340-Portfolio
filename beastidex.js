@@ -184,7 +184,27 @@ app.delete('/delete_party', function (req, res) {
         });
 
     })
-})
+});
+
+app.delete('/delete_relationship', function (req, res) {
+    return new Promise(function (resolve, reject) {
+        let characterID = req.get('characterID');
+        let monsterID = req.get('monsterID');
+
+        let queryString = 'DELETE FROM Character_Monster';
+        queryString += ' WHERE characterID=' + characterID;
+        queryString += ' AND monsterID=' + monsterID;
+        console.log(queryString);
+
+        mysql.pool.query(queryString, function (err, rows, fields) {
+            if (err) {
+                reject(Error(err))
+            } else {
+                resolve(JSON.parse(JSON.stringify(rows)));
+            }
+        });
+    })
+});
 
 app.get('/monsters', function (req, res) {
   let context = {title:"Monsters"};

@@ -158,7 +158,7 @@ SELECT `characterID`, `monsterID` FROM `Character_Monster`
 
 -- Associate a character with a monster and vice versa (M-to-M)
 INSERT INTO `Character_Monster` (`characterID`, `monsterID`) 
-VALUES (:characterID, :monsterID;
+VALUES (:characterID, :monsterID);
 
 -- Delete relationship
 DELETE FROM `Character_Monster` WHERE characterID = :characterID_from_Characters AND
