@@ -330,8 +330,12 @@ app.get('/partyList', function (req, res) {
         orderBy = req.get('orderBy');
     }
 
+<<<<<<< HEAD
 
   getTable('Parties', where, "name").then(function (parties) {
+=======
+  getTable('Parties', false, "name").then(function (parties) {
+>>>>>>> parent of f7b97a8... All tables correctly load and get inserted into.
     context['parties'] = parties;
     context['parties'].forEach(
       party => party['members'] = 0
