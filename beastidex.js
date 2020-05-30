@@ -133,6 +133,79 @@ app.post('/table_modify', function (req, res) {
   let element = req.get('element');
 });
 
+app.delete('/table_delete', function (req, res) {
+    return new Promise(function (resolve, reject) {
+        let table = req.get('table');
+        let element = req.get('element');
+        let elementID = req.get('elementID');
+
+        let queryString = 'DELETE FROM ' + table;
+        queryString += ' WHERE ' + element + '= ';
+        queryString += "'" + elementID + "'";
+        console.log(queryString);
+
+        mysql.pool.query(queryString, function (err, rows, fields) {
+            if (err) {
+                reject(Error(err))
+            } else {
+                resolve(JSON.parse(JSON.stringify(rows)));
+            }
+        });
+    });
+});
+
+app.delete('/delete_party', function (req, res) {
+    return new Promise(function (resolve, reject) {
+        let partyID = req.get('partyID');
+
+        let updateQuery = 'UPDATE Characters';
+        updateQuery += ' SET partyID=NULL'
+        updateQuery += ' WHERE partyID=' + partyID;
+        console.log(updateQuery);
+
+        mysql.pool.query(updateQuery, function (err, rows, fields) {
+            if (err) {
+                reject(Error(err))
+            } else {
+                resolve(JSON.parse(JSON.stringify(rows)));
+            }
+        });
+
+        let deleteQuery = 'DELETE FROM Parties';
+        deleteQuery += ' WHERE partyID=' + partyID;
+        console.log(deleteQuery);
+
+        mysql.pool.query(deleteQuery, function (err, rows, fields) {
+            if (err) {
+                reject(Error(err))
+            } else {
+                resolve(JSON.parse(JSON.stringify(rows)));
+            }
+        });
+
+    })
+});
+
+app.delete('/delete_relationship', function (req, res) {
+    return new Promise(function (resolve, reject) {
+        let characterID = req.get('characterID');
+        let monsterID = req.get('monsterID');
+
+        let queryString = 'DELETE FROM Character_Monster';
+        queryString += ' WHERE characterID=' + characterID;
+        queryString += ' AND monsterID=' + monsterID;
+        console.log(queryString);
+
+        mysql.pool.query(queryString, function (err, rows, fields) {
+            if (err) {
+                reject(Error(err))
+            } else {
+                resolve(JSON.parse(JSON.stringify(rows)));
+            }
+        });
+    })
+});
+
 app.get('/monsters', function (req, res) {
   let context = {title:"Monsters"};
   res.render('monsters', context)
@@ -181,18 +254,28 @@ app.get('/elementList', function (req, res) {
 })
 
 app.get('/elementDisplay', function (req, res) {
-  let context = {layout:false}
-  let table = req.get('table');
-  let partial = req.get('partial');
-  let attributeKey = req.get('attributeKey');
-  let attributeValue = req.get('attributeValue');
-  getTable(table, attributeKey + "=" + attributeValue).then(function (element) {
-    for(let key in element[0]) {
-      context[key] = element[0][key];
+    let context = { layout: false };
+    let table = req.get('table');
+    let partial = req.get('partial');
+    let attributeKey = req.get('attributeKey');
+    let attributeValue = req.get('attributeValue');
+    let mode = req.get('mode');
+    if (mode == 'add') {
+        getTable(table).then(function (elements) {
+            context[attributeKey] = elements[0][attributeKey];
+            context['add'] = true;
+            res.render('partials/' + partial, context);
+        });
+    } else {
+        getTable(table, attributeKey + "=" + attributeValue).then(function (element) {
+            for (let key in element[0]) {
+                context[key] = element[0][key];
+            }
+            res.render('partials/' + partial, context);
+        });
     }
-    res.render('partials/' + partial, context);
-  });
 });
+
 
 app.get('/characterList', function (req, res) {
   let context = {layout:false};

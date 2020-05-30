@@ -42,7 +42,14 @@ function listElements (table, partial, attributeKey) {
     request.send();
 }
 
-function loadElement (table, partial, attributeKey, attributeValue) {
+/**
+* Loads an element into the display table
+* @param { string } table database table to request
+* @param { string } partial handlebars partial name to load
+* @param { string } attributeKey id attribute name
+* @param { string } attributeValue id attribute value
+*/
+function loadElement (table, partial, attributeKey, attributeValue, mode = 'display') {
     var request = new XMLHttpRequest();
 	request.open('get', '/elementDisplay');
     request.setRequestHeader('Content-Type', 'application/json');
@@ -50,12 +57,68 @@ function loadElement (table, partial, attributeKey, attributeValue) {
     request.setRequestHeader('partial', partial);
     request.setRequestHeader('attributeKey', attributeKey);
     request.setRequestHeader('attributeValue', attributeValue);
+    request.setRequestHeader('mode', mode);
     request.addEventListener("load", response => {
         let display = document.getElementById("display");
         display.innerHTML = request.responseText;
     });
     request.send();
 }
+
+/**	
+* Adds an element to the database
+* @param {string} table database table to request
+* @param {string} partial handlebars partial name of element list
+* @param {string} attributeKey id attribute name
+* @param {string[]} mandatoryKeys element keys which are required
+* @param {string[]} optionalKeys element keys which can be ignored
+*/
+function addElement(table, partial, attributeKey, mandatoryKeys, optionalKeys = []) {
+    let element = {};
+    let failures = [];
+    mandatoryKeys.forEach(key => {
+        console.log(key);
+        element[key] = document.getElementById(key).value;
+        if (element[key].length == 0) {
+            failures.push(key);
+        }
+    });
+    optionalKeys.forEach(key => {
+        console.log(key);
+        element[key] = document.getElementById(key).value;
+    });
+
+
+    if (failures.length > 0) {
+        if (failures.length == 1) {
+            alert(table + " must have a " + failures[0] + ". Element not saved.");
+        } else {
+            let alertString = table + " must have ";
+            for (i = 0; i < failures.length - 1; i++) {
+                alertString += failures[i] + ", ";
+            }
+            alertString += " and " + failures[failures.length - 1] + ". Element not saved.";
+            alert(alertString);
+        }
+        return;
+    }
+
+
+    let request = new XMLHttpRequest();
+    request.open('post', '/table_insert');
+    request.setRequestHeader('Content-Type', 'application/json');
+    request.setRequestHeader('table', table);
+    request.setRequestHeader('element', JSON.stringify(element));
+    request.addEventListener("load", response => {
+        let attributeValue = JSON.parse(request.responseText).insertId;
+        loadElement(table, partial.substring(0, partial.length - 4) + "Display", attributeKey, attributeValue);
+    });
+    request.send();
+
+
+    listElements(table, partial);
+}
+
 
 /**
 * Adds a node to the DOM as a child of an existing node
@@ -112,6 +175,10 @@ function addOption(selects, table) {
     console.log(button.getAttribute("onClick"));
 }
 
+/**
+* Removes an option of the given ID from the DOM
+* @param {string} optionID id string of element
+*/
 function removeOption(optionID) {
     let option = document.getElementById(optionID);
     option.remove();

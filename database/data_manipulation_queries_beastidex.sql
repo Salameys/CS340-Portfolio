@@ -21,13 +21,8 @@ UPDATE `Monsters` SET `name` = :nameInput, `description` = :descriptionInput, `s
 -- Deletes monster from the selected row
 DELETE FROM `Monsters` WHERE monsterID= monsterID_of_selected_row;
 
--- Filter monsters by specified column
-SELECT * FROM `Monsters` WHERE `type` = ":typeInput" ORDER BY `type` ASC;
-SELECT * FROM `Monsters` WHERE `challenge`= ":challengeInput" ORDER BY `challenge` ASC;
-SELECT * FROM `Monsters` WHERE `source_book` = ":source_bookInput" ORDER BY `source_book` ASC;
-
--- Populate dropdown menu for filters
-SELECT DISTINCT `type`, `challenge`, `source_book` FROM `Monsters`;
+-- Filter monsters by name entered by user
+SELECT * FROM `Monsters` WHERE `name` = ":nameInput";
 
 -------------------------------------------------------------------
 
@@ -51,13 +46,8 @@ UPDATE `Characters` SET `name` = :nameInput, `race` = :raceInput, `level` = :lev
 -- Deletes character from the selected row
 DELETE FROM `Characters` WHERE characterID= characterID_of_selected_row;
 
--- Filter characters by specified column
-SELECT * FROM `Characters` WHERE `race` = ":raceInput" ORDER BY `race` ASC;
-SELECT * FROM `Characters` WHERE `class`= ":classInput" ORDER BY `class` ASC;
-SELECT * FROM `Characters` WHERE `partyID` = ":partyIDInput" ORDER BY `name` ASC;
-
--- Populate dropdown menu for filters
-SELECT DISTINCT `race`, `class`, `partyID` FROM `Characters`;
+-- Filter characters by name entered by user
+SELECT * FROM `Characters` WHERE `name` = ":nameInput";
 
 --------------------------------------------------------------------
 
@@ -78,13 +68,8 @@ range = :rangeInput, damage_dice = :damage_diceInput WHERE abilityID= abilityID_
 -- Deletes ability from selected row
 DELETE FROM `Abilities` WHERE abilityID= abilityID_of_selected_row;
 
--- Filter abilities by specified column
-SELECT * FROM `Abilities` WHERE `type` = ":typeInput" ORDER BY `type` ASC;
-SELECT * FROM `Abilities` WHERE `range`= ":rangeInput" ORDER BY `range` ASC;
-
--- Populate dropdown menu for filters
-SELECT DISTINCT `type`, `range` FROM `Abilities`;
-
+-- Filter abilities by name entered by user
+SELECT * FROM `Abilities` WHERE `name` = ":nameInput";
 ----------------------------------------------------------------------
 
 
@@ -103,6 +88,9 @@ WHERE biomeID= biomeID_of_selected_row;
 
 -- Delete biome from selected row
 DELETE FROM `Biomes` WHERE biomeID= biomeID_of_selected_row;
+
+-- Filter biomes by name entered by user
+SELECT * FROM `Biomes` WHERE `name` = ":nameInput";
 
 -----------------------------------------------------------------------
 
@@ -170,7 +158,7 @@ SELECT `characterID`, `monsterID` FROM `Character_Monster`
 
 -- Associate a character with a monster and vice versa (M-to-M)
 INSERT INTO `Character_Monster` (`characterID`, `monsterID`) 
-VALUES (:characterID, :monsterID;
+VALUES (:characterID, :monsterID);
 
 -- Delete relationship
 DELETE FROM `Character_Monster` WHERE characterID = :characterID_from_Characters AND

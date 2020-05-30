@@ -135,3 +135,35 @@ function addCharacter() {
 
     listCharacters();
 }
+
+function deleteCharacter(characterID) {
+    let request = new XMLHttpRequest();
+    request.open('delete', '/table_delete');
+    request.setRequestHeader('table', 'Characters');
+    request.setRequestHeader('element', 'characterID');
+    request.setRequestHeader('elementID', characterID);
+    request.addEventListener("load", response => {
+        let list = document.getElementById("list");
+        list.innerHTML = request.responseText;
+    })
+    request.send();
+
+    listCharacters();
+}
+
+/*
+ * Work in Progress
+ */
+function deleteRelationship(characterID, monsterID) {
+    let request = new XMLHttpRequest();
+    request.open('delete', '/delete_relationship');
+    request.setRequestHeader('characterID', characterID);
+    request.setRequestHeader('monsterID', monsterID);
+    request.addEventListener("load", response => {
+        let list = document.getElementById("list");
+        list.innerHTML = request.responseText;
+    })
+    request.send();
+
+   loadCharacter();
+}
