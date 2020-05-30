@@ -4,25 +4,33 @@ var express = require('express');
 var router = express.Router();
 
 router.get('/',function(req,res,next){
-  var context = {};
-  context.title = "Beastidex";
+    var context = {
+        title: "Beastidex"
+    };
   res.render('home',context);
 });
 
 router.get('/index',function(req,res,next){
-  var context = {};
-  context.title = "Beastidex";
-  res.render('home',context);
+    var context = {
+        title: "Beastidex"
+    };
+    res.render('home',context);
 });
 
 router.get('/biomes', function (req, res) {
-  let context = {title:"Biomes"};
+  let context = {
+      title:"Biomes",
+      description:"Biomes are a way to describe the regions of the world, different monsters are found in an area depending on its biome."
+    };
   res.render('biomes', context);
 });
 
 router.get('/abilities', function (req, res) {
-  let context = {title:"Abilities"};
-  res.render('abilities', context)
+    let context = {
+        title:"Abilities",
+        description:"Abilities are an important aspect differentiating how characters experience different monsters. Monsters may have any number of abilities."
+    };
+    res.render('abilities', context)
 });
 
 router.get('/elementList', function (req, res) {

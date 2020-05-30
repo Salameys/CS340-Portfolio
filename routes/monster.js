@@ -4,7 +4,10 @@ var express = require('express');
 var router = express.Router();
 
 router.get('/monsters', function (req, res) {
-  let context = {title:"Monsters"};
+  let context = {
+    title:"Monsters",
+    description:"Monsters are the primary form of challenge in the world. In addition to their vital statistics, monsters may have any number of abilities and can be found in any number of biomes."
+  };
   res.render('monsters', context)
 });
 

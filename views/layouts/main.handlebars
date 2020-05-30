@@ -9,6 +9,11 @@
 <body>
 	<h1>{{title}}</h1>
 	{{> topNavigation }}
+	{{#if description}}
+	<table>
+		<td>{{description}}</td>
+	</table>
+	{{/if}}
 	</br>
 	{{{body}}}
 </body>

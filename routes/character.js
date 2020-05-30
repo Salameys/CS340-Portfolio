@@ -4,11 +4,12 @@ var express = require('express');
 var router = express.Router();
 
 router.get('/characters', function (req, res) {
-  let context = {title:"Characters"};
+  let context = {
+    title:"Characters",
+    description:"Characters are the means by which players interact with the world. In addition to their own vital stats, a character may be in a party and may have encountered any number of monsters."
+  };
   res.render('characters', context)
 });
-
-
 
 router.get('/characterList', function (req, res) {
   let context = {layout:false};

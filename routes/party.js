@@ -4,7 +4,10 @@ var express = require('express');
 var router = express.Router();
 
 router.get('/parties', function (req, res) {
-    let context = {title:"Parties"};
+    let context = {
+      title:"Parties",
+      description:"Parties are the means by which characters can band together against the world's challenges. Parties can find who belongs to them by searching the character list for matching a matching partyID. This page can also use this reference to modify the partyID attribute of characters."
+    };
     res.render('parties', context)
   });
 
