@@ -20,12 +20,12 @@
         <th>FLY</th>
     </tr>
     <tr>
-        <td class="center"><input id="challenge" type="number" value={{challenge}} ></td>
-        <td class="center"><input id="armor_class" type="number" value={{armor_class}} ></td>
+        <td class="center"><input id="challenge" type="number" value={{challenge}} onchange="minimum(this, 0, false)"></td>
+        <td class="center"><input id="armor_class" type="number" value={{armor_class}} onchange="minimum(this, 0)"></td>
         <td class="center"><input id="hit_dice" type="text" value={{hit_dice}} ></td>
         <td class="center"><input id="alignment" type="text" value={{alignment}} ></td>
-        <td class="center"><input id="speed" type="number" value={{speed}} ></td>
-        <td class="center"><input id="fly_speed" type="number" {{#if fly_speed}}value={{fly_speed}}{{else}}value="-1"{{/if}} ></td>
+        <td class="center"><input id="speed" type="number" value={{speed}} onchange="minimum(this, 0)"></td>
+        <td class="center"><input id="fly_speed" type="number" {{#if fly_speed}}value={{fly_speed}}{{else}}value="-1"{{/if}} onchange="minimum(this, -1)"></td>
     </tr>
     <tr>
         <th>STR</th>
@@ -36,12 +36,12 @@
         <th>CHA</th>
     </tr>
     <tr>
-        <td class="center"><input id="strength" type="number" value={{strength}} ></td>
-        <td class="center"><input id="dexterity" type="number" value={{dexterity}} ></td>
-        <td class="center"><input id="constitution" type="number" value={{constitution}} ></td>
-        <td class="center"><input id="intelligence" type="number" value={{intelligence}} ></td>
-        <td class="center"><input id="wisdom" type="number" value={{wisdom}} ></td>
-        <td class="center"><input id="charisma" type="number" value={{charisma}} ></td>
+        <td class="center"><input id="strength" type="number" value={{strength}} onchange="minimum(this, 1)"></td>
+        <td class="center"><input id="dexterity" type="number" value={{dexterity}} onchange="minimum(this, 1)"></td>
+        <td class="center"><input id="constitution" type="number" value={{constitution}} onchange="minimum(this, 1)"></td>
+        <td class="center"><input id="intelligence" type="number" value={{intelligence}} onchange="minimum(this, 1)"></td>
+        <td class="center"><input id="wisdom" type="number" value={{wisdom}} onchange="minimum(this, 1)"></td>
+        <td class="center"><input id="charisma" type="number" value={{charisma}} onchange="minimum(this, 1)"></td>
     </tr>
     <tr>
         <th>Source</th>
@@ -94,7 +94,7 @@
         <td class="center" colspan=3><button onclick="addMonster()">Add Monster</button></td>
         <td class="center" colspan=3><button onclick="loadMonster({{monsterID}})">Cancel</button></td>
         {{else}}
-        <td class="center" colspan=3><button onclick="confirmMonster()">Confirm Changes</button></td>
+        <td class="center" colspan=3><button onclick="confirmMonster({{monsterID}})">Confirm Changes</button></td>
         <td class="center" colspan=3><button onclick="loadMonster({{monsterID}})">Cancel</button></td>
         {{/if}}
     </tr>

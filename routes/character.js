@@ -88,4 +88,47 @@ router.get('/characterDisplay', function (req, res) {
   });
 });
 
+router.post('/characterInsert', function (req, res) {
+  let character = JSON.parse(req.get('character'));
+  let monsters = character.monsters;
+  delete character.monsters;
+
+  sqlFunctions.insertIntoTable('Characters', character).then(function (response) {
+      monsters.forEach(monster => {
+        sqlFunctions.insertIntoTable('Character_Monster', {characterID:character.characterID, monsterID:monster});
+      });
+      res.json(response);
+  });
+});
+
+router.post('/characterModify', function (req, res) {
+  let character = JSON.parse(req.get('character'));
+  let monsters = character.monsters;
+  delete character.monsters;
+
+  sqlFunctions.getTable('Character_Monster', "characterID=" + character.characterID).then(function (response) {
+    oldMonsters = [];
+    response.forEach(relationship => {
+      oldMonsters.push(relationship.monsterID);
+    });
+
+    oldMonsters.forEach(oldMonster => {
+      if(!monsters.includes(oldMonster)) {
+        console.log("Deleting " + monster);
+        //Delete {characterID:character.characterID, monsterID:oldMonster}
+        mysql.pool.query('DELETE FROM Character_Monster WHERE characterID=' + character.characterID + " AND monsterID=" + oldMonster);
+      };
+    });
+    
+    monsters.forEach(monster => {
+      if(!oldMonsters.includes(monster)) {
+        console.log("Adding " + monster);
+        sqlFunctions.insertIntoTable('Character_Monster', {characterID:character.characterID, monsterID:monster});
+      }
+    });
+  });
+
+  res.json();
+});
+
 module.exports = router;

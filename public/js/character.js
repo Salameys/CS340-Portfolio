@@ -38,7 +38,7 @@ function loadCharacter(characterID, mode = 'display') {
                 }
             }, false, 'characterID', characterID)
         }
-        if(mode != 'display') addOption('monsterSelects', 'Monsters');;
+        if(mode != 'display') addOption('monsterSelects', 'Monsters', 'monsterSelect');;
     });
 	request.send();
 }
@@ -59,7 +59,10 @@ function listCharacters(attributeKey) {
     request.send();
 }
 
-function addCharacter() {
+/**
+ * Constructs a character object from table input data
+ */
+function extractCharacterData() {
     //let formElements = document.getElementById("inputForm").elements;
     let keys = [
         "name", "race", "class", "level",
@@ -76,6 +79,7 @@ function addCharacter() {
         }
     });
 
+    //Checks if any data is not set
     if(failures.length > 0) {
         if(failures.length == 1) {
             alert ("The key " + failures[0] + " is mandatory. Character not saved.");
@@ -90,6 +94,7 @@ function addCharacter() {
         return;
     }
 
+    //Runs through the party select
     let partySelect = document.getElementById("partySelect");
     if(partySelect.value != "None") {
         for(i = 0; i < partySelect.options.length; i++) {
@@ -100,42 +105,67 @@ function addCharacter() {
             }
         }
     }
-    
+
+    //Runs through the monster selects
+    character.monsters = [];
+    let monsterSelects = [...document.getElementsByClassName("monsterSelect")];
+    console.log(monsterSelects);
+    monsterSelects.forEach(select => {
+        console.log(select);
+        if(select.value != "None") {
+            for(i = 0; i < select.options.length; i++) {
+                let option = select[i];
+                console.log(option);
+                if(option.selected == true) {
+                    console.log(option.getAttribute("monsterID"));
+                    character.monsters.push(option.getAttribute("monsterID"));
+                    break;
+                }
+            }
+        }
+    });
+
+    return character;
+}
+
+function addCharacter() {
+    let character = extractCharacterData();
+
     let request = new XMLHttpRequest();
-	request.open('post', '/table_insert');
+	request.open('post', '/characterInsert');
     request.setRequestHeader('Content-Type', 'application/json');
     request.setRequestHeader('table', 'Characters');
-    request.setRequestHeader('element', JSON.stringify(character));
+    request.setRequestHeader('character', JSON.stringify(character));
     request.addEventListener("load", response => {
         let characterID = JSON.parse(request.responseText).insertId;
         loadCharacter(characterID);
-
-        let monsterSelects = [...document.getElementsByClassName("monsterSelect")];
-        monsterSelects.forEach(select => {
-            if(select.value != "None") {
-                let monsterID;
-                for(i = 0; i < select.options.length; i++) {
-                    let option = select[i];
-                    if(option.selected == true) {
-                        monsterID = option.getAttribute("monsterID");
-                        break;
-                    }
-                }
-                
-                let selectRequest = new XMLHttpRequest();
-                selectRequest.open('post', '/table_insert');
-                selectRequest.setRequestHeader('Content-Type', 'application/json');
-                selectRequest.setRequestHeader('table', 'Character_Monster');
-                selectRequest.setRequestHeader('element', JSON.stringify({characterID:characterID, monsterID:monsterID}));
-                selectRequest.send();
-            }
-        });
     });
     request.send();
 
     listCharacters();
 }
 
+function confirmCharacter(characterID) {
+    let character = extractCharacterData();
+    character.characterID = characterID;
+
+    let request = new XMLHttpRequest();
+	request.open('post', '/characterModify');
+    request.setRequestHeader('Content-Type', 'application/json');
+    request.setRequestHeader('table', 'Characters');
+    request.setRequestHeader('character', JSON.stringify(character));
+    request.addEventListener("load", response => {
+        loadCharacter(characterID);
+    });
+    request.send();
+
+    listCharacters();
+}
+
+/**
+ * Calls the server to submit an SQL request to delete the character
+ * @param {Number} characterID 
+ */
 function deleteCharacter(characterID) {
     let request = new XMLHttpRequest();
     request.open('delete', '/table_delete');

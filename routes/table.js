@@ -1,5 +1,6 @@
 const sqlFunctions = require('./sqlFunctions');
 
+var mysql = require('../dbcon.js');
 var express = require('express');
 var router = express.Router();
 
@@ -24,7 +25,7 @@ router.get('/table', function (req, res) {
         orderBy = req.get('orderBy');
     }
 
-    getTable(table, where, orderBy).then(function (elements) {
+    sqlFunctions.getTable(table, where, orderBy).then(function (elements) {
         res.json(elements);
     }); 
 
@@ -34,7 +35,7 @@ router.post('/table_insert', function (req, res) {
     let table = req.get('table');
     let element = JSON.parse(req.get('element'));
 
-    insertIntoTable(table, element).then(function (response) {
+    sqlFunctions.insertIntoTable(table, element).then(function (response) {
         console.log(response);
         res.json(response);
     });

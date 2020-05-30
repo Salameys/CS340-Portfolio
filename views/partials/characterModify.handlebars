@@ -11,7 +11,7 @@
         <th>Class</th>
         <td colspan=3><input id="class" type="text" value={{class}} ></td>
         <th>Level</th>
-        <td class="center"><input id="level" type="number" value={{level}} min="1"></td>
+        <td class="center"><input id="level" type="number" value={{level}} min="1" onchange="minimum(this, 1)"></td>
     </tr>
     <tr>
         <th>STR</th>
@@ -22,12 +22,12 @@
         <th>CHA</th>
     </tr>
     <tr>
-        <td class="center"><input id="strength" type="number" value={{strength}} min="1"} ></td>
-        <td class="center"><input id="dexterity" type="number" value={{dexterity}} min="1"></td>
-        <td class="center"><input id="constitution" type="number" value={{constitution}} min="1"></td>
-        <td class="center"><input id="intelligence" type="number" value={{intelligence}} min="1"></td>
-        <td class="center"><input id="wisdom" type="number" value={{wisdom}} min="1"></td>
-        <td class="center"><input id="charisma" type="number" value={{charisma}} min="1"></td>
+        <td class="center"><input id="strength" type="number" value={{strength}} min="1" onchange="minimum(this, 1)"} ></td>
+        <td class="center"><input id="dexterity" type="number" value={{dexterity}} min="1" onchange="minimum(this, 1)"></td>
+        <td class="center"><input id="constitution" type="number" value={{constitution}} min="1" onchange="minimum(this, 1)"></td>
+        <td class="center"><input id="intelligence" type="number" value={{intelligence}} min="1" onchange="minimum(this, 1)"></td>
+        <td class="center"><input id="wisdom" type="number" value={{wisdom}} min="1" onchange="minimum(this, 1)"></td>
+        <td class="center"><input id="charisma" type="number" value={{charisma}} min="1" onchange="minimum(this, 1)"></td>
     </tr>
     <tr>
         <th>Party</th>
@@ -67,7 +67,7 @@
         <td class="center" colspan=3><button onclick="addCharacter()">Add Character</button></td>
         <td class="center" colspan=3><button onclick="loadCharacter({{characterID}})">Cancel</button></td>
         {{else}}
-        <td class="center" colspan=3><button onclick="confirmCharacter()">Confirm Changes</button></td>
+        <td class="center" colspan=3><button onclick="confirmCharacter({{characterID}})">Confirm Changes</button></td>
         <td class="center" colspan=3><button onclick="loadCharacter({{characterID}})">Cancel</button></td>
         {{/if}}
     </tr>

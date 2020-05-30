@@ -14,7 +14,7 @@
         <td colspan=3><button onclick="addElement('Biomes', 'biomeList', 'biomeID', ['name', 'description'])">Confirm</button></td>
         <td colspan=3><button onclick="loadElement('Biomes', 'biomeDisplay', 'biomeID', {{biomeID}} )">Cancel</button></td>
         {{else}}
-        <td><button>Confirm</button></td>
+        <td><button onclick="modifyElement('Biomes', 'biomeList', 'biomeID', {{biomeID}}, ['name', 'description'])">Confirm</button></td>
         <td><button onclick="loadElement('Biomes', 'biomeDisplay', 'biomeID', {{biomeID}} )">Cancel</button></td>
         {{/if}}
     </tr>

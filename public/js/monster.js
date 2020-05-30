@@ -42,14 +42,14 @@ function loadMonster(monsterID, mode = "display") {
         }
 
         if(mode != 'display') {
-            addOption('abilitySelects', 'Abilities');
-            addOption('biomeSelects', 'Biomes');
+            addOption('abilitySelects', 'Abilities', 'abilitySelect');
+            addOption('biomeSelects', 'Biomes', 'biomeSelect');
         }
     });
     request.send();
 }
 
-function addMonster() {
+function buildMonster() {
     //let formElements = document.getElementById("inputForm").elements;
     let keys = [
         "name", "type", "description",
@@ -89,58 +89,69 @@ function addMonster() {
         }
         return;
     }
+
+    monster.abilities = [];
+    let abilitySelects = [...document.getElementsByClassName("abilitySelect")];
+    abilitySelects.forEach(select => {
+        if(select.value != "None") {
+            for(i = 0; i < select.options.length; i++) {
+                let option = select[i];
+                if(option.selected == true) {
+                    monster.abilities.push(option.getAttribute("abilityId"));
+                    break;
+                }
+            }
+        }
+    });
+
+    monster.biomes = [];
+    let biomeSelects = [...document.getElementsByClassName("biomeSelect")];
+    biomeSelects.forEach(select => {
+        if(select.value != "None") {
+            for(i = 0; i < select.options.length; i++) {
+                let option = select[i];
+                if(option.selected == true) {
+                    monster.biomes.push(option.getAttribute("biomeId"));
+                    break;
+                }
+            }
+        }
+    });
     
-    //Submit monster to server
+    return monster;
+}
+
+/**
+ * Sends the monster object to the server to be added to the database
+ */
+function addMonster() {
+    let monster = buildMonster();
+
     let request = new XMLHttpRequest();
-	request.open('post', '/table_insert');
+	request.open('post', '/insertMonster');
     request.setRequestHeader('Content-Type', 'application/json');
-    request.setRequestHeader('table', 'Monsters');
     request.setRequestHeader('element', JSON.stringify(monster));
     request.addEventListener("load", response => {
         let monsterID = JSON.parse(request.responseText).insertId;
         loadMonster(monsterID);
+    });
+    request.send();
 
-        let abilitySelects = [...document.getElementsByClassName("abilitySelect")];
-        abilitySelects.forEach(select => {
-            if(select.value != "None") {
-                let abilityId;
-                for(i = 0; i < select.options.length; i++) {
-                    let option = select[i];
-                    if(option.selected == true) {
-                        abilityId = option.getAttribute("abilityId");
-                        break;
-                    }
-                }
-                
-                let selectRequest = new XMLHttpRequest();
-                selectRequest.open('post', '/table_insert');
-                selectRequest.setRequestHeader('Content-Type', 'application/json');
-                selectRequest.setRequestHeader('table', 'Monster_Ability');
-                selectRequest.setRequestHeader('element', JSON.stringify({monsterID:monsterID, abilityId:abilityId}));
-                selectRequest.send();
-            }
-        });
+    listElements('Monsters', 'monsterList');
+}
 
-        let biomeSelects = [...document.getElementsByClassName("biomeSelect")];
-        biomeSelects.forEach(select => {
-            if(select.value != "None") {
-                let biomeId;
-                for(i = 0; i < select.options.length; i++) {
-                    let option = select[i];
-                    if(option.selected == true) {
-                        biomeId = option.getAttribute("biomeId");
-                        break;
-                    }
-                }
-                
-                let selectRequest = new XMLHttpRequest();
-                selectRequest.open('post', '/table_insert');
-                selectRequest.setRequestHeader('Content-Type', 'application/json');
-                selectRequest.setRequestHeader('table', 'Monster_Biome');
-                selectRequest.setRequestHeader('element', JSON.stringify({monsterID:monsterID, biomeId:biomeId}));
-                selectRequest.send();
-            }
-        });
+/**
+ * Sends the monster object to the server to be modified in the database
+ */
+function confirmMonster(monsterID) {
+    let monster = buildMonster();
+
+    let request = new XMLHttpRequest();
+	request.open('post', '/modifyMonster');
+    request.setRequestHeader('Content-Type', 'application/json');
+    request.setRequestHeader('element', JSON.stringify(monster));
+    request.addEventListener("load", response => {
+        loadMonster(monsterID);
     });
     request.send();
 

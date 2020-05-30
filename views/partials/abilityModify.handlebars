@@ -20,7 +20,7 @@
         <td><button onclick="addElement('Abilities', 'abilityList', 'abilityID', ['name', 'damage_type', 'range', 'damage_dice'])">Confirm</button></td>
         <td><button onclick="loadElement('Abilities', 'abilityDisplay', 'abilityID', {{abilityID}} )">Cancel</button></td>
         {{else}}
-        <td><button>Confirm</button></td>
+        <td><button onclick="modifyElement('Abilities', 'abilityList', 'abilityID', {{abilityID}}, ['name', 'damage_type', 'range', 'damage_dice'])">Confirm</button></td>
         <td><button onclick="loadElement('Abilities', 'abilityDisplay', 'abilityID', {{abilityID}} )">Cancel</button></td>
         {{/if}}
     </tr>
