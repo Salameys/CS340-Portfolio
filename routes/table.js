@@ -45,7 +45,7 @@ router.post('/table_insert', function (req, res) {
 router.post('/table_modify', function (req, res) {
     let table = req.get('table');
     let body = req.get('body');
-    let element = req.get('element');
+    let element = JSON.parse(req.get('element'));
     let elementID = req.get('elementID');
 
     sqlFunctions.updateTable(table, element, elementID, body).then(function (response) {

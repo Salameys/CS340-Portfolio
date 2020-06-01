@@ -47,7 +47,7 @@ router.get('/monsterDisplay', function (req, res) {
       .then(sqlFunctions.getTable('Monster_Biome', 'monsterID=' + monsterID).then(function (biomes) {
           context['biomes'] = [];
           for (i = 0; i < biomes.length; i++) {
-            let biome = context["allBiomes"].find(biome => biome.monsterID == biomes[i].biomeID);
+            let biome = context["allBiomes"].find(biome => biome.biomeID == biomes[i].biomeID);
             context["biomes"].push(biome);
           }
           if(mode == "display") res.render('partials/monsterDisplay', context);
@@ -84,8 +84,7 @@ router.post('/monsterModify', function (req, res) {
   delete monster.abilities;
     delete monster.biomes;
 
-    sqlFunctions.updateTable('Monsters', 'monsterID', monster.monsterID, monster).then(function (response) {
-        res.json(response);
+    sqlFunctions.updateTable('Monsters', 'monsterID', monster.monsterID, monster).then(function () {
     });
 
   sqlFunctions.getTable('Monster_Ability', "monsterID=" + monster.monsterID).then(function (response) {
@@ -101,7 +100,7 @@ router.post('/monsterModify', function (req, res) {
       };
     });
     
-    abilities.forEach(monster => {
+    abilities.forEach(ability => {
       if(!oldAbilities.includes(ability)) {
         console.log("Adding " + ability);
         sqlFunctions.insertIntoTable('Monster_Ability', {monsterID:monster.monsterID, abilityID:ability});
@@ -112,7 +111,7 @@ router.post('/monsterModify', function (req, res) {
   sqlFunctions.getTable('Monster_Biome', "monsterID=" + monster.monsterID).then(function (response) {
     oldBiomes = [];
     response.forEach(relationship => {
-      oldBiomes.push(relationship.abilityID);
+      oldBiomes.push(relationship.biomeID);
     });
 
     oldBiomes.forEach(oldBiome => {

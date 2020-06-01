@@ -2,6 +2,7 @@ const sqlFunctions = require('./sqlFunctions');
 
 var express = require('express');
 var router = express.Router();
+var mysql = require('../dbcon.js');
 
 router.get('/characters', function (req, res) {
   let context = {
@@ -107,8 +108,7 @@ router.post('/characterModify', function (req, res) {
   let monsters = character.monsters;
     delete character.monsters;
 
-    sqlFunctions.updateTable('Characters', 'characterID', character.characterID, character).then(function (response) {
-        res.json(response);
+    sqlFunctions.updateTable('Characters', 'characterID', character.characterID, character).then(function () {
     });
 
   sqlFunctions.getTable('Character_Monster', "characterID=" + character.characterID).then(function (response) {
@@ -119,7 +119,7 @@ router.post('/characterModify', function (req, res) {
 
     oldMonsters.forEach(oldMonster => {
       if(!monsters.includes(oldMonster)) {
-        console.log("Deleting " + monster);
+        console.log("Deleting " + oldMonster);
         //Delete {characterID:character.characterID, monsterID:oldMonster}
         mysql.pool.query('DELETE FROM Character_Monster WHERE characterID=' + character.characterID + " AND monsterID=" + oldMonster);
       };
