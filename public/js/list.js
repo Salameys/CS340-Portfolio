@@ -1,4 +1,4 @@
-var abilityKeys = ["name", "damage_type", "range", "damage_dice"];
+var abilityKeys = ["name", "damage_type", "attack_range", "damage_dice"];
 var biomeKeys = ["name"];
 var characterKeys = ["name", "race", "class", "level", "_partyID:Parties"];
 var monsterKeys = ["name", "type", "challenge", "source"];

@@ -8,8 +8,8 @@
         <td colspan=2><input id="damage_type" type="text" value={{damage_type}}></td>
     </tr>
     <tr>
-        <th>Range</th>
-        <td colspan=2><input id="range" type="text" value={{range}}></td>
+        <th>Attack Range</th>
+        <td colspan=2><input id="attack_range" type="text" value={{attack_range}}></td>
     </tr>
     <tr>
         <th>Damage</th>
@@ -17,10 +17,10 @@
     </tr>
     <tr>
         {{#if add}}
-        <td><button onclick="addElement('Abilities', 'abilityList', 'abilityID', ['name', 'damage_type', 'range', 'damage_dice'])">Confirm</button></td>
+        <td><button onclick="addElement('Abilities', 'abilityList', 'abilityID', ['name', 'damage_type', 'attack_range', 'damage_dice'])">Confirm</button></td>
         <td><button onclick="loadElement('Abilities', 'abilityDisplay', 'abilityID', {{abilityID}} )">Cancel</button></td>
         {{else}}
-        <td><button onclick="modifyElement('Abilities', 'abilityList', 'abilityID', {{abilityID}}, ['name', 'damage_type', 'range', 'damage_dice'])">Confirm</button></td>
+        <td><button onclick="modifyElement('Abilities', 'abilityList', 'abilityID', {{abilityID}}, ['name', 'damage_type', 'attack_range', 'damage_dice'])">Confirm</button></td>
         <td><button onclick="loadElement('Abilities', 'abilityDisplay', 'abilityID', {{abilityID}} )">Cancel</button></td>
         {{/if}}
     </tr>

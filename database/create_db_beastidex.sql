@@ -49,7 +49,7 @@ CREATE TABLE `Abilities` (
 `abilityID` int(11) NOT NULL AUTO_INCREMENT,
 `name` varchar(255) NOT NULL,
 `damage_type` varchar(255) NOT NULL,
-`range` varchar(255) NOT NULL,
+`attack_range` varchar(255) NOT NULL,
 `damage_dice` varchar(255) NOT NULL,
 PRIMARY KEY (`abilityID`)
 ) ENGINE=InnoDB;
@@ -108,7 +108,6 @@ ON DELETE CASCADE);
 
 
 ALTER TABLE `Characters`
-ADD CONSTRAINT `party_idfk_1`
 ADD FOREIGN KEY `partyID` (`partyID`) 
 REFERENCES `Parties` (`partyID`);
 
@@ -132,7 +131,7 @@ VALUES ('Salah Salamey', 'Human', '20', 'Monk', '20', '20', '20', '20', '20', '2
 ('Robert Sandfield', 'Human', '20', 'Wizard', '20', '20', '20', '20', '20', '20', 1), 
 ('Jeffosaurus', 'Dinosaur', '20', 'Barbarian', '20', '20', '20', '20', '20', '20', NULL);
 
-INSERT INTO `Abilities` (`name`, `damage_type`, `range`, `damage_dice`)
+INSERT INTO `Abilities` (`name`, `damage_type`, `attack_range`, `damage_dice`)
 VALUES ('Claw', 'Slashing', 'Melee', '2d4'), 
 ('Bite', 'Piercing', 'Melee', '2d6'),
 ('Paralyzing Touch', 'Cold', '5ft', '3d6');
