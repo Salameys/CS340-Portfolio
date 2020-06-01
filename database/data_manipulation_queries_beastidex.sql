@@ -55,15 +55,15 @@ SELECT * FROM `Characters` WHERE `name` = ":nameInput";
 -- SQL calls that relate to `Abilities` table
 
 -- Get all data for an ability
-SELECT `abilityID`, `name`, `damage_type`, `range`, `damage_dice` FROM `Abilities`;
+SELECT `abilityID`, `name`, `damage_type`, `attack_range`, `damage_dice` FROM `Abilities`;
 
 -- Add a new ability to `Abilities` table
-INSERT INTO `Abilities` (`name`, `damage_type`, `range`, `damage_dice`)
-VALUES (:nameInput, :damage_typeInput, :rangeInput, :damage_diceInput);
+INSERT INTO `Abilities` (`name`, `damage_type`, `attack_range`, `damage_dice`)
+VALUES (:nameInput, :damage_typeInput, :attack_rangeInput, :damage_diceInput);
 
 -- Update an ability from row selected by User
 UPDATE `Abilities` SET `name` = :nameInput, `damage_type` = :damage_typeInput, 
-range = :rangeInput, damage_dice = :damage_diceInput WHERE abilityID= abilityID_of_selected_row;
+attack_range = :attack_rangeInput, damage_dice = :damage_diceInput WHERE abilityID= abilityID_of_selected_row;
 
 -- Deletes ability from selected row
 DELETE FROM `Abilities` WHERE abilityID= abilityID_of_selected_row;

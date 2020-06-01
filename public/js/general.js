@@ -139,7 +139,7 @@ function addElement(table, partial, attributeKey, mandatoryKeys, optionalKeys = 
 */
 function modifyElement(table, partial, attributeKey, attributeValue, mandatoryKeys, optionalKeys = []) {
     let element = buildElement(mandatoryKeys, optionalKeys);
-    //element[attributeKey] = attributeValue;
+    element[attributeKey] = attributeValue;
 
     let request = new XMLHttpRequest();
     request.open('post', '/table_modify');

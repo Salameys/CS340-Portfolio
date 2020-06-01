@@ -2,6 +2,7 @@ const sqlFunctions = require('./sqlFunctions');
 
 var express = require('express');
 var router = express.Router();
+var mysql = require('../dbcon.js');
 
 router.get('/',function(req,res,next){
     var context = {
@@ -141,11 +142,10 @@ router.post('/table_insert', function (req, res) {
 
 router.post('/table_modify', function (req, res) {
     let table = req.get('table');
-    let body = req.get('body');
     let element = JSON.parse(req.get('element'));
-    let elementID = req.get('elementID');
+    let attributeKey = req.get('attributeKey');
 
-    sqlFunctions.updateTable(table, element, elementID, body).then(function (response) {
+    sqlFunctions.updateTable(table, attributeKey, element[attributeKey], element).then(function (response) {
         console.log(response);
         res.json(response);
     });
