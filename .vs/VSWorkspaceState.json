@@ -8,6 +8,6 @@
     "\\views\\layouts",
     "\\views\\partials"
   ],
-  "SelectedNode": "\\views\\partials\\abilityDisplay.handlebars",
+  "SelectedNode": "\\public\\js\\character.js",
   "PreviewInSolutionExplorer": false
 }

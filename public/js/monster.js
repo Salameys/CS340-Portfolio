@@ -145,11 +145,13 @@ function addMonster() {
  */
 function confirmMonster(monsterID) {
     let monster = buildMonster();
+    monster.monsterID = monsterID;
 
     let request = new XMLHttpRequest();
-	request.open('post', '/modifyMonster');
+	request.open('post', '/monsterModify');
     request.setRequestHeader('Content-Type', 'application/json');
-    request.setRequestHeader('element', JSON.stringify(monster));
+    request.setRequestHeader('table', 'Monsters');
+    request.setRequestHeader('monster', JSON.stringify(monster));
     request.addEventListener("load", response => {
         loadMonster(monsterID);
     });

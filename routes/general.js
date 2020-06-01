@@ -78,6 +78,9 @@ router.get('/elementDisplay', function (req, res) {
     }
 });
 
+/*
+* Unsure if this is still necessary
+*/
 router.delete('/delete_relationship', function (req, res) {
     return new Promise(function (resolve, reject) {
         let characterID = req.get('characterID');

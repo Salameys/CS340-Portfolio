@@ -52,4 +52,43 @@ return new Promise(function(resolve, reject) {
 });
 };
 
-  module.exports = {getTable, insertIntoTable};
+function updateTable(table, element, elementID, body) {
+    return new Promise(function (resolve, reject) {
+        let keys = [];
+        let values = [];
+        let queryString = '';
+
+        for (let key in body) {
+            keys.push(key);
+            values.push("'" + body[key] + "'");
+        }
+
+        queryString = "UPDATE " + table;
+        queryString += " SET "
+        //For loop so that the proper keys and values are matched up
+        //keys.length-1 so the characterID isn't touched
+        for (i = 0; i < (keys.length - 1); i++) {
+            queryString += keys[i] + '=';
+            //If/else used to ensure proper SQL syntax
+            if ((i+1) == (keys.length-1)) {
+                queryString += values[i];
+            }
+            else {
+                queryString += values[i] + ', ';
+            }
+        }
+        queryString += " WHERE " + element;
+        queryString += "=" + elementID;
+        console.log(queryString);
+
+        mysql.pool.query(queryString, function (err, rows, fields) {
+            if (err) {
+                reject(Error(err))
+            } else {
+                resolve(JSON.parse(JSON.stringify(rows)));
+            }
+        });
+    });
+};
+
+  module.exports = {getTable, insertIntoTable, updateTable};

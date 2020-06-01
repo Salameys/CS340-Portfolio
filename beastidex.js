@@ -25,12 +25,6 @@ app.use(require('./routes/monster'));
 app.use(require('./routes/party'));
 app.use(require('./routes/table.js'));
 
-app.get('/searchQuery', function (req, res) {
-    let table = req.get('table');
-    let element = req.get('element');
-
-});
-
 app.use(function(req,res){
   res.status(404);
   res.render('404');

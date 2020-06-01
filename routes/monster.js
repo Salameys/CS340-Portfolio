@@ -2,6 +2,7 @@ const sqlFunctions = require('./sqlFunctions');
 
 var express = require('express');
 var router = express.Router();
+var mysql = require('../dbcon.js');
 
 router.get('/monsters', function (req, res) {
   let context = {
@@ -46,7 +47,7 @@ router.get('/monsterDisplay', function (req, res) {
       .then(sqlFunctions.getTable('Monster_Biome', 'monsterID=' + monsterID).then(function (biomes) {
           context['biomes'] = [];
           for (i = 0; i < biomes.length; i++) {
-            let biome = context["allBiomes"].find(biome => biome.monsterID == biomes[i].abilityID);
+            let biome = context["allBiomes"].find(biome => biome.monsterID == biomes[i].biomeID);
             context["biomes"].push(biome);
           }
           if(mode == "display") res.render('partials/monsterDisplay', context);
@@ -80,8 +81,12 @@ router.post('/monsterModify', function (req, res) {
   let monster = JSON.parse(req.get('monster'));
   let abilities = monster.abilities;
   let biomes = monster.biomes;
-  delete mosnter.abilities;
-  delete monster.biomes;
+  delete monster.abilities;
+    delete monster.biomes;
+
+    sqlFunctions.updateTable('Monsters', 'monsterID', monster.monsterID, monster).then(function (response) {
+        res.json(response);
+    });
 
   sqlFunctions.getTable('Monster_Ability', "monsterID=" + monster.monsterID).then(function (response) {
     oldAbilities = [];
@@ -113,14 +118,14 @@ router.post('/monsterModify', function (req, res) {
     oldBiomes.forEach(oldBiome => {
       if(!biomes.includes(oldBiome)) {
         console.log("Deleting " + oldBiome);
-        mysql.pool.query('DELETE FROM Monster_Ability WHERE monsterID=' + monster.monsterID + " AND biomeID=" + oldBiome);
+        mysql.pool.query('DELETE FROM Monster_Biome WHERE monsterID=' + monster.monsterID + " AND biomeID=" + oldBiome);
       };
     });
     
     biomes.forEach(biome => {
       if(!oldBiomes.includes(biome)) {
         console.log("Adding " + biome);
-        sqlFunctions.insertIntoTable('Monster_Ability', {monsterID:monster.monsterID, biomeID:biome});
+        sqlFunctions.insertIntoTable('Monster_Biome', {monsterID:monster.monsterID, biomeID:biome});
       }
     });
   });

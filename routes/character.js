@@ -105,7 +105,11 @@ router.post('/characterInsert', function (req, res) {
 router.post('/characterModify', function (req, res) {
   let character = JSON.parse(req.get('character'));
   let monsters = character.monsters;
-  delete character.monsters;
+    delete character.monsters;
+
+    sqlFunctions.updateTable('Characters', 'characterID', character.characterID, character).then(function (response) {
+        res.json(response);
+    });
 
   sqlFunctions.getTable('Character_Monster', "characterID=" + character.characterID).then(function (response) {
     oldMonsters = [];
