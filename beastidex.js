@@ -19,11 +19,10 @@ app.set('port', process.argv[2]);
 app.use(express.static(path.join(__dirname, '/public')));
 app.use(express.static('images'));
 
-app.use(require('./routes/character'));
-app.use(require('./routes/general'));
-app.use(require('./routes/monster'));
-app.use(require('./routes/party'));
-app.use(require('./routes/table.js'));
+app.use(require('./routes/characterRoutes'));
+app.use(require('./routes/generalRoutes'));
+app.use(require('./routes/monsterRoutes'));
+app.use(require('./routes/partyRoutes'));
 
 app.use(function(req,res){
   res.status(404);
