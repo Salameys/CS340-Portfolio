@@ -117,7 +117,6 @@ function extractCharacterData() {
                 let option = select[i];
                 console.log(option);
                 if(option.selected == true) {
-                    console.log(option.getAttribute("monsterID"));
                     character.monsters.push(option.getAttribute("monsterID"));
                     break;
                 }

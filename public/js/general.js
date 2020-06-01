@@ -176,14 +176,15 @@ function addNode(parent, type, content = '') {
  * @param {string} table name of table in database
  * @param {string} className class used to select option
  */
-function addOption(selects, table, className) {
+function addOption(selects, table) {
+    className = selects.substring(0, selects.length - 1);
     let tbody = document.getElementById(selects);
     selects = [...tbody.getElementsByTagName("tr")];
 
     let index = 0;
     for(i = 0; i < selects.length; i++)  {
-        let derp = Number.parseInt(selects[i].id.substring(1));
-        if(!isNaN(derp) && derp > index) index = derp;
+        let selectID = Number.parseInt(selects[i].id.substring(1));
+        if(!isNaN(selectID) && selectID > index) index = selectID;
     }
     index += 1;
     
@@ -203,7 +204,6 @@ function addOption(selects, table, className) {
         options.forEach(option => {
             let node = addNode(select, "option", option["name"]);
             let id = className.substring(0, className.length - 6) + "ID";
-            console.log(id);
             node.setAttribute(id, option[id]);
         });
     });
@@ -212,7 +212,6 @@ function addOption(selects, table, className) {
     button.classList.add("center");
     button = addNode(button, "button", "-");
     button.setAttribute("onClick", "removeOption('" + rowID + "')");
-    console.log(button.getAttribute("onClick"));
 }
 
 /**
