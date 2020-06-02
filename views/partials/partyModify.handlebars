@@ -1,17 +1,17 @@
 <table>
     <tr>
         <th>Name</th>
-        <td colspan=8><input type="text" id="name" value={{name}}></td>
+        <td colspan=8><input type="text" id="name" value="{{name}}"></td>
     </tr>
-    <tbody id="memberSelects">
+    <tbody id="characterSelects">
         <tr>
-            <th colspan=8>Members</th>
+            <th colspan=8>Members <button onclick="addOption('characterSelects', 'Characters')">+</button></th>
         </tr>
         {{#each characters}}
-        <tr>
+        <tr id="c{{@index}}">
             <th>Character</th>
             <td colspan=4>
-                <select class="member" id="c{{@index}}">
+                <select class="characterSelect">
                     <option>None</option>
                     {{#each ../allCharacters}}
                     <option characterID={{this.characterID}}>{{this.name}}</option>
@@ -29,7 +29,7 @@
         <td class="center" colspan=3><button onclick="addParty()">Add Party</button></td>
         <td class="center" colspan=3><button onclick="loadParty({{partyID}})">Cancel</button></td>
         {{else}}
-        <td class="center" colspan=3><button onclick="confirmCharacter()">Confirm Changes</button></td>
+        <td class="center" colspan=3><button onclick="confirmParty({{partyID}})">Confirm Changes</button></td>
         <td class="center" colspan=3><button onclick="loadParty({{partyID}})">Cancel</button></td>
         {{/if}}
     </tr>

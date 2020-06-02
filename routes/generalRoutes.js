@@ -134,7 +134,6 @@ router.post('/table_insert', function (req, res) {
     let element = JSON.parse(req.get('element'));
 
     sqlFunctions.insertIntoTable(table, element).then(function (response) {
-        console.log(response);
         res.json(response);
     });
 

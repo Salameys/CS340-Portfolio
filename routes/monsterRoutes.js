@@ -30,29 +30,28 @@ router.get('/monsterDisplay', function (req, res) {
         context['add'] = true;
         res.render('partials/monsterModify', context);
       })
-    }
-    else {
+    } else {
       sqlFunctions.getTable('Monsters', 'monsterID=' + monsterID).then(function (monster) {
         for(let key in monster[0]) {
           context[key] = monster[0][key];
         }
-      })
-      .then(sqlFunctions.getTable('Monster_Ability', 'monsterID=' + monsterID).then(function (abilities) {
-        context['abilities'] = [];
-        for (i = 0; i < abilities.length; i++) {
-          let ability = context['allAbilities'].find(ability => ability.abilityID == abilities[i].abilityID);
-          context["abilities"].push(ability);
-        }
-      }))
-      .then(sqlFunctions.getTable('Monster_Biome', 'monsterID=' + monsterID).then(function (biomes) {
-          context['biomes'] = [];
-          for (i = 0; i < biomes.length; i++) {
-            let biome = context["allBiomes"].find(biome => biome.biomeID == biomes[i].biomeID);
-            context["biomes"].push(biome);
+        sqlFunctions.getTable('Monster_Ability', 'monsterID=' + monsterID).then(function (abilities) {
+          context['abilities'] = [];
+          for (i = 0; i < abilities.length; i++) {
+            let ability = context['allAbilities'].find(ability => ability.abilityID == abilities[i].abilityID);
+            context["abilities"].push(ability);
           }
-          if(mode == "display") res.render('partials/monsterDisplay', context);
-          if(mode == "modify") res.render('partials/monsterModify', context);
-      }))
+          sqlFunctions.getTable('Monster_Biome', 'monsterID=' + monsterID).then(function (biomes) {
+            context['biomes'] = [];
+            for (i = 0; i < biomes.length; i++) {
+              let biome = context["allBiomes"].find(biome => biome.biomeID == biomes[i].biomeID);
+              context["biomes"].push(biome);
+            }
+            if(mode == "display") res.render('partials/monsterDisplay', context);
+            if(mode == "modify") res.render('partials/monsterModify', context);
+          });
+        });
+      });
     }
   });
 });
@@ -61,10 +60,11 @@ router.post('/monsterInsert', function (req, res) {
   let monster = JSON.parse(req.get('monster'));
   let abilities = monster.abilities;
   let biomes = monster.biomes;
-  delete mosnter.abilities;
+  delete monster.abilities;
   delete monster.biomes;
 
   sqlFunctions.insertIntoTable('Monsters', monster).then(function (response) {
+    monster.monsterID = response.insertId;
     abilities.forEach(ability => {
       sqlFunctions.insertIntoTable('Monster_Ability', {monsterID:monster.monsterID, abilityID:ability});
     });
@@ -79,30 +79,33 @@ router.post('/monsterInsert', function (req, res) {
 
 router.post('/monsterModify', function (req, res) {
   let monster = JSON.parse(req.get('monster'));
-  let abilities = monster.abilities;
-  let biomes = monster.biomes;
+  let abilities = sqlFunctions.parseStringArrayToInt(monster.abilities);
+  let biomes = sqlFunctions.parseStringArrayToInt(monster.biomes);
   delete monster.abilities;
-    delete monster.biomes;
+  delete monster.biomes;
 
-    sqlFunctions.updateTable('Monsters', 'monsterID', monster.monsterID, monster).then(function () {
-    });
+  console.log(abilities);
+  console.log(biomes);
+
+  sqlFunctions.updateTable('Monsters', 'monsterID', monster.monsterID, monster).then(function () {
+  });
 
   sqlFunctions.getTable('Monster_Ability', "monsterID=" + monster.monsterID).then(function (response) {
     oldAbilities = [];
     response.forEach(relationship => {
-      oldAbilities.push(relationship.abilityID);
+      oldAbilities.push(Number.parseInt(relationship.abilityID));
     });
 
     oldAbilities.forEach(oldAbility => {
       if(!abilities.includes(oldAbility)) {
-        console.log("Deleting " + oldAbility);
+        console.log("Deleting abilityID " + oldAbility);
         mysql.pool.query('DELETE FROM Monster_Ability WHERE monsterID=' + monster.monsterID + " AND abilityID=" + oldAbility);
       };
     });
     
     abilities.forEach(ability => {
       if(!oldAbilities.includes(ability)) {
-        console.log("Adding " + ability);
+        console.log("Adding abilityID " + ability);
         sqlFunctions.insertIntoTable('Monster_Ability', {monsterID:monster.monsterID, abilityID:ability});
       }
     });
@@ -111,25 +114,26 @@ router.post('/monsterModify', function (req, res) {
   sqlFunctions.getTable('Monster_Biome', "monsterID=" + monster.monsterID).then(function (response) {
     oldBiomes = [];
     response.forEach(relationship => {
-      oldBiomes.push(relationship.biomeID);
+      oldBiomes.push(Number.parseInt(relationship.biomeID));
     });
+    console.log(oldBiomes);
 
     oldBiomes.forEach(oldBiome => {
       if(!biomes.includes(oldBiome)) {
-        console.log("Deleting " + oldBiome);
+        console.log("Deleting biomeID " + oldBiome);
         mysql.pool.query('DELETE FROM Monster_Biome WHERE monsterID=' + monster.monsterID + " AND biomeID=" + oldBiome);
-      };
+      }
     });
     
     biomes.forEach(biome => {
       if(!oldBiomes.includes(biome)) {
-        console.log("Adding " + biome);
+        console.log("Adding biomeID " + biome);
         sqlFunctions.insertIntoTable('Monster_Biome', {monsterID:monster.monsterID, biomeID:biome});
       }
     });
   });
 
-  res.json();
+  res.json(monster);
 });
 
 module.exports = router;

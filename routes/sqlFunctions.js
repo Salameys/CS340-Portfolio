@@ -91,4 +91,12 @@ function updateTable(table, element, elementID, body) {
     });
 };
 
-  module.exports = {getTable, insertIntoTable, updateTable};
+function parseStringArrayToInt(array) {
+    let outcart = [];
+    array.forEach(index => {
+        outcart.push(Number.parseInt(index));
+    })
+    return outcart;
+}
+
+  module.exports = {getTable, insertIntoTable, updateTable, parseStringArrayToInt};

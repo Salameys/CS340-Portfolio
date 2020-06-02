@@ -1,15 +1,15 @@
 <table>
     <tr>
         <th>Name</th>
-        <td colspan=5><input id="name" type="text" value={{name}} ></td>
+        <td colspan=5><input id="name" type="text" value="{{name}}"></td>
     </tr>
     <tr>
         <th>Type</th>
-        <td colspan=5><input id="type" type="text" value={{type}} ></td>
+        <td colspan=5><input id="type" type="text" value="{{type}}"></td>
     </tr>
     <tr>
         <th>Desc.</th>
-        <td colspan=5><input id="description" type="text" value={{description}} ></td>
+        <td colspan=5><input id="description" type="text" value="{{description}}"></td>
     </tr>
     <tr>
         <th>CR</th>
@@ -22,8 +22,8 @@
     <tr>
         <td class="center"><input id="challenge" type="number" value={{challenge}} onchange="minimum(this, 0, false)"></td>
         <td class="center"><input id="armor_class" type="number" value={{armor_class}} onchange="minimum(this, 0)"></td>
-        <td class="center"><input id="hit_dice" type="text" value={{hit_dice}} ></td>
-        <td class="center"><input id="alignment" type="text" value={{alignment}} ></td>
+        <td class="center"><input id="hit_dice" type="text" value="{{hit_dice}}"></td>
+        <td class="center"><input id="alignment" type="text" value="{{alignment}}"></td>
         <td class="center"><input id="speed" type="number" value={{speed}} onchange="minimum(this, 0)"></td>
         <td class="center"><input id="fly_speed" type="number" {{#if fly_speed}}value={{fly_speed}}{{else}}value="-1"{{/if}} onchange="minimum(this, -1)"></td>
     </tr>
@@ -45,7 +45,7 @@
     </tr>
     <tr>
         <th>Source</th>
-        <td colspan=5><input id="source_book" type="text" value={{source_book}} ></td>
+        <td colspan=5><input id="source_book" type="text" value="{{source_book}}" ></td>
     </tr>
     <tbody id="abilitySelects">
         <tr>

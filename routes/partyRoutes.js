@@ -105,4 +105,45 @@ router.get('/partyDisplay', function (req, res) {
   })
 });
 
+router.get('/partyInsert', function (req, res) {
+  let party = JSON.parse(req.get('party'));
+  let members = party.members;
+  delete party.members;
+
+  sqlFunctions.insertIntoTable('Parties', party).then(function () {
+    res.json(response);
+  });
+
+  sqlFunctions.getTable('Characters').then(function (characters) {
+    character.forEach(character => {if (members.includes(character.characterID)) {
+        character[partyID] = party.partyID;
+      }
+    });
+  });
+});
+
+router.get('/partyModify', function (req, res) {
+  let party = JSON.parse(req.get('party'));
+  let members = party.members;
+  delete party.members;
+  console.log(party);
+  sqlFunctions.updateTable('Parties', 'partyID', party.partyID, party).then(function () {
+    sqlFunctions.getTable('Characters').then(function (characters) {
+      character.forEach(character => {
+        if(
+          character.partyID &&                      //Character has a party
+          character.partyID == party.partyID &&     //The party is this party
+          !members.includes(character.characterID)  //The character is no longer on the member list
+        ) {
+          delete character.partyID;
+        } else if (members.includes(character.characterID)) {
+          character[partyID] = party.partyID;
+        }
+      });
+      
+      res.json(party);
+    });
+  });
+});
+
   module.exports = router;

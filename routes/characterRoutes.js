@@ -67,25 +67,26 @@ router.get('/characterDisplay', function (req, res) {
     }
     //Display or modify table with provided characterID reference
     else { 
-      //Populate party name via party ID
+      //Populate character data
       sqlFunctions.getTable('Characters', 'characterID=' + characterID).then(function (character) {
         for(let key in character[0]) {
           context[key] = character[0][key];
         }
+        //Insert party name if partyID attribute exists
         if(context.partyID) {
-          context.party = context["parties"].find(party => party.partyID = context.partyID).name;
+          context.party = context["parties"].find(party => party.partyID == context.partyID).name;
         }
-      })
-      //Load list of monsters encountered and replace monsterIDs with monster objects
-      .then(sqlFunctions.getTable('Character_Monster', "characterID=" + characterID).then(function(monsters) {
-        context["monsters"] = [];
-        for (i = 0; i < monsters.length; i++) {
-          let monster = context["allMonsters"].find(monster => monster.monsterID == monsters[i].monsterID);
-          context["monsters"].push(monster);
-        }
-        if(mode == "display") res.render('partials/characterDisplay', context);
-        if(mode == "modify") res.render('partials/characterModify', context);
-      }));
+        //Load list of monsters encountered and replace monsterIDs with monster objects
+        sqlFunctions.getTable('Character_Monster', "characterID=" + characterID).then(function(monsters) {
+          context["monsters"] = [];
+          for (i = 0; i < monsters.length; i++) {
+            let monster = context["allMonsters"].find(monster => monster.monsterID == monsters[i].monsterID);
+            context["monsters"].push(monster);
+          }
+          if(mode == "display") res.render('partials/characterDisplay', context);
+          if(mode == "modify") res.render('partials/characterModify', context);
+        })
+      });
     }
   });
 });
@@ -96,6 +97,7 @@ router.post('/characterInsert', function (req, res) {
   delete character.monsters;
 
   sqlFunctions.insertIntoTable('Characters', character).then(function (response) {
+      character.characterID = JSON.parse(response).insertId;
       monsters.forEach(monster => {
         sqlFunctions.insertIntoTable('Character_Monster', {characterID:character.characterID, monsterID:monster});
       });
@@ -106,10 +108,10 @@ router.post('/characterInsert', function (req, res) {
 router.post('/characterModify', function (req, res) {
   let character = JSON.parse(req.get('character'));
   let monsters = character.monsters;
-    delete character.monsters;
+  delete character.monsters;
 
-    sqlFunctions.updateTable('Characters', 'characterID', character.characterID, character).then(function () {
-    });
+  sqlFunctions.updateTable('Characters', 'characterID', character.characterID, character).then(function () {
+  });
 
   sqlFunctions.getTable('Character_Monster', "characterID=" + character.characterID).then(function (response) {
     oldMonsters = [];
@@ -133,7 +135,7 @@ router.post('/characterModify', function (req, res) {
     });
   });
 
-  res.json();
+  res.json(character);
 });
 
 module.exports = router;

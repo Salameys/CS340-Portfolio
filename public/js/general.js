@@ -191,7 +191,9 @@ function addOption(selects, table) {
     let rowID = table.substring(0, 1) + index;  //Would cause a collision if two tables related to entity had the same first letter
     let row = addNode(tbody, "tr");
     row.setAttribute("id", rowID);
-    addNode(row, "th", table.substring(0, table.length - 1));
+    let header = className.substring(0, className.length - 6);
+    header = header.charAt(0).toUpperCase() + header.slice(1);
+    addNode(row, "th", header);
 
     let select = addNode(row, "td");
     select.setAttribute("colspan", 4); //May need to be changed if something without stats has a relationship box
@@ -203,7 +205,7 @@ function addOption(selects, table) {
         let options = JSON.parse(request.responseText);
         options.forEach(option => {
             let node = addNode(select, "option", option["name"]);
-            let id = className.substring(0, className.length - 6) + "ID";
+            let id = header.toLocaleLowerCase() + "ID";
             node.setAttribute(id, option[id]);
         });
     });
