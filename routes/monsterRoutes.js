@@ -64,7 +64,7 @@ router.post('/monsterInsert', function (req, res) {
   delete monster.biomes;
 
   sqlFunctions.insertIntoTable('Monsters', monster).then(function (response) {
-    monster.monsterID = response.insertId;
+    monster.monsterID = JSON.parse(response).insertId;
     abilities.forEach(ability => {
       sqlFunctions.insertIntoTable('Monster_Ability', {monsterID:monster.monsterID, abilityID:ability});
     });
