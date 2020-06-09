@@ -35,7 +35,7 @@ return new Promise(function(resolve, reject) {
 
     for (let key in element) {
         keys.push(key);
-        values.push("'" + element[key] + "'");
+        values.push('"' + element[key] + '"');
     }
 
     queryString = "INSERT INTO " + table;
@@ -72,7 +72,7 @@ function updateTable(table, attributeKey, attributeValue, element) {
             if(element[key] == null) {
                 values.push("null");
             } else {
-                values.push("'" + element[key] + "'");
+                values.push('"' + element[key] + '"');
             }
         }
 
