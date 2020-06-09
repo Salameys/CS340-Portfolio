@@ -121,8 +121,8 @@ INSERT INTO `Monsters` (`name`, `description`, `type`,
 `fly_speed`, `strength`, `dexterity`, `constitution`,
 `intelligence`, `wisdom`, `charisma`, `challenge`, `source_book`) 
 VALUES ("Ancient White Dragon", "Terrifying beast of old", "Dragon", "CE", "20", "18d20", "40", "80", "26", "10", "26", "10", "13", "14", "20", "MM"),
-('Cat', 'Meow', 'Tiny', 'Beast', 'CN', '12', '1d4', '40', '0', '3', '15', '10', '3','12', '7', '0', 'PHB'),
-('Lich', 'Super Evil, Super Undead, Lots of Magic, WOW', 'Medium', 'Undead', 'EE', '17', '18d8', '30', '0', '11', '16', '16', '20', '14', '16', '21', 'MM');
+('Cat', 'Meow', 'Beast', 'CN', '12', '1d4', '40', '0', '3', '15', '10', '3','12', '7', '0', 'PHB'),
+('Lich', 'Super Evil, Super Undead, Lots of Magic, WOW', 'Undead', 'EE', '17', '18d8', '30', '0', '11', '16', '16', '20', '14', '16', '21', 'MM');
 
 INSERT INTO `Characters` (`name`, `race`, `level`, `class`, `strength`,
 `dexterity`, `constitution`, `intelligence`, `wisdom`, `charisma`, `partyID`)
