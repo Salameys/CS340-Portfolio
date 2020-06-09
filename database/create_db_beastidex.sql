@@ -11,7 +11,6 @@ CREATE TABLE `Monsters` (
 `monsterID` int(11) NOT NULL AUTO_INCREMENT,
 `name` varchar(255) NOT NULL,
 `description` varchar(255) NOT NULL,
-`size` varchar(255) NOT NULL,
 `type` varchar(255) NOT NULL,
 `alignment` varchar(2) NOT NULL,
 `armor_class` int NOT NULL,
@@ -117,11 +116,11 @@ VALUES ('Database Comrades'),
 ('Mighty Nein'),
 ('The Fellowship');
 
-INSERT INTO `Monsters` (`name`, `description`, `size`, `type`, 
+INSERT INTO `Monsters` (`name`, `description`, `type`, 
 `alignment`, `armor_class`, `hit_dice`, `speed`, 
 `fly_speed`, `strength`, `dexterity`, `constitution`,
 `intelligence`, `wisdom`, `charisma`, `challenge`, `source_book`) 
-VALUES ("Ancient White Dragon", "Terrifying beast of old", "Gargantuan", "Dragon", "CE", "20", "18d20", "40", "80", "26", "10", "26", "10", "13", "14", "20", "MM"),
+VALUES ("Ancient White Dragon", "Terrifying beast of old", "Dragon", "CE", "20", "18d20", "40", "80", "26", "10", "26", "10", "13", "14", "20", "MM"),
 ('Cat', 'Meow', 'Tiny', 'Beast', 'CN', '12', '1d4', '40', '0', '3', '15', '10', '3','12', '7', '0', 'PHB'),
 ('Lich', 'Super Evil, Super Undead, Lots of Magic, WOW', 'Medium', 'Undead', 'EE', '17', '18d8', '30', '0', '11', '16', '16', '20', '14', '16', '21', 'MM');
 

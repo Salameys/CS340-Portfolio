@@ -3,11 +3,13 @@
     "",
     "\\database",
     "\\public",
+    "\\public\\css",
     "\\public\\js",
+    "\\routes",
     "\\views",
     "\\views\\layouts",
     "\\views\\partials"
   ],
-  "SelectedNode": "\\public\\js\\character.js",
+  "SelectedNode": "\\views\\biomes.handlebars",
   "PreviewInSolutionExplorer": false
 }

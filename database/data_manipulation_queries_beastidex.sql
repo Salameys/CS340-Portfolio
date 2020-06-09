@@ -3,17 +3,17 @@
 -- SQL calls that relate to `Monsters` table
 
 -- Get all data for a monster
-SELECT `monsterID`, `name`, `description`, `size`, `type`, `alignment`, `armor_class`, `hit_dice`, `speed`, `fly_speed`, `strength`,
+SELECT `monsterID`, `name`, `description`, `type`, `alignment`, `armor_class`, `hit_dice`, `speed`, `fly_speed`, `strength`,
 `dexterity`, `constitution`, `intelligence`, `wisdom`, `charisma`, `challenge`, `source_book` FROM `Monsters`
 
 -- Add a new monster to `Monsters` table
-INSERT INTO `Monsters` (`name`, `description`, `size`, `type`, `alignment`, `armor_class`, `hit_dice`, `speed`, `fly_speed`, `strength`,
+INSERT INTO `Monsters` (`name`, `description`, `type`, `alignment`, `armor_class`, `hit_dice`, `speed`, `fly_speed`, `strength`,
 `dexterity`, `constitution`, `intelligence`, `wisdom`, `charisma`, `challenge`, `source_book`)
-VALUES (:nameInput, :descriptionInput, :sizeInput, :typeInput, :alignmentInput, :armor_classInput, :hit_diceInput, :speedInput, :fly_speedInput,
+VALUES (:nameInput, :descriptionInput, :typeInput, :alignmentInput, :armor_classInput, :hit_diceInput, :speedInput, :fly_speedInput,
 :strengthInput, :dexterityInput, :constitutionInput, :intelligenceInput, :wisdomInput, :charismaInput, :challengeInput, :source_bookInput);
 
 -- Update a monster from the row selected by User
-UPDATE `Monsters` SET `name` = :nameInput, `description` = :descriptionInput, `size` = :sizeInput, `type` = :typeInput, `alignment` = alignmentInput, 
+UPDATE `Monsters` SET `name` = :nameInput, `description` = :descriptionInput, `type` = :typeInput, `alignment` = alignmentInput, 
 `armor_class` = :armor_classInput, `hit_dice` = :hit_diceInput, `speed` = :speedInput, `fly_speed` = :fly_speedInput, `strength` = :strengthInput,
 `dexterity` = :dexterityInput, `constitution` = :constitutionInput, `intelligence` = :intelligenceInput, `wisdom` = :wisdomInput, 
 `charisma` = :charismaInput, `challenge` =:challengeInput, `source_book` = :source_bookInput WHERE monsterID= monsterID_of_selected_row;
