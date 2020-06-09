@@ -47,7 +47,7 @@ return new Promise(function(resolve, reject) {
         if (err) {
             reject(Error(err))
         } else {
-            resolve(JSON.parse(JSON.stringify(rows)));
+            resolve(rows);
         }
     });
 });

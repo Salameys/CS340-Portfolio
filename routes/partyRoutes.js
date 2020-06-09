@@ -25,7 +25,7 @@ router.delete('/delete_party', function (req, res) {
             if (err) {
                 reject(Error(err))
             } else {
-                resolve(JSON.parse(JSON.stringify(rows)));
+                resolve(rows);
             }
         });
 
@@ -37,7 +37,7 @@ router.delete('/delete_party', function (req, res) {
             if (err) {
                 reject(Error(err))
             } else {
-                resolve(JSON.parse(JSON.stringify(rows)));
+                resolve(rows);
             }
         });
     })
@@ -110,18 +110,22 @@ router.get('/partyDisplay', function (req, res) {
 
 router.post('/partyInsert', function (req, res) {
   let party = JSON.parse(req.get('party'));
-  let members = party.members;
+  let members = sqlFunctions.parseStringArrayToInt(party.members);
   delete party.members;
+  console.log(party);
 
-  sqlFunctions.insertIntoTable('Parties', party).then(function () {
-    res.json(response);
-  });
-
-  sqlFunctions.getTable('Characters').then(function (characters) {
-    character.forEach(character => {if (members.includes(character.characterID)) {
-        character[partyID] = party.partyID;
-      }
+  sqlFunctions.insertIntoTable('Parties', party).then(function (response) {
+    party.partyID = response.insertId;
+    sqlFunctions.getTable('Characters').then(function (characters) {
+      characters.forEach(character => {
+        if (members.includes(Number.parseInt(character.characterID))) {
+          character['partyID'] = party.partyID;
+          sqlFunctions.updateTable('Characters', 'characterID', character.characterID, character);
+        }
+      });
     });
+
+    res.json(response);
   });
 });
 
@@ -142,14 +146,13 @@ router.post('/partyModify', function (req, res) {
         if(
           character.partyID &&                      //Character has a party
           character.partyID == party.partyID &&     //The party is this party
-          !members.includes(characterID)  //The character is no longer on the member list
+          !members.includes(characterID)            //The character is no longer on the member list
         ) {
           console.log("Removing " + character.name + " from " + party.name);
           delete character.partyID;
         } else if (members.includes(characterID)) {
           console.log("Adding " + character.name + " to " + party.name);
           character['partyID'] = partyID;
-          console.log(character);
           sqlFunctions.updateTable('Characters', 'characterID', character.characterID, character);
         }
       });

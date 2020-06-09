@@ -92,11 +92,11 @@ router.get('/characterDisplay', function (req, res) {
  */
 router.post('/characterInsert', function (req, res) {
   let character = JSON.parse(req.get('character'));
-  let monsters = character.monsters;
+  let monsters = sqlFunctions.parseStringArrayToInt(character.monsters);
   delete character.monsters;
 
   sqlFunctions.insertIntoTable('Characters', character).then(function (response) {
-      character.characterID = JSON.parse(response).insertId;
+      character.characterID = response.insertId;
       monsters.forEach(monster => {
         sqlFunctions.insertIntoTable('Character_Monster', {characterID:character.characterID, monsterID:monster});
       });
@@ -112,7 +112,7 @@ router.post('/characterModify', function (req, res) {
   if(!character.partyID) {
     character.partyID = null;
   }
-  let monsters = character.monsters;
+  let monsters = sqlFunctions.parseStringArrayToInt(character.monsters);
   delete character.monsters;
 
   sqlFunctions.updateTable('Characters', 'characterID', character.characterID, character).then(function () {
