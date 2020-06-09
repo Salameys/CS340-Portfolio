@@ -23,18 +23,19 @@ function getTable (table, where = false, orderBy = false) {
   };
 
 /**
- * Inserts new row into table
- *
+ * 
+ * @param {string} table Name of table in database
+ * @param {Object} element JSON object 
  */
-function insertIntoTable (table, body) {
+function insertIntoTable (table, element) {
 return new Promise(function(resolve, reject) {
     let keys = [];
     let values = [];
     let queryString = '';
 
-    for (let key in body) {
+    for (let key in element) {
         keys.push(key);
-        values.push("'" + body[key] + "'");
+        values.push("'" + element[key] + "'");
     }
 
     queryString = "INSERT INTO " + table;
@@ -52,33 +53,41 @@ return new Promise(function(resolve, reject) {
 });
 };
 
-function updateTable(table, element, elementID, body) {
+/**
+ * Updates all passed key/value pairs of an element in a given table. It is
+ * safe to pass the elementID key/value pair so long as they are unchanged.
+ * @param {string} table Name of table in database
+ * @param {string} attributeKey Name of ID attribute
+ * @param {string} attributeValue Value of ID attribute
+ * @param {Object} element Object containing element data
+ */
+function updateTable(table, attributeKey, attributeValue, element) {
     return new Promise(function (resolve, reject) {
         let keys = [];
         let values = [];
         let queryString = '';
 
-        for (let key in body) {
+        for (let key in element) {
             keys.push(key);
-            values.push("'" + body[key] + "'");
+            if(element[key] == null) {
+                values.push("null");
+            } else {
+                values.push("'" + element[key] + "'");
+            }
         }
 
         queryString = "UPDATE " + table;
         queryString += " SET "
         //For loop so that the proper keys and values are matched up
-        //keys.length-1 so the characterID isn't touched
-        for (i = 0; i < (keys.length - 1); i++) {
-            queryString += keys[i] + '=';
+        for (i = 0; i < keys.length; i++) {
+            queryString += keys[i] + '=' + values[i];
             //If/else used to ensure proper SQL syntax
-            if ((i+1) == (keys.length-1)) {
-                queryString += values[i];
-            }
-            else {
-                queryString += values[i] + ', ';
+            if ((i+1) < keys.length) {
+                queryString += ', ';
             }
         }
-        queryString += " WHERE " + element;
-        queryString += "=" + elementID;
+        queryString += " WHERE " + attributeKey;
+        queryString += "=" + attributeValue;
         console.log(queryString);
 
         mysql.pool.query(queryString, function (err, rows, fields) {
@@ -91,6 +100,10 @@ function updateTable(table, element, elementID, body) {
     });
 };
 
+/**
+ * Converts an array of numbers saved as strings into Number primatives
+ * @param {Array} array 
+ */
 function parseStringArrayToInt(array) {
     let outcart = [];
     array.forEach(index => {

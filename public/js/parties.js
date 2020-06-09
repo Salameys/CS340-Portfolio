@@ -93,16 +93,14 @@ function confirmParty(partyID) {
     console.log(party);
 
     let request = new XMLHttpRequest();
-    request.open('delete', '/partyModify');
+    request.open('post', '/partyModify');
     request.setRequestHeader('partyID', partyID);
-    request.setRequestHeader('party', party);
+    request.setRequestHeader('party', JSON.stringify(party));
     request.addEventListener("load", response => {
-        let list = document.getElementById("list");
-        list.innerHTML = request.responseText;
+        loadParty(partyID);
+        listParties();
     })
     request.send();
-
-    listParties();
 }
 
 function deleteParty(partyID) {

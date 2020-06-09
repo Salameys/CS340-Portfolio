@@ -39,7 +39,6 @@ router.delete('/delete_party', function (req, res) {
                 resolve(JSON.parse(JSON.stringify(rows)));
             }
         });
-
     })
 });
 
@@ -61,20 +60,22 @@ router.get('/partyList', function (req, res) {
     context['parties'].forEach(
       party => party['members'] = 0
     );
-  }).then(sqlFunctions.getTable('Characters', false).then(function (characters) {
-    characters.forEach(character => {
-      if(character.partyID) {
-        try {
-          let party = context['parties'].find(party => party.partyID == character.partyID);
-          party['members'] += 1;
+    
+    sqlFunctions.getTable('Characters', false).then(function (characters) {
+      characters.forEach(character => {
+        if(character.partyID) {
+          try {
+            let party = context['parties'].find(party => party.partyID == character.partyID);
+            party['members'] += 1;
+          }
+          catch (err) {
+            console.log(character.name + " has no party.");
+          }
         }
-        catch (err) {
-          console.log(character.name + " has no party.");
-        }
-      }
+      });
+      res.render('partials/partyList', context);
     });
-    res.render('partials/partyList', context);
-  }));
+  });
 });
 
 router.get('/partyDisplay', function (req, res) {
@@ -96,16 +97,17 @@ router.get('/partyDisplay', function (req, res) {
         for(let key in party[0]) {
           context[key] = party[0][key];
         }
-      }).then(sqlFunctions.getTable('Characters', "partyID=" + partyID, "name").then(function (characters) {
-        context['characters'] = characters;
-        if(mode == "modify") res.render('partials/partyModify', context);
-        if(mode == "display") res.render('partials/partyDisplay', context);
-      }));
+        sqlFunctions.getTable('Characters', "partyID=" + partyID, "name").then(function (characters) {
+          context['characters'] = characters;
+          if(mode == "modify") res.render('partials/partyModify', context);
+          if(mode == "display") res.render('partials/partyDisplay', context);
+        });
+      });
     }
   })
 });
 
-router.get('/partyInsert', function (req, res) {
+router.post('/partyInsert', function (req, res) {
   let party = JSON.parse(req.get('party'));
   let members = party.members;
   delete party.members;
@@ -122,22 +124,32 @@ router.get('/partyInsert', function (req, res) {
   });
 });
 
-router.get('/partyModify', function (req, res) {
+/**
+ * Modifies a party which already exists. Uses an updated member list to alter the partyID fk in characters.
+ */
+router.post('/partyModify', function (req, res) {
   let party = JSON.parse(req.get('party'));
-  let members = party.members;
+  let partyID = req.get("partyID");
+  let members = sqlFunctions.parseStringArrayToInt(party.members);
   delete party.members;
-  console.log(party);
-  sqlFunctions.updateTable('Parties', 'partyID', party.partyID, party).then(function () {
+  console.log(members);
+
+  sqlFunctions.updateTable('Parties', 'partyID', partyID, party).then(function () {
     sqlFunctions.getTable('Characters').then(function (characters) {
-      character.forEach(character => {
+      characters.forEach(character => {
+        let characterID = Number.parseInt(character.characterID);
         if(
           character.partyID &&                      //Character has a party
           character.partyID == party.partyID &&     //The party is this party
-          !members.includes(character.characterID)  //The character is no longer on the member list
+          !members.includes(characterID)  //The character is no longer on the member list
         ) {
+          console.log("Removing " + character.name + " from " + party.name);
           delete character.partyID;
-        } else if (members.includes(character.characterID)) {
-          character[partyID] = party.partyID;
+        } else if (members.includes(characterID)) {
+          console.log("Adding " + character.name + " to " + party.name);
+          character['partyID'] = partyID;
+          console.log(character);
+          sqlFunctions.updateTable('Characters', 'characterID', character.characterID, character);
         }
       });
       
@@ -146,4 +158,4 @@ router.get('/partyModify', function (req, res) {
   });
 });
 
-  module.exports = router;
+module.exports = router;

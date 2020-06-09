@@ -48,49 +48,48 @@ router.get('/characterDisplay', function (req, res) {
   //Load list of all monsters
   sqlFunctions.getTable('Monsters', false, "name").then(function (monsters) {
     context['allMonsters'] = monsters;
-  })
 
-  //Load list of all parties
-  .then(sqlFunctions.getTable('Parties', false, "name").then(function (parties) {
-    context["parties"] = parties;
-  }))
-
-  //Actually do stuff
-  .then(function () {
-    //Render the add table with the first character of the table for reference if cancelled
-    if(mode == "add") {
-      sqlFunctions.getTable('Characters').then(function (characters) {
-        context['characterID'] = characters[0].characterID;
-        context['add'] = true;
-        res.render('partials/characterModify', context);
-      });
-    }
-    //Display or modify table with provided characterID reference
-    else { 
-      //Populate character data
-      sqlFunctions.getTable('Characters', 'characterID=' + characterID).then(function (character) {
-        for(let key in character[0]) {
-          context[key] = character[0][key];
-        }
-        //Insert party name if partyID attribute exists
-        if(context.partyID) {
-          context.party = context["parties"].find(party => party.partyID == context.partyID).name;
-        }
-        //Load list of monsters encountered and replace monsterIDs with monster objects
-        sqlFunctions.getTable('Character_Monster', "characterID=" + characterID).then(function(monsters) {
-          context["monsters"] = [];
-          for (i = 0; i < monsters.length; i++) {
-            let monster = context["allMonsters"].find(monster => monster.monsterID == monsters[i].monsterID);
-            context["monsters"].push(monster);
+    sqlFunctions.getTable('Parties', false, "name").then(function (parties) {
+      context["parties"] = parties;
+      
+      //Render the add table with the first character of the table for reference if cancelled
+      if(mode == "add") {
+        sqlFunctions.getTable('Characters').then(function (characters) {
+          context['characterID'] = characters[0].characterID;
+          context['add'] = true;
+          res.render('partials/characterModify', context);
+        });
+      }
+      //Display or modify table with provided characterID reference
+      else { 
+        //Populate character data
+        sqlFunctions.getTable('Characters', 'characterID=' + characterID).then(function (character) {
+          for(let key in character[0]) {
+            context[key] = character[0][key];
           }
-          if(mode == "display") res.render('partials/characterDisplay', context);
-          if(mode == "modify") res.render('partials/characterModify', context);
-        })
-      });
-    }
+          //Insert party name if partyID attribute exists
+          if(context.partyID) {
+            context.party = context["parties"].find(party => party.partyID == context.partyID).name;
+          }
+          //Load list of monsters encountered and replace monsterIDs with monster objects
+          sqlFunctions.getTable('Character_Monster', "characterID=" + characterID).then(function(monsters) {
+            context["monsters"] = [];
+            for (i = 0; i < monsters.length; i++) {
+              let monster = context["allMonsters"].find(monster => monster.monsterID == monsters[i].monsterID);
+              context["monsters"].push(monster);
+            }
+            if(mode == "display") res.render('partials/characterDisplay', context);
+            if(mode == "modify") res.render('partials/characterModify', context);
+          })
+        });
+      }
+    });
   });
 });
 
+/**
+ * Creates a new character, passed in the request header, in the database
+ */
 router.post('/characterInsert', function (req, res) {
   let character = JSON.parse(req.get('character'));
   let monsters = character.monsters;
@@ -105,8 +104,14 @@ router.post('/characterInsert', function (req, res) {
   });
 });
 
+/**
+ * Updates a character in the database with the given data in the header
+ */
 router.post('/characterModify', function (req, res) {
   let character = JSON.parse(req.get('character'));
+  if(!character.partyID) {
+    character.partyID = null;
+  }
   let monsters = character.monsters;
   delete character.monsters;
 
