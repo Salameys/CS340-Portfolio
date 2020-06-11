@@ -10,6 +10,6 @@
     "\\views\\layouts",
     "\\views\\partials"
   ],
-  "SelectedNode": "\\views\\biomes.handlebars",
+  "SelectedNode": "\\database\\data_manipulation_queries_beastidex.sql",
   "PreviewInSolutionExplorer": false
 }

@@ -3,6 +3,12 @@ window.addEventListener("DOMContentLoaded", event => {
     listElements('Abilities', 'abilityList');
 });
 
+/**
+ * Function deletes a specific ability based
+ * on the selected abilityID
+ * @param {any} abilityID
+ */
+
 function deleteAbility(abilityID) {
     let request = new XMLHttpRequest();
     request.open('delete', '/table_delete');

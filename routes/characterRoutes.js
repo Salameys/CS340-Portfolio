@@ -4,6 +4,9 @@ var express = require('express');
 var router = express.Router();
 var mysql = require('../dbcon.js');
 
+/**
+ * Route to display the character page
+ */
 router.get('/characters', function (req, res) {
   let context = {
     title:"Characters",
@@ -12,6 +15,9 @@ router.get('/characters', function (req, res) {
   res.render('characters', context)
 });
 
+/**
+ * Route to list the characters in a table from a database
+ */
 router.get('/characterList', function (req, res) {
   let context = {layout:false};
 

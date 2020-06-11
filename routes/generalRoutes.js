@@ -4,12 +4,20 @@ var express = require('express');
 var router = express.Router();
 var mysql = require('../dbcon.js');
 
+/**
+ * Route to retrieve the home page 
+ */
+
 router.get('/',function(req,res,next){
     var context = {
         title: "Beastidex"
     };
   res.render('home',context);
 });
+
+/**
+ * Route to retrieve the home page
+ */
 
 router.get('/index',function(req,res,next){
     var context = {
@@ -18,6 +26,9 @@ router.get('/index',function(req,res,next){
     res.render('home',context);
 });
 
+/**
+ * Route to retrieve the biomes page
+ */
 router.get('/biomes', function (req, res) {
   let context = {
       title:"Biomes",
@@ -26,6 +37,9 @@ router.get('/biomes', function (req, res) {
   res.render('biomes', context);
 });
 
+/**
+ * Route to retrieve the abilities page
+ */
 router.get('/abilities', function (req, res) {
     let context = {
         title:"Abilities",
@@ -34,6 +48,9 @@ router.get('/abilities', function (req, res) {
     res.render('abilities', context)
 });
 
+/**
+ * Route to retrieve the list of elements
+ */
 router.get('/elementList', function (req, res) {
   let context = {layout:false}
   let table = req.get('table');
@@ -56,6 +73,9 @@ router.get('/elementList', function (req, res) {
   });
 })
 
+/**
+ * Route to display all data for a selected element
+ */
 router.get('/elementDisplay', function (req, res) {
     let context = { layout: false };
     let table = req.get('table');
@@ -77,29 +97,6 @@ router.get('/elementDisplay', function (req, res) {
             res.render('partials/' + partial, context);
         });
     }
-});
-
-/*
-* Unsure if this is still necessary
-*/
-router.delete('/delete_relationship', function (req, res) {
-    return new Promise(function (resolve, reject) {
-        let characterID = req.get('characterID');
-        let monsterID = req.get('monsterID');
-
-        let queryString = 'DELETE FROM Character_Monster';
-        queryString += ' WHERE characterID=' + characterID;
-        queryString += ' AND monsterID=' + monsterID;
-        console.log(queryString);
-
-        mysql.pool.query(queryString, function (err, rows, fields) {
-            if (err) {
-                reject(Error(err))
-            } else {
-                resolve(JSON.parse(JSON.stringify(rows)));
-            }
-        });
-    })
 });
 
 /**
@@ -129,6 +126,9 @@ router.get('/table', function (req, res) {
 
 });
 
+/**
+ * Route to insert data into table within database as a JSON
+ */
 router.post('/table_insert', function (req, res) {
     let table = req.get('table');
     let element = JSON.parse(req.get('element'));
@@ -139,6 +139,9 @@ router.post('/table_insert', function (req, res) {
 
 });
 
+/**
+ * Route to modify data in a table within database as a JSON
+ */
 router.post('/table_modify', function (req, res) {
     let table = req.get('table');
     let element = JSON.parse(req.get('element'));
@@ -150,6 +153,9 @@ router.post('/table_modify', function (req, res) {
     });
 });
 
+/**
+ * Route to delete data in a table within database
+ */
 router.delete('/table_delete', function (req, res) {
     return new Promise(function (resolve, reject) {
         let table = req.get('table');

@@ -49,6 +49,11 @@ function loadMonster(monsterID, mode = "display") {
     request.send();
 }
 
+/**
+ * Constructs a monster object from table input data and
+ * returns that object
+ */
+
 function buildMonster() {
     //let formElements = document.getElementById("inputForm").elements;
     let keys = [
@@ -158,6 +163,11 @@ function confirmMonster(monsterID) {
 
     listElements('Monsters', 'monsterList');
 }
+
+/**
+ * Deletes a monster object from the table
+ * @param {number} monsterID
+ */
 
 function deleteMonster(monsterID) {
     let request = new XMLHttpRequest();

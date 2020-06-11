@@ -3,6 +3,12 @@ window.addEventListener("DOMContentLoaded", event => {
     loadParty(1);
 });
 
+/**
+ * Loads party data utilizing the characters table
+ * @param {number} partyID
+ * @param {string} mode
+ */
+
 function loadParty(partyID, mode = "display") {
     var request = new XMLHttpRequest();
 	request.open('get', '/partyDisplay');
@@ -32,6 +38,10 @@ function loadParty(partyID, mode = "display") {
     request.send();
 }
 
+/**
+ * Lists all parties
+ */
+
 function listParties() {
     let request = new XMLHttpRequest();
     request.open('get', '/partyList');
@@ -42,6 +52,10 @@ function listParties() {
     })
     request.send();
 }
+
+/**
+ * Creates a party object and returns that party
+ */
 
 function extractPartyData() {
     let party = { name: document.getElementById("name").value };
@@ -69,6 +83,10 @@ function extractPartyData() {
     return party;
 }
 
+/**
+ * Sends party object to the server to be added to the database
+ */
+
 function addParty() {
     let party = extractPartyData();
     if(!party) return; 
@@ -87,6 +105,11 @@ function addParty() {
     listParties();
 } 
 
+/**
+ * Sends the party object to be modified in the database
+ * @param {number} partyID
+ */
+
 function confirmParty(partyID) {
     let party = extractPartyData();
     if(!party) return;
@@ -102,6 +125,11 @@ function confirmParty(partyID) {
     })
     request.send();
 }
+
+/**
+ * Deletes a party object from the table
+ * @param {any} partyID
+ */
 
 function deleteParty(partyID) {
     let request = new XMLHttpRequest();

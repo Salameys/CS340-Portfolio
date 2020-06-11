@@ -23,7 +23,7 @@ function getTable (table, where = false, orderBy = false) {
   };
 
 /**
- * 
+ * Adds an element into the specified table utilizing INSERT INTO
  * @param {string} table Name of table in database
  * @param {Object} element JSON object 
  */

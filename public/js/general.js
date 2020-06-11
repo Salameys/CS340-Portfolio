@@ -22,6 +22,12 @@ function requestTable (table, func, orderBy = false, attributeKey = false, attri
     request.addEventListener("load", response => {func(request)});
 	request.send();
 }
+/**
+ * List all elements of a specific table
+ * @param {string} table
+ * @param {string} partial
+ * @param {string} attributeKey
+ */
 
 function listElements (table, partial, attributeKey) {
     var request = new XMLHttpRequest();
@@ -66,7 +72,7 @@ function loadElement (table, partial, attributeKey, attributeValue, mode = 'disp
 }
 
 /**
- * Assembles an element object from page data
+ * Assembles an element object from page data and returns the element
 * @param {string[]} mandatoryKeys element keys which are required
 * @param {string[]} optionalKeys element keys which can be ignored
  */

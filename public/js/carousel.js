@@ -2,6 +2,10 @@ var imgIndex = 1;
 var imgTimer;
 var imgSlides;
 
+/**
+ * Change images in a carousel slideshow
+ * @param {number} n
+ */
 function changeImgs(n) {
     clearInterval(imgTimer);
     if (n === -1) {
@@ -19,6 +23,11 @@ function changeImgs(n) {
     }
 }
 
+/**
+ * Clears the timer for the image and displays that specific image
+ * @param {number} n
+ */
+
 
 function currentImg(n) {
     clearInterval(imgTimer);
@@ -28,6 +37,10 @@ function currentImg(n) {
     showImgs(imgIndex = n);
 }
 
+/**
+ * Display specific image utilzing a for loop
+ * @param {number} n
+ */
 
 function showImgs(n) {
     var i;

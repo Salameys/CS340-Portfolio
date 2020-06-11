@@ -4,6 +4,9 @@ var express = require('express');
 var router = express.Router();
 var mysql = require('../dbcon.js');
 
+/**
+ * Route to display the parties page
+ */ 
 router.get('/parties', function (req, res) {
     let context = {
       title:"Parties",
@@ -12,6 +15,10 @@ router.get('/parties', function (req, res) {
     res.render('parties', context)
   });
 
+/**
+ * Route to delete a party and update the corresponding characters
+ * to no longer have a party
+ */ 
 router.delete('/delete_party', function (req, res) {
     return new Promise(function (resolve, reject) {
         let partyID = req.get('partyID');
@@ -43,6 +50,9 @@ router.delete('/delete_party', function (req, res) {
     })
 });
 
+/**
+ * Route to display all parties in the database
+ */
 router.get('/partyList', function (req, res) {
     context = { layout: false };
 
@@ -79,6 +89,9 @@ router.get('/partyList', function (req, res) {
   });
 });
 
+/**
+ * Route to display the data of a selected party
+ */ 
 router.get('/partyDisplay', function (req, res) {
   context = {layout: false};
   let partyID = req.get("partyID");
@@ -107,6 +120,10 @@ router.get('/partyDisplay', function (req, res) {
     }
   })
 });
+
+/**
+ * Route to add a party into the database as a JSON
+ */ 
 
 router.post('/partyInsert', function (req, res) {
   let party = JSON.parse(req.get('party'));

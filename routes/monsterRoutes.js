@@ -4,6 +4,9 @@ var express = require('express');
 var router = express.Router();
 var mysql = require('../dbcon.js');
 
+/**
+ * Route to display the monsters page
+ */
 router.get('/monsters', function (req, res) {
   let context = {
     title:"Monsters",
@@ -11,6 +14,10 @@ router.get('/monsters', function (req, res) {
   };
   res.render('monsters', context)
 });
+
+/**
+ * Route to display all data for a selected monster
+ */
 
 router.get('/monsterDisplay', function (req, res) {
   context = {layout:false};
@@ -56,6 +63,9 @@ router.get('/monsterDisplay', function (req, res) {
   });
 });
 
+/**
+ * Route to insert a monster into a table within the database as a JSON
+ */ 
 router.post('/monsterInsert', function (req, res) {
   let monster = JSON.parse(req.get('monster'));
   let abilities = monster.abilities;
@@ -77,6 +87,9 @@ router.post('/monsterInsert', function (req, res) {
   });
 });
 
+/**
+ * Updates a monster in the database with the given data in the header
+ */
 router.post('/monsterModify', function (req, res) {
   let monster = JSON.parse(req.get('monster'));
   let abilities = sqlFunctions.parseStringArrayToInt(monster.abilities);

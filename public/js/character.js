@@ -43,6 +43,12 @@ function loadCharacter(characterID, mode = 'display') {
 	request.send();
 }
 
+/**
+ * Lists all the characters on the webpage and their corresponding
+ * attributes
+ * @param {string} attributeKey
+ */
+
 function listCharacters(attributeKey) {
     let request = new XMLHttpRequest();
 	request.open('get', '/characterList');
@@ -127,6 +133,12 @@ function extractCharacterData() {
     return character;
 }
 
+/**
+ * Utilizes extract data to construct an object
+ * and permenantly adds it to the table
+ * 
+ */
+
 function addCharacter() {
     let character = extractCharacterData();
 
@@ -144,6 +156,12 @@ function addCharacter() {
     listCharacters();
 }
 
+
+/**
+ * Used to confirm updates that are made to the table data
+ * for characters
+ * @param {number} characterID
+ */
 function confirmCharacter(characterID) {
     let character = extractCharacterData();
     character.characterID = characterID;
@@ -178,21 +196,4 @@ function deleteCharacter(characterID) {
     request.send();
 
     listCharacters();
-}
-
-/*
- * Work in Progress
- */
-function deleteRelationship(characterID, monsterID) {
-    let request = new XMLHttpRequest();
-    request.open('delete', '/delete_relationship');
-    request.setRequestHeader('characterID', characterID);
-    request.setRequestHeader('monsterID', monsterID);
-    request.addEventListener("load", response => {
-        let list = document.getElementById("list");
-        list.innerHTML = request.responseText;
-    })
-    request.send();
-
-   loadCharacter();
 }
